@@ -1,9 +1,14 @@
-﻿<!DOCTYPE html>
+﻿@using System.Threading;
+@{
+    string culture = Thread.CurrentThread.CurrentUICulture.ToString();
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Security.IdentityServer</title>
+    <title>@sharedLocalizer["SafeEntry"]</title>
+    <link rel="shortcut icon" href="~/favicon.ico">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
@@ -11,7 +16,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Security.IdentityServer</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">@sharedLocalizer["HasTextile"]</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -26,6 +31,23 @@
                         </li>
                     </ul>
                 </div>
+                <div class="navbar-right">
+                    <ul class="navbar-nav ml-auto">
+                        <form asp-controller="Home" asp-antiforgery="true" asp-action="SetCulture">
+                            <input type="hidden" name="returnUrl" value="@(Context.Request.Path)@(Context.Request.QueryString.ToUriComponent())" />
+                            @if (culture != "tr-TR")
+                            {
+                                <input type="hidden" name="culture" value="tr-TR" />
+                                <button type="submit" class="btn font-weight-bold">Türkçe</button>
+                            }
+                            else
+                            {
+                                <input type="hidden" name="culture" value="en-US" />
+                                <button type="submit" class="btn font-weight-bold">English</button>
+                            }
+                        </form>
+                    </ul>
+                </div>
             </div>
         </nav>
     </header>
@@ -37,7 +59,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2020 - Security.IdentityServer - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; @DateTime.Now.Year - @sharedLocalizer["HasTextile"]
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

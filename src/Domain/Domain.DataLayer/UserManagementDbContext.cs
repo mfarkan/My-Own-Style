@@ -1,10 +1,7 @@
-﻿using Domain.Model.Security;
-using Domain.Model.User;
+﻿using Domain.Model.User;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Domain.DataLayer
 {
@@ -17,7 +14,7 @@ namespace Domain.DataLayer
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            builder.UseOpenIddict<CustomOpenIdApplication, CustomOpenIdAuthorization, CustomOpenIdScope, CustomOpenIdToken, Guid>();
+            builder.UseOpenIddict<Guid>();
         }
     }
 }

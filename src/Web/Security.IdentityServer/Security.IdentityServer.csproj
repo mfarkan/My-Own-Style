@@ -7,8 +7,13 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.4" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.3" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.1.4" />
     <PackageReference Include="OpenIddict" Version="2.0.1" />
     <PackageReference Include="OpenIddict.EntityFrameworkCore" Version="2.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Domain\Domain.DataLayer\Domain.DataLayer.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -39,6 +44,12 @@
     <EmbeddedResource Update="Resources\Views\Account\Login.tr-TR.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Certificate.pfx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

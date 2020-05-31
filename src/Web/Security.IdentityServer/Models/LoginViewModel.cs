@@ -10,9 +10,8 @@ namespace Security.IdentityServer.Models
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "Email")]
-        [EmailAddress(ErrorMessage = "InvalidEmailError")]
-        public string Email { get; set; }
+        [Display(Name = "UserName")]
+        public string Username { get; set; }
 
         [Required]
         [DataType(DataType.Password)]

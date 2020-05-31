@@ -9,6 +9,10 @@ namespace Security.IdentityServer.Models
     public class RegisterViewModel
     {
         [Required]
+        [Display(Name = "UserName")]
+        public string Username { get; set; }
+
+        [Required]
         [Display(Name = "Email")]
         [EmailAddress(ErrorMessage = "InvalidEmailError")]
         public string Email { get; set; }

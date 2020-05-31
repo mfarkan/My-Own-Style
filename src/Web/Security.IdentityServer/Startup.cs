@@ -36,7 +36,11 @@ namespace Security.IdentityServer
         {
             services.AddDbContext<UserManagementDbContext>(options =>
             {
-                options.UseNpgsql(Configuration.GetConnectionString("ConnectionStringSecurity"));
+
+                options.UseNpgsql(Configuration.GetConnectionString("ConnectionStringSecurity"), sql =>
+                 {
+                     sql.MigrationsAssembly("Security.IdentityServer");
+                 });
                 options.UseOpenIddict<Guid>();
 
             });

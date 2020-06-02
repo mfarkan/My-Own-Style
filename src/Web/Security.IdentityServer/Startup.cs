@@ -186,7 +186,6 @@ namespace Security.IdentityServer
                 var manager = scope.ServiceProvider.GetRequiredService<OpenIddictApplicationManager<OpenIddictApplication<int>>>();
 
                 var clientApp = await manager.FindByClientIdAsync("HasTextileWebCore");
-
                 if (clientApp == null)
                 {
                     OpenIddictApplicationDescriptor customApp = new OpenIddictApplicationDescriptor

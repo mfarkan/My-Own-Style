@@ -15,15 +15,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{674C6E3A
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{AC82AFE1-F080-44F8-9120-689B876CD073}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security.IdentityServer", "src\Web\Security.IdentityServer\Security.IdentityServer.csproj", "{8640ED73-30A0-43F2-BB83-7E065F1A3F37}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Security.IdentityServer", "src\Web\Security.IdentityServer\Security.IdentityServer.csproj", "{8640ED73-30A0-43F2-BB83-7E065F1A3F37}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bridge", "Bridge", "{7CAE6BBF-418E-405F-A1D1-23BE981270C5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HasTextile.API", "src\Bridge\HasTextile.API\HasTextile.API.csproj", "{015E95D1-8A7C-47C0-85AC-2D07ACF91837}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HasTextile.API", "src\Bridge\HasTextile.API\HasTextile.API.csproj", "{015E95D1-8A7C-47C0-85AC-2D07ACF91837}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Model", "src\Domain\Domain.Model\Domain.Model.csproj", "{9E8C17E6-C99E-4312-AE35-941536943E8B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.Model", "src\Domain\Domain.Model\Domain.Model.csproj", "{9E8C17E6-C99E-4312-AE35-941536943E8B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.DataLayer", "src\Domain\Domain.DataLayer\Domain.DataLayer.csproj", "{B20EFC2F-CC0B-45F0-BB06-715D34AEBE75}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.DataLayer", "src\Domain\Domain.DataLayer\Domain.DataLayer.csproj", "{B20EFC2F-CC0B-45F0-BB06-715D34AEBE75}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Enumarations", "src\Core\Core.Enumarations\Core.Enumarations.csproj", "{1BF14AFB-F8A6-49AC-8493-4FA80A3600B4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Integration", "src\Domain\Domain.Integration\Domain.Integration\Domain.Integration.csproj", "{8052FD69-0220-4AB1-B39F-6E2D0C897292}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -83,6 +87,30 @@ Global
 		{B20EFC2F-CC0B-45F0-BB06-715D34AEBE75}.Release|x64.Build.0 = Release|Any CPU
 		{B20EFC2F-CC0B-45F0-BB06-715D34AEBE75}.Release|x86.ActiveCfg = Release|Any CPU
 		{B20EFC2F-CC0B-45F0-BB06-715D34AEBE75}.Release|x86.Build.0 = Release|Any CPU
+		{1BF14AFB-F8A6-49AC-8493-4FA80A3600B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BF14AFB-F8A6-49AC-8493-4FA80A3600B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BF14AFB-F8A6-49AC-8493-4FA80A3600B4}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1BF14AFB-F8A6-49AC-8493-4FA80A3600B4}.Debug|x64.Build.0 = Debug|Any CPU
+		{1BF14AFB-F8A6-49AC-8493-4FA80A3600B4}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1BF14AFB-F8A6-49AC-8493-4FA80A3600B4}.Debug|x86.Build.0 = Debug|Any CPU
+		{1BF14AFB-F8A6-49AC-8493-4FA80A3600B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BF14AFB-F8A6-49AC-8493-4FA80A3600B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BF14AFB-F8A6-49AC-8493-4FA80A3600B4}.Release|x64.ActiveCfg = Release|Any CPU
+		{1BF14AFB-F8A6-49AC-8493-4FA80A3600B4}.Release|x64.Build.0 = Release|Any CPU
+		{1BF14AFB-F8A6-49AC-8493-4FA80A3600B4}.Release|x86.ActiveCfg = Release|Any CPU
+		{1BF14AFB-F8A6-49AC-8493-4FA80A3600B4}.Release|x86.Build.0 = Release|Any CPU
+		{8052FD69-0220-4AB1-B39F-6E2D0C897292}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8052FD69-0220-4AB1-B39F-6E2D0C897292}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8052FD69-0220-4AB1-B39F-6E2D0C897292}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8052FD69-0220-4AB1-B39F-6E2D0C897292}.Debug|x64.Build.0 = Debug|Any CPU
+		{8052FD69-0220-4AB1-B39F-6E2D0C897292}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8052FD69-0220-4AB1-B39F-6E2D0C897292}.Debug|x86.Build.0 = Debug|Any CPU
+		{8052FD69-0220-4AB1-B39F-6E2D0C897292}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8052FD69-0220-4AB1-B39F-6E2D0C897292}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8052FD69-0220-4AB1-B39F-6E2D0C897292}.Release|x64.ActiveCfg = Release|Any CPU
+		{8052FD69-0220-4AB1-B39F-6E2D0C897292}.Release|x64.Build.0 = Release|Any CPU
+		{8052FD69-0220-4AB1-B39F-6E2D0C897292}.Release|x86.ActiveCfg = Release|Any CPU
+		{8052FD69-0220-4AB1-B39F-6E2D0C897292}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -92,6 +120,8 @@ Global
 		{015E95D1-8A7C-47C0-85AC-2D07ACF91837} = {7CAE6BBF-418E-405F-A1D1-23BE981270C5}
 		{9E8C17E6-C99E-4312-AE35-941536943E8B} = {C2225835-8345-4B55-BF5A-CB184F500461}
 		{B20EFC2F-CC0B-45F0-BB06-715D34AEBE75} = {C2225835-8345-4B55-BF5A-CB184F500461}
+		{1BF14AFB-F8A6-49AC-8493-4FA80A3600B4} = {FBC1703F-8F6D-4293-8DA2-E6F86B0AE0EF}
+		{8052FD69-0220-4AB1-B39F-6E2D0C897292} = {C2225835-8345-4B55-BF5A-CB184F500461}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D5AA8F5A-BE3A-46B1-AD66-7E05D6755883}

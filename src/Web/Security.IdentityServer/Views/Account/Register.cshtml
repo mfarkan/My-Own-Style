@@ -2,10 +2,11 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<title>@sharedLocalizer["Register"]</title>
 <div class="row">
     <div class="col-md-4">
         <form asp-route-returnUrl="@Model.ReturnUrl" method="post" autocomplete="off">
-            <h4>Create a new account.</h4>
+            <h4>@viewLocalizer["NewAccount"]</h4>
             <hr />
             <input type="hidden" value="@Model.ReturnUrl" />
             <div asp-validation-summary="All" class="text-danger"></div>
@@ -24,10 +25,10 @@
                 <input asp-for="ConfirmPassword" class="form-control" />
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
-            <button type="submit" class="btn btn-primary">Register</button>
+            <button type="submit" class="btn btn-primary">@viewLocalizer["Register"]</button>
             <div class="form-group">
                 <p>
-                    <a asp-controller="Account" asp-action="Login" asp-route-returnurl="@Model.ReturnUrl">Log in</a>
+                    <a asp-controller="Account" asp-action="Login" asp-route-returnurl="@Model.ReturnUrl">@viewLocalizer["Login"]</a>
                 </p>
             </div>
         </form>

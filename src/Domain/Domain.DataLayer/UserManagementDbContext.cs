@@ -13,8 +13,8 @@ namespace Domain.DataLayer
         }
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.HasDefaultSchema("public");
             base.OnModelCreating(builder);
-            builder.UseOpenIddict<Guid>();
         }
     }
 }

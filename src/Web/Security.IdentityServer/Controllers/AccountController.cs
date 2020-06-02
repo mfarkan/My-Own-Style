@@ -56,6 +56,15 @@ namespace Security.IdentityServer.Controllers
             }
             return View();
         }
+        [HttpGet]
+        public IActionResult Register(string returnUrl)
+        {
+            RegisterViewModel model = new RegisterViewModel
+            {
+                ReturnUrl = returnUrl,
+            };
+            return View(model);
+        }
         public IActionResult LockedOut()
         {
             return View();

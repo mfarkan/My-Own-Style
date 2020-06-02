@@ -2,14 +2,18 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace Security.IdentityServer.Migrations.FirstMigration.UserManagementDb
+namespace Security.IdentityServer.Migrations.IdentityServer.UserManagementDb
 {
-    public partial class FirstInitializeUserDb : Migration
+    public partial class FirstMigrationUserDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.EnsureSchema(
+                name: "public");
+
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
+                schema: "public",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
@@ -24,6 +28,7 @@ namespace Security.IdentityServer.Migrations.FirstMigration.UserManagementDb
 
             migrationBuilder.CreateTable(
                 name: "AspNetUsers",
+                schema: "public",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
@@ -49,9 +54,11 @@ namespace Security.IdentityServer.Migrations.FirstMigration.UserManagementDb
 
             migrationBuilder.CreateTable(
                 name: "OpenIddictApplications",
+                schema: "public",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     ClientId = table.Column<string>(maxLength: 100, nullable: false),
                     ClientSecret = table.Column<string>(nullable: true),
                     ConcurrencyToken = table.Column<string>(maxLength: 50, nullable: true),
@@ -70,9 +77,11 @@ namespace Security.IdentityServer.Migrations.FirstMigration.UserManagementDb
 
             migrationBuilder.CreateTable(
                 name: "OpenIddictScopes",
+                schema: "public",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     ConcurrencyToken = table.Column<string>(maxLength: 50, nullable: true),
                     Description = table.Column<string>(nullable: true),
                     DisplayName = table.Column<string>(nullable: true),
@@ -87,6 +96,7 @@ namespace Security.IdentityServer.Migrations.FirstMigration.UserManagementDb
 
             migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
+                schema: "public",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -101,6 +111,7 @@ namespace Security.IdentityServer.Migrations.FirstMigration.UserManagementDb
                     table.ForeignKey(
                         name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
                         column: x => x.RoleId,
+                        principalSchema: "public",
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -108,6 +119,7 @@ namespace Security.IdentityServer.Migrations.FirstMigration.UserManagementDb
 
             migrationBuilder.CreateTable(
                 name: "AspNetUserClaims",
+                schema: "public",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -122,6 +134,7 @@ namespace Security.IdentityServer.Migrations.FirstMigration.UserManagementDb
                     table.ForeignKey(
                         name: "FK_AspNetUserClaims_AspNetUsers_UserId",
                         column: x => x.UserId,
+                        principalSchema: "public",
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -129,6 +142,7 @@ namespace Security.IdentityServer.Migrations.FirstMigration.UserManagementDb
 
             migrationBuilder.CreateTable(
                 name: "AspNetUserLogins",
+                schema: "public",
                 columns: table => new
                 {
                     LoginProvider = table.Column<string>(nullable: false),
@@ -142,6 +156,7 @@ namespace Security.IdentityServer.Migrations.FirstMigration.UserManagementDb
                     table.ForeignKey(
                         name: "FK_AspNetUserLogins_AspNetUsers_UserId",
                         column: x => x.UserId,
+                        principalSchema: "public",
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -149,6 +164,7 @@ namespace Security.IdentityServer.Migrations.FirstMigration.UserManagementDb
 
             migrationBuilder.CreateTable(
                 name: "AspNetUserRoles",
+                schema: "public",
                 columns: table => new
                 {
                     UserId = table.Column<Guid>(nullable: false),
@@ -160,12 +176,14 @@ namespace Security.IdentityServer.Migrations.FirstMigration.UserManagementDb
                     table.ForeignKey(
                         name: "FK_AspNetUserRoles_AspNetRoles_RoleId",
                         column: x => x.RoleId,
+                        principalSchema: "public",
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_AspNetUserRoles_AspNetUsers_UserId",
                         column: x => x.UserId,
+                        principalSchema: "public",
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -173,6 +191,7 @@ namespace Security.IdentityServer.Migrations.FirstMigration.UserManagementDb
 
             migrationBuilder.CreateTable(
                 name: "AspNetUserTokens",
+                schema: "public",
                 columns: table => new
                 {
                     UserId = table.Column<Guid>(nullable: false),
@@ -186,6 +205,7 @@ namespace Security.IdentityServer.Migrations.FirstMigration.UserManagementDb
                     table.ForeignKey(
                         name: "FK_AspNetUserTokens_AspNetUsers_UserId",
                         column: x => x.UserId,
+                        principalSchema: "public",
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -193,10 +213,12 @@ namespace Security.IdentityServer.Migrations.FirstMigration.UserManagementDb
 
             migrationBuilder.CreateTable(
                 name: "OpenIddictAuthorizations",
+                schema: "public",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    ApplicationId = table.Column<Guid>(nullable: true),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    ApplicationId = table.Column<int>(nullable: true),
                     ConcurrencyToken = table.Column<string>(maxLength: 50, nullable: true),
                     Properties = table.Column<string>(nullable: true),
                     Scopes = table.Column<string>(nullable: true),
@@ -210,6 +232,7 @@ namespace Security.IdentityServer.Migrations.FirstMigration.UserManagementDb
                     table.ForeignKey(
                         name: "FK_OpenIddictAuthorizations_OpenIddictApplications_Application~",
                         column: x => x.ApplicationId,
+                        principalSchema: "public",
                         principalTable: "OpenIddictApplications",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -217,11 +240,13 @@ namespace Security.IdentityServer.Migrations.FirstMigration.UserManagementDb
 
             migrationBuilder.CreateTable(
                 name: "OpenIddictTokens",
+                schema: "public",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    ApplicationId = table.Column<Guid>(nullable: true),
-                    AuthorizationId = table.Column<Guid>(nullable: true),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    ApplicationId = table.Column<int>(nullable: true),
+                    AuthorizationId = table.Column<int>(nullable: true),
                     ConcurrencyToken = table.Column<string>(maxLength: 50, nullable: true),
                     CreationDate = table.Column<DateTimeOffset>(nullable: true),
                     ExpirationDate = table.Column<DateTimeOffset>(nullable: true),
@@ -238,12 +263,14 @@ namespace Security.IdentityServer.Migrations.FirstMigration.UserManagementDb
                     table.ForeignKey(
                         name: "FK_OpenIddictTokens_OpenIddictApplications_ApplicationId",
                         column: x => x.ApplicationId,
+                        principalSchema: "public",
                         principalTable: "OpenIddictApplications",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_OpenIddictTokens_OpenIddictAuthorizations_AuthorizationId",
                         column: x => x.AuthorizationId,
+                        principalSchema: "public",
                         principalTable: "OpenIddictAuthorizations",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -251,71 +278,84 @@ namespace Security.IdentityServer.Migrations.FirstMigration.UserManagementDb
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
+                schema: "public",
                 table: "AspNetRoleClaims",
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
+                schema: "public",
                 table: "AspNetRoles",
                 column: "NormalizedName",
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserClaims_UserId",
+                schema: "public",
                 table: "AspNetUserClaims",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserLogins_UserId",
+                schema: "public",
                 table: "AspNetUserLogins",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserRoles_RoleId",
+                schema: "public",
                 table: "AspNetUserRoles",
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
                 name: "EmailIndex",
+                schema: "public",
                 table: "AspNetUsers",
                 column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
+                schema: "public",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_OpenIddictApplications_ClientId",
+                schema: "public",
                 table: "OpenIddictApplications",
                 column: "ClientId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_OpenIddictAuthorizations_ApplicationId_Status_Subject_Type",
+                schema: "public",
                 table: "OpenIddictAuthorizations",
                 columns: new[] { "ApplicationId", "Status", "Subject", "Type" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_OpenIddictScopes_Name",
+                schema: "public",
                 table: "OpenIddictScopes",
                 column: "Name",
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_OpenIddictTokens_AuthorizationId",
+                schema: "public",
                 table: "OpenIddictTokens",
                 column: "AuthorizationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OpenIddictTokens_ReferenceId",
+                schema: "public",
                 table: "OpenIddictTokens",
                 column: "ReferenceId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_OpenIddictTokens_ApplicationId_Status_Subject_Type",
+                schema: "public",
                 table: "OpenIddictTokens",
                 columns: new[] { "ApplicationId", "Status", "Subject", "Type" });
         }
@@ -323,37 +363,48 @@ namespace Security.IdentityServer.Migrations.FirstMigration.UserManagementDb
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "AspNetRoleClaims");
+                name: "AspNetRoleClaims",
+                schema: "public");
 
             migrationBuilder.DropTable(
-                name: "AspNetUserClaims");
+                name: "AspNetUserClaims",
+                schema: "public");
 
             migrationBuilder.DropTable(
-                name: "AspNetUserLogins");
+                name: "AspNetUserLogins",
+                schema: "public");
 
             migrationBuilder.DropTable(
-                name: "AspNetUserRoles");
+                name: "AspNetUserRoles",
+                schema: "public");
 
             migrationBuilder.DropTable(
-                name: "AspNetUserTokens");
+                name: "AspNetUserTokens",
+                schema: "public");
 
             migrationBuilder.DropTable(
-                name: "OpenIddictScopes");
+                name: "OpenIddictScopes",
+                schema: "public");
 
             migrationBuilder.DropTable(
-                name: "OpenIddictTokens");
+                name: "OpenIddictTokens",
+                schema: "public");
 
             migrationBuilder.DropTable(
-                name: "AspNetRoles");
+                name: "AspNetRoles",
+                schema: "public");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "AspNetUsers",
+                schema: "public");
 
             migrationBuilder.DropTable(
-                name: "OpenIddictAuthorizations");
+                name: "OpenIddictAuthorizations",
+                schema: "public");
 
             migrationBuilder.DropTable(
-                name: "OpenIddictApplications");
+                name: "OpenIddictApplications",
+                schema: "public");
         }
     }
 }

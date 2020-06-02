@@ -252,6 +252,9 @@
   <data name="ReadyToLeave" xml:space="preserve">
     <value>Ready to leave?</value>
   </data>
+  <data name="Register" xml:space="preserve">
+    <value>Register</value>
+  </data>
   <data name="RememberMe" xml:space="preserve">
     <value>Remember me</value>
   </data>

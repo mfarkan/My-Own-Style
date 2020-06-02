@@ -255,6 +255,9 @@
   <data name="ReadyToLeave" xml:space="preserve">
     <value>Çıkmak istediğinize emin misiniz?</value>
   </data>
+  <data name="Register" xml:space="preserve">
+    <value>Kayıt Ol</value>
+  </data>
   <data name="RememberMe" xml:space="preserve">
     <value>Beni hatırla</value>
   </data>

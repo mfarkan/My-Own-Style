@@ -39,9 +39,10 @@ namespace Security.IdentityServer
 
                 options.UseNpgsql(Configuration.GetConnectionString("ConnectionStringSecurity"), sql =>
                  {
+                     sql.MigrationsHistoryTable("MigrationHistory", "public");
                      sql.MigrationsAssembly("Security.IdentityServer");
                  });
-                options.UseOpenIddict<Guid>();
+                options.UseOpenIddict<int>();
 
             });
             services.AddIdentity<ApplicationUser, ApplicationRole>()
@@ -119,8 +120,7 @@ namespace Security.IdentityServer
                 options.AddCore(config =>
                 {
                     config.UseEntityFrameworkCore()
-                        .UseDbContext<UserManagementDbContext>()
-                        .ReplaceDefaultEntities<Guid>();
+                        .UseDbContext<UserManagementDbContext>().ReplaceDefaultEntities<int>();
                 });
                 options.AddServer(config =>
                 {
@@ -138,7 +138,7 @@ namespace Security.IdentityServer
                     config.AllowRefreshTokenFlow();
 
                     config.EnableRequestCaching();
-                    config.AddSigningCertificate(new FileStream(Directory.GetCurrentDirectory() + "/Certificate.pfx", FileMode.Open), "fatih2626");
+                    config.AddSigningCertificate(new FileStream(Directory.GetCurrentDirectory() + "/Certificate.pfx", FileMode.Open), "fatih2626", System.Security.Cryptography.X509Certificates.X509KeyStorageFlags.UserKeySet);
                     config.DisableHttpsRequirement();
                 }).AddValidation();
             });
@@ -183,9 +183,11 @@ namespace Security.IdentityServer
             using (var scope = service.CreateScope())
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<UserManagementDbContext>();
-                var manager = scope.ServiceProvider.GetRequiredService<OpenIddictApplicationManager<OpenIddictApplication>>();
+                var manager = scope.ServiceProvider.GetRequiredService<OpenIddictApplicationManager<OpenIddictApplication<int>>>();
 
-                if (await manager.FindByClientIdAsync("HasTextileWebCore") == null)
+                var clientApp = await manager.FindByClientIdAsync("HasTextileWebCore");
+
+                if (clientApp == null)
                 {
                     OpenIddictApplicationDescriptor customApp = new OpenIddictApplicationDescriptor
                     {

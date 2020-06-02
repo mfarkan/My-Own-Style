@@ -3,20 +3,19 @@ using System;
 using Domain.DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace Security.IdentityServer.Migrations.FirstMigration.UserManagementDb
+namespace Security.IdentityServer.Migrations.IdentityServer.UserManagementDb
 {
     [DbContext(typeof(UserManagementDbContext))]
-    [Migration("20200531124313_FirstInitializeUserDb")]
-    partial class FirstInitializeUserDb
+    partial class UserManagementDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .HasDefaultSchema("public")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
                 .HasAnnotation("ProductVersion", "3.1.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
@@ -214,11 +213,12 @@ namespace Security.IdentityServer.Migrations.FirstMigration.UserManagementDb
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("OpenIddict.EntityFrameworkCore.Models.OpenIddictApplication<System.Guid>", b =>
+            modelBuilder.Entity("OpenIddict.EntityFrameworkCore.Models.OpenIddictApplication<int>", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("ClientId")
                         .IsRequired()
@@ -264,14 +264,15 @@ namespace Security.IdentityServer.Migrations.FirstMigration.UserManagementDb
                     b.ToTable("OpenIddictApplications");
                 });
 
-            modelBuilder.Entity("OpenIddict.EntityFrameworkCore.Models.OpenIddictAuthorization<System.Guid>", b =>
+            modelBuilder.Entity("OpenIddict.EntityFrameworkCore.Models.OpenIddictAuthorization<int>", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<Guid?>("ApplicationId")
-                        .HasColumnType("uuid");
+                    b.Property<int?>("ApplicationId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("ConcurrencyToken")
                         .IsConcurrencyToken()
@@ -306,11 +307,12 @@ namespace Security.IdentityServer.Migrations.FirstMigration.UserManagementDb
                     b.ToTable("OpenIddictAuthorizations");
                 });
 
-            modelBuilder.Entity("OpenIddict.EntityFrameworkCore.Models.OpenIddictScope<System.Guid>", b =>
+            modelBuilder.Entity("OpenIddict.EntityFrameworkCore.Models.OpenIddictScope<int>", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("ConcurrencyToken")
                         .IsConcurrencyToken()
@@ -342,17 +344,18 @@ namespace Security.IdentityServer.Migrations.FirstMigration.UserManagementDb
                     b.ToTable("OpenIddictScopes");
                 });
 
-            modelBuilder.Entity("OpenIddict.EntityFrameworkCore.Models.OpenIddictToken<System.Guid>", b =>
+            modelBuilder.Entity("OpenIddict.EntityFrameworkCore.Models.OpenIddictToken<int>", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<Guid?>("ApplicationId")
-                        .HasColumnType("uuid");
+                    b.Property<int?>("ApplicationId")
+                        .HasColumnType("integer");
 
-                    b.Property<Guid?>("AuthorizationId")
-                        .HasColumnType("uuid");
+                    b.Property<int?>("AuthorizationId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("ConcurrencyToken")
                         .IsConcurrencyToken()
@@ -453,20 +456,20 @@ namespace Security.IdentityServer.Migrations.FirstMigration.UserManagementDb
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("OpenIddict.EntityFrameworkCore.Models.OpenIddictAuthorization<System.Guid>", b =>
+            modelBuilder.Entity("OpenIddict.EntityFrameworkCore.Models.OpenIddictAuthorization<int>", b =>
                 {
-                    b.HasOne("OpenIddict.EntityFrameworkCore.Models.OpenIddictApplication<System.Guid>", "Application")
+                    b.HasOne("OpenIddict.EntityFrameworkCore.Models.OpenIddictApplication<int>", "Application")
                         .WithMany("Authorizations")
                         .HasForeignKey("ApplicationId");
                 });
 
-            modelBuilder.Entity("OpenIddict.EntityFrameworkCore.Models.OpenIddictToken<System.Guid>", b =>
+            modelBuilder.Entity("OpenIddict.EntityFrameworkCore.Models.OpenIddictToken<int>", b =>
                 {
-                    b.HasOne("OpenIddict.EntityFrameworkCore.Models.OpenIddictApplication<System.Guid>", "Application")
+                    b.HasOne("OpenIddict.EntityFrameworkCore.Models.OpenIddictApplication<int>", "Application")
                         .WithMany("Tokens")
                         .HasForeignKey("ApplicationId");
 
-                    b.HasOne("OpenIddict.EntityFrameworkCore.Models.OpenIddictAuthorization<System.Guid>", "Authorization")
+                    b.HasOne("OpenIddict.EntityFrameworkCore.Models.OpenIddictAuthorization<int>", "Authorization")
                         .WithMany("Tokens")
                         .HasForeignKey("AuthorizationId");
                 });

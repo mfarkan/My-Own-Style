@@ -193,8 +193,8 @@ namespace Security.IdentityServer
                         ClientId = "HasTextileWebCore",
                         ClientSecret = "123456",
                         DisplayName = "Has Textile Core Web Application",
-                        PostLogoutRedirectUris = { new Uri("http://localhost:53507/signout-callback-oidc") },
-                        RedirectUris = { new Uri("http://localhost:53507/signin-oidc") },
+                        PostLogoutRedirectUris = { new Uri("http://localhost:55467/signout-callback-oidc") },
+                        RedirectUris = { new Uri("http://localhost:55467/signin-oidc") },
                         Permissions =
                         {
                             OpenIddictConstants.Permissions.Endpoints.Authorization,

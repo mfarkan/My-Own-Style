@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using AspNet.Security.OpenIdConnect.Extensions;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using OpenIddict.Abstractions;
 using OpenIddict.Core;
 using OpenIddict.EntityFrameworkCore.Models;
@@ -20,13 +22,16 @@ namespace Security.IdentityServer.Controllers
     public class AuthorizationController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly OpenIddictScopeManager<OpenIddictScope<int>> _scopeManager;
         private readonly OpenIddictApplicationManager<OpenIddictApplication<int>> _applicationManager;
         public AuthorizationController(OpenIddictApplicationManager<OpenIddictApplication<int>> manager,
-            UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signIn)
+            UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signIn,
+            OpenIddictScopeManager<OpenIddictScope<int>> scopeManager)
         {
+            _scopeManager = scopeManager;
             _userManager = userManager;
-            signInManager = signIn;
+            _signInManager = signIn;
             _applicationManager = manager;
         }
         [Authorize, HttpGet("~/connect/authorize")]
@@ -40,6 +45,17 @@ namespace Security.IdentityServer.Controllers
 
             return await Accept(openIdConnectRequest);
         }
+        [HttpGet("~/connect/logout")]
+        public async Task<IActionResult> Logout()
+        {
+            var request = HttpContext.GetOpenIdConnectRequest();
+            var application = await _applicationManager.FindByClientIdAsync(request.ClientId);
+            await _signInManager.SignOutAsync();
+            return SignOut(new AuthenticationProperties
+            {
+                RedirectUri = application.PostLogoutRedirectUris
+            }, OpenIddictServerDefaults.AuthenticationScheme);
+        }
         [Authorize]
         [HttpPost("~/connect/authorize"), ValidateAntiForgeryToken]
         public async Task<IActionResult> Accept(OpenIdConnectRequest openIdConnectRequest)
@@ -49,14 +65,15 @@ namespace Security.IdentityServer.Controllers
             {
                 throw new InvalidOperationException("An internal error has occurred");
             }
-            var principal = await signInManager.CreateUserPrincipalAsync(user);
+            var principal = await _signInManager.CreateUserPrincipalAsync(user);
 
             var ticket = new AuthenticationTicket(principal, new AuthenticationProperties(), OpenIddictServerDefaults.AuthenticationScheme);
 
-            ticket.SetScopes(openIdConnectRequest.GetScopes());
+            var scopes = openIdConnectRequest.GetScopes().ToImmutableArray();
 
+            ticket.SetScopes(openIdConnectRequest.GetScopes());
             // bu kısım resourceları ticket'a kaydettiğimiz yer.
-            //ticket.SetResources();
+            ticket.SetResources(await _scopeManager.ListResourcesAsync(scopes));
 
             foreach (var claim in ticket.Principal.Claims)
             {

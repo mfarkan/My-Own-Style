@@ -55,7 +55,9 @@
             @RenderBody()
         </main>
     </div>
-
+    @section Scripts{
+        @Html.PartialAsync("_ValidationScriptsPartial");
+    }
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; @DateTime.Now.Year - @sharedLocalizer["HasTextile"]

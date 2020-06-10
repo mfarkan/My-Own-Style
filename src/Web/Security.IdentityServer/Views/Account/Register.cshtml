@@ -9,7 +9,11 @@
             <h4>@viewLocalizer["NewAccount"]</h4>
             <hr />
             <input type="hidden" value="@Model.ReturnUrl" />
-            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Username"></label>
+                <input asp-for="Username" class="form-control" />
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="Email"></label>
                 <input asp-for="Email" class="form-control" />
@@ -25,7 +29,9 @@
                 <input asp-for="ConfirmPassword" class="form-control" />
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
-            <button type="submit" class="btn btn-primary">@viewLocalizer["Register"]</button>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">@viewLocalizer["RegisterButton"]</button>
+            </div>
             <div class="form-group">
                 <p>
                     <a asp-controller="Account" asp-action="Login" asp-route-returnurl="@Model.ReturnUrl">@viewLocalizer["Login"]</a>

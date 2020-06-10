@@ -22,14 +22,14 @@ namespace Security.IdentityServer.Resources.Views.Account {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Register {
+    public class VerifyUser {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Register() {
+        internal VerifyUser() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Security.IdentityServer.Resources.Views.Account {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Security.IdentityServer.Resources.Views.Account.Register", typeof(Register).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Security.IdentityServer.Resources.Views.Account.VerifyUser", typeof(VerifyUser).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,29 +61,11 @@ namespace Security.IdentityServer.Resources.Views.Account {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Log in.
+        ///   Looks up a localized string similar to Verify User.
         /// </summary>
-        public static string Login {
+        public static string VerifyUserTitle {
             get {
-                return ResourceManager.GetString("Login", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Create a new account..
-        /// </summary>
-        public static string NewAccount {
-            get {
-                return ResourceManager.GetString("NewAccount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Register.
-        /// </summary>
-        public static string RegisterButton {
-            get {
-                return ResourceManager.GetString("RegisterButton", resourceCulture);
+                return ResourceManager.GetString("VerifyUserTitle", resourceCulture);
             }
         }
     }

@@ -219,8 +219,11 @@
   <data name="OptionLabel" xml:space="preserve">
     <value>Seçiniz.</value>
   </data>
-  <data name="PassWord" xml:space="preserve">
+  <data name="Password" xml:space="preserve">
     <value>Şifre</value>
+  </data>
+  <data name="PasswordCompare" xml:space="preserve">
+    <value>Şifre Tekrarı</value>
   </data>
   <data name="PasswordContainsUserName" xml:space="preserve">
     <value>Şifre içerisinde kulanıcı adı geçmektedir.</value>
@@ -296,6 +299,9 @@
   </data>
   <data name="UserName" xml:space="preserve">
     <value>Kullanıcı Adı</value>
+  </data>
+  <data name="UsernameRequired" xml:space="preserve">
+    <value>Kullanıcı adı zorunludur.</value>
   </data>
   <data name="UserNotFound" xml:space="preserve">
     <value>Kullanıcı bulunamadı.</value>

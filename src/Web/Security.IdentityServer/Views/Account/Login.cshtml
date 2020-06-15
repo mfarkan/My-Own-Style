@@ -8,7 +8,7 @@
         <section>
             <form id="account" method="post" asp-action="Login" asp-controller="Account" autocomplete="off">
                 <h4>@viewLocalizer["LocalAccount"]</h4>
-                <input type="hidden" value="@Model.ReturnUrl" />
+                <input type="hidden" asp-for="ReturnUrl" />
                 <hr />
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <div class="form-group">

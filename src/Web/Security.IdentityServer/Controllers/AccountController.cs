@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using AspNet.Security.OpenIdConnect.Primitives;
@@ -12,6 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Server.IISIntegration;
+using Microsoft.AspNetCore.WebUtilities;
 using Security.IdentityServer.Models;
 using Security.IdentityServer.Resources.Views.Account;
 
@@ -75,7 +77,8 @@ namespace Security.IdentityServer.Controllers
             {
                 return View();
             }
-            var result = await _userManager.ConfirmEmailAsync(user, HttpUtility.UrlDecode(token));
+            var code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(token));
+            var result = await _userManager.ConfirmEmailAsync(user, code);
             if (result.Succeeded)
             {
                 ViewBag.Success = true;
@@ -93,7 +96,7 @@ namespace Security.IdentityServer.Controllers
                     Action = action,
                     Controller = controller,
                     Protocol = scheme,
-                    Values = new { userId, token = HttpUtility.UrlEncode(token) },
+                    Values = new { userId, token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token)) },
                 });
             return callbackUrl;
         }

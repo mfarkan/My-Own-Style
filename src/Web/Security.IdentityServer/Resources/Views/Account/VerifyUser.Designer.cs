@@ -61,6 +61,15 @@ namespace Security.IdentityServer.Resources.Views.Account {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Thank you for confirming your email..
+        /// </summary>
+        public static string ThankYou {
+            get {
+                return ResourceManager.GetString("ThankYou", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Verify User.
         /// </summary>
         public static string VerifyUserTitle {

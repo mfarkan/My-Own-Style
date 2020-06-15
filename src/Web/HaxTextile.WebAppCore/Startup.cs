@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace HaxTextile.WebAppCore
 {
@@ -40,7 +41,6 @@ namespace HaxTextile.WebAppCore
 
                 config.ClaimActions.DeleteClaim("s_hash");
                 config.ClaimActions.DeleteClaim("amr");
-                config.Scope.Add("roles");
 
                 config.ResponseType = OpenIdConnectResponseType.Code;
                 config.AuthenticationMethod = OpenIdConnectRedirectBehavior.RedirectGet;
@@ -50,6 +50,17 @@ namespace HaxTextile.WebAppCore
                 config.ClaimActions.MapUniqueJsonKey("role", "role");
                 config.RequireHttpsMetadata = false;
                 config.GetClaimsFromUserInfoEndpoint = true;
+
+
+                config.Scope.Add("email");
+                config.Scope.Add("roles");
+
+                config.SecurityTokenValidator = new JwtSecurityTokenHandler
+                {
+                    // Disable the built-in JWT claims mapping feature.
+                    InboundClaimTypeMap = new Dictionary<string, string>()
+                };
+
                 config.TokenValidationParameters.NameClaimType = "name";
                 config.TokenValidationParameters.RoleClaimType = "role";
             });
@@ -70,7 +81,7 @@ namespace HaxTextile.WebAppCore
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

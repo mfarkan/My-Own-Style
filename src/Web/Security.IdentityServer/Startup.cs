@@ -91,14 +91,14 @@ namespace Security.IdentityServer
             {
                 o.ResourcesPath = "Resources";
             });
-            services.AddControllersWithViews(option =>
-            option.Filters.Add(new AutoValidateAntiforgeryTokenAttribute())).AddDataAnnotationsLocalization(o =>
-            {
-                o.DataAnnotationLocalizerProvider = (type, factory) =>
+            services.AddControllersWithViews().AddNewtonsoftJson()
+                .AddDataAnnotationsLocalization(o =>
                 {
-                    return factory.Create(typeof(SharedResource));
-                };
-            }).AddViewLocalization(Microsoft.AspNetCore.Mvc.Razor.LanguageViewLocationExpanderFormat.Suffix);
+                    o.DataAnnotationLocalizerProvider = (type, factory) =>
+                    {
+                        return factory.Create(typeof(SharedResource));
+                    };
+                }).AddViewLocalization(Microsoft.AspNetCore.Mvc.Razor.LanguageViewLocationExpanderFormat.Suffix);
             #endregion
             #region WindowsAuth
             services.Configure<IISOptions>(iis =>

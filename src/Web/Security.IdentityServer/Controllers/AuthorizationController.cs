@@ -68,47 +68,9 @@ namespace Security.IdentityServer.Controllers
             {
                 throw new InvalidOperationException("An internal error has occurred");
             }
-            var principal = await _signInManager.CreateUserPrincipalAsync(user);
-
-            var ticket = new AuthenticationTicket(principal, new AuthenticationProperties(), OpenIddictServerDefaults.AuthenticationScheme);
-
-            var scopes = request.GetScopes().ToImmutableArray();
-
-            ticket.SetScopes(request.GetScopes());
-            // bu kısım resourceları ticket'a kaydettiğimiz yer.
-            ticket.SetResources(await _scopeManager.ListResourcesAsync(scopes));
-
-            foreach (var claim in ticket.Principal.Claims)
-            {
-                if (claim.Type == "AspNet.Identity.SecurityStamp")
-                {
-                    continue;
-                }
-                var destinations = new List<string>();
-
-                if (claim.Type == OpenIdConnectConstants.Claims.Email ||
-                    claim.Type == OpenIdConnectConstants.Claims.Name ||
-                    claim.Type == OpenIdConnectConstants.Claims.Role)
-                {
-                    destinations.Add(OpenIdConnectConstants.Destinations.AccessToken);
-                }
-
-                if ((claim.Type == OpenIdConnectConstants.Claims.Email && ticket.HasScope(OpenIdConnectConstants.Scopes.Email)) ||
-                    (claim.Type == OpenIdConnectConstants.Claims.Name && ticket.HasScope(OpenIdConnectConstants.Scopes.Profile)) ||
-                    (claim.Type == OpenIdConnectConstants.Claims.Role && ticket.HasScope(OpenIddictConstants.Scopes.Roles)))
-                {
-                    if (!destinations.Contains(OpenIdConnectConstants.Destinations.AccessToken))
-                    {
-                        destinations.Add(OpenIdConnectConstants.Destinations.AccessToken);
-                    }
-                    if (!destinations.Contains(OpenIdConnectConstants.Destinations.AccessToken))
-                    {
-                        destinations.Add(OpenIdConnectConstants.Destinations.IdentityToken);
-                    }
-                }
-                claim.SetDestinations(destinations);
-            }
-            return SignIn(ticket.Principal, ticket.Properties, ticket.AuthenticationScheme);
+            var ticket = await CreateTicketAsync(user, request, new AuthenticationProperties());
+            var result = SignIn(ticket.Principal, ticket.Properties, ticket.AuthenticationScheme);
+            return result;
         }
 
         [HttpPost("~/connect/token"), Produces("application/json")]
@@ -144,13 +106,31 @@ namespace Security.IdentityServer.Controllers
 
                 return SignIn(ticket.Principal, ticket.Properties, ticket.AuthenticationScheme);
             }
-            else if (request.IsRefreshTokenGrantType())
+            else if (request.IsAuthorizationCodeGrantType() || request.IsRefreshTokenGrantType())
             {
+                var info = await HttpContext.AuthenticateAsync(OpenIddictServerDefaults.AuthenticationScheme);
 
-            }
-            else if (request.IsAuthorizationCodeGrantType())
-            {
+                var user = await _userManager.GetUserAsync(info.Principal);
 
+                if (user == null)
+                {
+                    return BadRequest(new OpenIdConnectResponse()
+                    {
+                        Error = OpenIdConnectConstants.Errors.InvalidGrant,
+                        ErrorDescription = "The authorization code is no longer valid."
+                    });
+                }
+                if (!await _signInManager.CanSignInAsync(user))
+                {
+                    return BadRequest(new OpenIdConnectResponse()
+                    {
+                        Error = OpenIdConnectConstants.Errors.InvalidGrant,
+                        ErrorDescription = "The user is no longer allowed to sign in."
+                    });
+                }
+
+                var ticket = await this.CreateTicketAsync(user, request, new AuthenticationProperties());
+                return SignIn(ticket.Principal, ticket.Properties, ticket.AuthenticationScheme);
             }
             else if (request.IsPasswordGrantType())
             {
@@ -202,6 +182,7 @@ namespace Security.IdentityServer.Controllers
 
                 if (claim.Type == OpenIdConnectConstants.Claims.Email ||
                     claim.Type == OpenIdConnectConstants.Claims.Name ||
+                    claim.Type == OpenIdConnectConstants.Claims.EmailVerified ||
                     claim.Type == OpenIdConnectConstants.Claims.Role)
                 {
                     destinations.Add(OpenIdConnectConstants.Destinations.AccessToken);

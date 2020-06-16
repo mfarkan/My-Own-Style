@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using HaxTextile.WebAppCore.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication;
 
 namespace HaxTextile.WebAppCore.Controllers
 {
@@ -24,8 +25,10 @@ namespace HaxTextile.WebAppCore.Controllers
             return View();
         }
         [Authorize]
-        public IActionResult Privacy()
+        public async Task<IActionResult> Privacy()
         {
+            var token = await HttpContext.GetTokenAsync("access_token");
+            var idToken = await HttpContext.GetTokenAsync("id_token");
             return View();
         }
 

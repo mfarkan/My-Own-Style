@@ -30,9 +30,9 @@ namespace HaxTextile.WebAppCore
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = "oidc";
+                options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
             }).AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
-            .AddOpenIdConnect("oidc", config =>
+            .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, config =>
             {
                 config.ClientId = "HasTextileWebCore";
                 config.ClientSecret = "123456";
@@ -41,7 +41,6 @@ namespace HaxTextile.WebAppCore
 
                 config.ClaimActions.DeleteClaim("s_hash");
                 config.ClaimActions.DeleteClaim("amr");
-
                 config.ResponseType = OpenIdConnectResponseType.Code;
                 config.AuthenticationMethod = OpenIdConnectRedirectBehavior.RedirectGet;
 
@@ -54,6 +53,7 @@ namespace HaxTextile.WebAppCore
 
                 config.Scope.Add("email");
                 config.Scope.Add("roles");
+                config.Scope.Add("profile");
 
                 config.SecurityTokenValidator = new JwtSecurityTokenHandler
                 {

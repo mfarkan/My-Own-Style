@@ -367,6 +367,15 @@ namespace Security.IdentityServer.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compare Password.
+        /// </summary>
+        public static string PasswordCompare {
+            get {
+                return ResourceManager.GetString("PasswordCompare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password contains username..
         /// </summary>
         public static string PasswordContainsUserName {
@@ -588,6 +597,15 @@ namespace Security.IdentityServer.Resources {
         public static string UserName {
             get {
                 return ResourceManager.GetString("UserName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User name is required..
+        /// </summary>
+        public static string UsernameRequired {
+            get {
+                return ResourceManager.GetString("UsernameRequired", resourceCulture);
             }
         }
         

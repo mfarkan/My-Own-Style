@@ -13,4 +13,8 @@
     <ProjectReference Include="..\..\Core\Core.Enumarations\Core.Enumarations.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="MessageProvider\" />
+  </ItemGroup>
+
 </Project>

@@ -123,4 +123,7 @@
   <data name="NewAccount" xml:space="preserve">
     <value>Create a new account.</value>
   </data>
+  <data name="RegisterButton" xml:space="preserve">
+    <value>Register</value>
+  </data>
 </root>

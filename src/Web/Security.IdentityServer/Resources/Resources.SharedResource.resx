@@ -219,6 +219,9 @@
   <data name="PassWord" xml:space="preserve">
     <value>Password</value>
   </data>
+  <data name="PasswordCompare" xml:space="preserve">
+    <value>Compare Password</value>
+  </data>
   <data name="PasswordContainsUserName" xml:space="preserve">
     <value>Password contains username.</value>
   </data>
@@ -293,6 +296,9 @@
   </data>
   <data name="UserName" xml:space="preserve">
     <value>User Name</value>
+  </data>
+  <data name="UsernameRequired" xml:space="preserve">
+    <value>User name is required.</value>
   </data>
   <data name="UserNotFound" xml:space="preserve">
     <value>User notfound.</value>

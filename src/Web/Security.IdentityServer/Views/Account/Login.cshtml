@@ -8,7 +8,7 @@
         <section>
             <form id="account" method="post" asp-action="Login" asp-controller="Account" autocomplete="off">
                 <h4>@viewLocalizer["LocalAccount"]</h4>
-                <input type="hidden" value="@Model.ReturnUrl" />
+                <input type="hidden" asp-for="ReturnUrl" />
                 <hr />
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <div class="form-group">
@@ -37,7 +37,7 @@
                         <a id="forgot-password" asp-action="ForgotPassword" asp-route-returnUrl="@Model.ReturnUrl" asp-controller="Account">@viewLocalizer["ForgotPassword"]</a>
                     </p>
                     <p>
-                        <a asp-action="Register" asp-controller="Account" asp-route-returUrl="@Model.ReturnUrl">@viewLocalizer["NewUser"]</a>
+                        <a asp-action="Register" asp-controller="Account" asp-route-returnUrl="@Model.ReturnUrl">@viewLocalizer["NewUser"]</a>
                     </p>
                 </div>
             </form>
@@ -58,7 +58,7 @@
                 }
                 else
                 {
-                    <form id="external-account" asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                    <form id="external-account" asp-controller="Account" asp-action="ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
                         <div>
                             <p>
                                 @foreach (var provider in Model.ExternalLogins)

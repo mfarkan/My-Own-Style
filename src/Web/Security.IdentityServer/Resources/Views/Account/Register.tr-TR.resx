@@ -123,4 +123,7 @@
   <data name="NewAccount" xml:space="preserve">
     <value>Yeni hesap oluştur.</value>
   </data>
+  <data name="RegisterButton" xml:space="preserve">
+    <value>Kayıt Ol</value>
+  </data>
 </root>

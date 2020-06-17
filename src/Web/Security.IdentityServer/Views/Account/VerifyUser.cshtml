@@ -1,0 +1,9 @@
+﻿<title>@viewLocalizer["VerifyUserTitle"]</title>
+@if (ViewBag.Success == true)
+{
+    @viewLocalizer["ThankYou"]
+}
+else
+{
+    <div asp-validation-summary="All" class="text-danger"></div>
+}

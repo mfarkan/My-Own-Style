@@ -77,5 +77,14 @@ namespace Security.IdentityServer.Resources.Views.Account {
                 return ResourceManager.GetString("NewAccount", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Register.
+        /// </summary>
+        public static string RegisterButton {
+            get {
+                return ResourceManager.GetString("RegisterButton", resourceCulture);
+            }
+        }
     }
 }

@@ -91,14 +91,14 @@ namespace Security.IdentityServer
             {
                 o.ResourcesPath = "Resources";
             });
-            services.AddControllersWithViews(option =>
-            option.Filters.Add(new AutoValidateAntiforgeryTokenAttribute())).AddDataAnnotationsLocalization(o =>
-            {
-                o.DataAnnotationLocalizerProvider = (type, factory) =>
+            services.AddControllersWithViews().AddNewtonsoftJson()
+                .AddDataAnnotationsLocalization(o =>
                 {
-                    return factory.Create(typeof(SharedResource));
-                };
-            }).AddViewLocalization(Microsoft.AspNetCore.Mvc.Razor.LanguageViewLocationExpanderFormat.Suffix);
+                    o.DataAnnotationLocalizerProvider = (type, factory) =>
+                    {
+                        return factory.Create(typeof(SharedResource));
+                    };
+                }).AddViewLocalization(Microsoft.AspNetCore.Mvc.Razor.LanguageViewLocationExpanderFormat.Suffix);
             #endregion
             #region WindowsAuth
             services.Configure<IISOptions>(iis =>
@@ -131,11 +131,15 @@ namespace Security.IdentityServer
 
                     config.RegisterScopes(OpenIdConnectConstants.Scopes.Email,
                        OpenIdConnectConstants.Scopes.Profile,
+                       OpenIdConnectConstants.Scopes.Phone,
+                       OpenIdConnectConstants.Scopes.OpenId,
+                       OpenIdConnectConstants.Scopes.Address,
                        OpenIddictConstants.Scopes.Roles);
 
                     config.AllowAuthorizationCodeFlow();
                     config.AllowClientCredentialsFlow();
-                    config.AllowRefreshTokenFlow();
+                    config.AllowPasswordFlow();
+                    //config.AllowRefreshTokenFlow();
 
                     config.EnableRequestCaching();
                     config.AddSigningCertificate(new FileStream(Directory.GetCurrentDirectory() + "/Certificate.pfx", FileMode.Open), "fatih2626", System.Security.Cryptography.X509Certificates.X509KeyStorageFlags.UserKeySet);
@@ -193,8 +197,8 @@ namespace Security.IdentityServer
                         ClientId = "HasTextileWebCore",
                         ClientSecret = "123456",
                         DisplayName = "Has Textile Core Web Application",
-                        PostLogoutRedirectUris = { new Uri("http://localhost:53507/signout-callback-oidc") },
-                        RedirectUris = { new Uri("http://localhost:53507/signin-oidc") },
+                        PostLogoutRedirectUris = { new Uri("http://localhost:55467/signout-callback-oidc") },
+                        RedirectUris = { new Uri("http://localhost:55467/signin-oidc"), new Uri("http://localhost:55467/Home/Index") },
                         Permissions =
                         {
                             OpenIddictConstants.Permissions.Endpoints.Authorization,

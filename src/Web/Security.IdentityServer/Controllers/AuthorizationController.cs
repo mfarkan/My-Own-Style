@@ -51,11 +51,11 @@ namespace Security.IdentityServer.Controllers
         public async Task<IActionResult> Logout()
         {
             var request = HttpContext.GetOpenIdConnectRequest();
-            var application = await _applicationManager.FindByClientIdAsync(request.ClientId);
+            //var application = await _applicationManager.FindByClientIdAsync(request.ClientId);
             await _signInManager.SignOutAsync();
             return SignOut(new AuthenticationProperties
             {
-                RedirectUri = application.PostLogoutRedirectUris
+                RedirectUri = request.PostLogoutRedirectUri
             }, OpenIddictServerDefaults.AuthenticationScheme);
         }
         [Authorize]
@@ -162,12 +162,29 @@ namespace Security.IdentityServer.Controllers
             }
             throw new NotImplementedException("The specified grant type is not implemented.");
         }
+        /// <summary>
+        /// If you want get some custom claims you just add custom claims.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        private async Task<List<Claim>> GetClaimsAsync(ApplicationUser user)
+        {
+            var customClaims = new List<Claim>();
+            //var isEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
+            //var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+            //var isphoneNumberConfirmed = await _userManager.IsPhoneNumberConfirmedAsync(user);
+            //customClaims.Add(new Claim(OpenIdConnectConstants.Claims.EmailVerified, isEmailConfirmed.ToString()));
+            //customClaims.Add(new Claim(OpenIdConnectConstants.Claims.PhoneNumber, phoneNumber));
+            //customClaims.Add(new Claim(OpenIdConnectConstants.Claims.PhoneNumberVerified, isphoneNumberConfirmed.ToString()));
+            return customClaims;
+        }
         private async Task<AuthenticationTicket> CreateTicketAsync(ApplicationUser user, OpenIdConnectRequest request, AuthenticationProperties properties)
         {
             var principal = await _signInManager.CreateUserPrincipalAsync(user);
             var ticket = new AuthenticationTicket(principal, properties, OpenIddictServerDefaults.AuthenticationScheme);
-            // eğer burada customclaimlerimiz varsa , onları da ekleyebiliriz.
-
+            var claims = await GetClaimsAsync(user);
+            ClaimsIdentity identity = (ClaimsIdentity)principal.Identity;
+            identity.AddClaims(claims);
             var scopes = request.GetScopes().ToImmutableArray();
             ticket.SetScopes(request.GetScopes());
             ticket.SetResources(await _scopeManager.ListResourcesAsync(scopes));
@@ -178,30 +195,7 @@ namespace Security.IdentityServer.Controllers
                 {
                     continue;
                 }
-                var destinations = new List<string>();
-
-                if (claim.Type == OpenIdConnectConstants.Claims.Email ||
-                    claim.Type == OpenIdConnectConstants.Claims.Name ||
-                    claim.Type == OpenIdConnectConstants.Claims.EmailVerified ||
-                    claim.Type == OpenIdConnectConstants.Claims.Role)
-                {
-                    destinations.Add(OpenIdConnectConstants.Destinations.AccessToken);
-                }
-
-                if ((claim.Type == OpenIdConnectConstants.Claims.Email && ticket.HasScope(OpenIdConnectConstants.Scopes.Email)) ||
-                    (claim.Type == OpenIdConnectConstants.Claims.Name && ticket.HasScope(OpenIdConnectConstants.Scopes.Profile)) ||
-                    (claim.Type == OpenIdConnectConstants.Claims.Role && ticket.HasScope(OpenIddictConstants.Scopes.Roles)))
-                {
-                    if (!destinations.Contains(OpenIdConnectConstants.Destinations.AccessToken))
-                    {
-                        destinations.Add(OpenIdConnectConstants.Destinations.AccessToken);
-                    }
-                    if (!destinations.Contains(OpenIdConnectConstants.Destinations.AccessToken))
-                    {
-                        destinations.Add(OpenIdConnectConstants.Destinations.IdentityToken);
-                    }
-                }
-                claim.SetDestinations(destinations);
+                claim.SetDestinations(OpenIdConnectConstants.Destinations.AccessToken, OpenIdConnectConstants.Destinations.IdentityToken);
             }
 
             return ticket;

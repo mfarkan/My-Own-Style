@@ -54,6 +54,7 @@ namespace HaxTextile.WebAppCore
                 config.Scope.Add("email");
                 config.Scope.Add("roles");
                 config.Scope.Add("profile");
+                config.Scope.Add("phone");
 
                 config.SecurityTokenValidator = new JwtSecurityTokenHandler
                 {

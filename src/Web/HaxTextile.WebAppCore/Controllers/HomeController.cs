@@ -8,6 +8,8 @@ using Microsoft.Extensions.Logging;
 using HaxTextile.WebAppCore.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 
 namespace HaxTextile.WebAppCore.Controllers
 {
@@ -23,6 +25,11 @@ namespace HaxTextile.WebAppCore.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+        [HttpGet, HttpPost]
+        public IActionResult LogOut()
+        {
+            return SignOut(CookieAuthenticationDefaults.AuthenticationScheme, OpenIdConnectDefaults.AuthenticationScheme);
         }
         [Authorize]
         public async Task<IActionResult> Privacy()

@@ -131,11 +131,15 @@ namespace Security.IdentityServer
 
                     config.RegisterScopes(OpenIdConnectConstants.Scopes.Email,
                        OpenIdConnectConstants.Scopes.Profile,
+                       OpenIdConnectConstants.Scopes.Phone,
+                       OpenIdConnectConstants.Scopes.OpenId,
+                       OpenIdConnectConstants.Scopes.Address,
                        OpenIddictConstants.Scopes.Roles);
 
                     config.AllowAuthorizationCodeFlow();
                     config.AllowClientCredentialsFlow();
-                    config.AllowRefreshTokenFlow();
+                    config.AllowPasswordFlow();
+                    //config.AllowRefreshTokenFlow();
 
                     config.EnableRequestCaching();
                     config.AddSigningCertificate(new FileStream(Directory.GetCurrentDirectory() + "/Certificate.pfx", FileMode.Open), "fatih2626", System.Security.Cryptography.X509Certificates.X509KeyStorageFlags.UserKeySet);
@@ -194,7 +198,7 @@ namespace Security.IdentityServer
                         ClientSecret = "123456",
                         DisplayName = "Has Textile Core Web Application",
                         PostLogoutRedirectUris = { new Uri("http://localhost:55467/signout-callback-oidc") },
-                        RedirectUris = { new Uri("http://localhost:55467/signin-oidc") },
+                        RedirectUris = { new Uri("http://localhost:55467/signin-oidc"), new Uri("http://localhost:55467/Home/Index") },
                         Permissions =
                         {
                             OpenIddictConstants.Permissions.Endpoints.Authorization,

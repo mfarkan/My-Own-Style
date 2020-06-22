@@ -65,6 +65,8 @@ namespace HaxTextile.WebAppCore
                 config.TokenValidationParameters.NameClaimType = "name";
                 config.TokenValidationParameters.RoleClaimType = "role";
             });
+            services.AddHttpClient();
+            services.AddHttpContextAccessor();
             services.AddControllersWithViews();
         }
 

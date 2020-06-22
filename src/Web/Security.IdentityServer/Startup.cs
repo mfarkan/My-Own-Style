@@ -127,6 +127,7 @@ namespace Security.IdentityServer
                     config.EnableAuthorizationEndpoint("/connect/authorize")
                       .EnableLogoutEndpoint("/connect/logout")
                       .EnableTokenEndpoint("/connect/token")
+                      .EnableIntrospectionEndpoint("/connect/introspect")
                       .EnableUserinfoEndpoint("/api/userinfo");
 
                     config.RegisterScopes(OpenIdConnectConstants.Scopes.Email,
@@ -188,6 +189,7 @@ namespace Security.IdentityServer
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<UserManagementDbContext>();
                 var manager = scope.ServiceProvider.GetRequiredService<OpenIddictApplicationManager<OpenIddictApplication<int>>>();
+                var scopeManager = scope.ServiceProvider.GetRequiredService<OpenIddictScopeManager<OpenIddictScope<int>>>();
 
                 var clientApp = await manager.FindByClientIdAsync("HasTextileWebCore");
                 if (clientApp == null)
@@ -207,10 +209,35 @@ namespace Security.IdentityServer
                             OpenIddictConstants.Permissions.GrantTypes.AuthorizationCode,
                             OpenIddictConstants.Permissions.Scopes.Email,
                             OpenIddictConstants.Permissions.Scopes.Profile,
-                            OpenIddictConstants.Permissions.Scopes.Roles
+                            OpenIddictConstants.Permissions.Scopes.Roles,
+                            OpenIddictConstants.Permissions.Prefixes.Scope + "textileApi"
                         }
                     };
                     await manager.CreateAsync(customApp);
+                }
+                var resourceApi = await manager.FindByClientIdAsync("HasTextileAPI");
+                if (resourceApi == null)
+                {
+                    OpenIddictApplicationDescriptor apiClient = new OpenIddictApplicationDescriptor
+                    {
+                        ClientId = "HasTextileAPI",
+                        ClientSecret = "987654",
+                        Permissions =
+                        {
+                            OpenIddictConstants.Permissions.Endpoints.Introspection,
+                        }
+                    };
+                    await manager.CreateAsync(apiClient);
+                }
+                var scopeApi = await scopeManager.FindByNameAsync("textileApi");
+                if (scopeApi == null)
+                {
+                    var textileApiScope = new OpenIddictScopeDescriptor
+                    {
+                        Name = "textileApi",
+                        Resources = { "HasTextileAPI" }
+                    };
+                    await scopeManager.CreateAsync(textileApiScope);
                 }
             }
         }

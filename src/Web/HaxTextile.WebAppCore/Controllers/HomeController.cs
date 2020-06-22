@@ -10,15 +10,17 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using System.Net.Http;
 
 namespace HaxTextile.WebAppCore.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly HttpClient httpClient;
+        public HomeController(ILogger<HomeController> logger, HttpClient http)
         {
+            httpClient = http;
             _logger = logger;
         }
 

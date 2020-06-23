@@ -239,6 +239,24 @@ namespace Security.IdentityServer
                     };
                     await scopeManager.CreateAsync(textileApiScope);
                 }
+                var clientCredentialApp = await manager.FindByClientIdAsync("HaxTextileServerToServer");
+                if (clientCredentialApp == null)
+                {
+                    OpenIddictApplicationDescriptor credentialApp = new OpenIddictApplicationDescriptor
+                    {
+                        ClientId = "HaxTextileServerToServer",
+                        ClientSecret = "gq9jeNhQbE6QFQx7Le8f7maB",
+                        DisplayName = "HasTextile Not Living Client",
+                        Permissions =
+                        {
+                            OpenIddictConstants.Permissions.Endpoints.Token,
+                            OpenIddictConstants.Permissions.GrantTypes.ClientCredentials,
+                            OpenIddictConstants.Permissions.Scopes.Email,
+                            OpenIddictConstants.Permissions.Prefixes.Scope+ "textileApi"
+                        }
+                    };
+                    await manager.CreateAsync(credentialApp);
+                }
             }
         }
     }

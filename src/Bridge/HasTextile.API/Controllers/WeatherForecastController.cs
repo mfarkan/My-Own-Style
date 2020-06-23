@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 namespace HasTextile.API.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]/[action]")]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]

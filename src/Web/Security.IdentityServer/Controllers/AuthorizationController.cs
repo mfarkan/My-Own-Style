@@ -187,7 +187,8 @@ namespace Security.IdentityServer.Controllers
             identity.AddClaims(claims);
             var scopes = request.GetScopes().ToImmutableArray();
             ticket.SetScopes(request.GetScopes());
-            ticket.SetResources(await _scopeManager.ListResourcesAsync(scopes));
+            var resourceList = await _scopeManager.ListResourcesAsync(scopes);
+            ticket.SetResources(resourceList);
 
             foreach (var claim in ticket.Principal.Claims)
             {

@@ -18,9 +18,9 @@ namespace HaxTextile.WebAppCore.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly HttpClient httpClient;
-        public HomeController(ILogger<HomeController> logger, HttpClient http)
+        public HomeController(ILogger<HomeController> logger, IHttpClientFactory httpFactory)
         {
-            httpClient = http;
+            httpClient = httpFactory.CreateClient();
             _logger = logger;
         }
 
@@ -38,6 +38,9 @@ namespace HaxTextile.WebAppCore.Controllers
         {
             var token = await HttpContext.GetTokenAsync("access_token");
             var idToken = await HttpContext.GetTokenAsync("id_token");
+
+            httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            var result = await httpClient.GetAsync("http://localhost:53906/api/WeatherForecast/Get");
             return View();
         }
 

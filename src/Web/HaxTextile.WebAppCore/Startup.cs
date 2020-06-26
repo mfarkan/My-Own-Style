@@ -53,15 +53,14 @@ namespace HaxTextile.WebAppCore
 
                 config.Scope.Add("email");
                 config.Scope.Add("roles");
-                config.Scope.Add("profile");
-                config.Scope.Add("phone");
+                config.Scope.Add("textileApi");
+                //config.Scope.Add("profile");
+                //config.Scope.Add("phone");
 
                 config.SecurityTokenValidator = new JwtSecurityTokenHandler
                 {
-                    // Disable the built-in JWT claims mapping feature.
                     InboundClaimTypeMap = new Dictionary<string, string>()
                 };
-
                 config.TokenValidationParameters.NameClaimType = "name";
                 config.TokenValidationParameters.RoleClaimType = "role";
             });

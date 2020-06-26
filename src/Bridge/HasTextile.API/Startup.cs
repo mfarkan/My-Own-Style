@@ -1,19 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authentication.OAuth;
+using AspNet.Security.OAuth.Validation;
+using HasTextile.API.HealtChecker;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.JsonWebTokens;
-using Microsoft.IdentityModel.Tokens;
+using System.Net;
 
 namespace HasTextile.API
 {
@@ -29,21 +23,34 @@ namespace HasTextile.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-            JwtSecurityTokenHandler.DefaultOutboundClaimTypeMap.Clear();
             services.AddAuthentication(options =>
             {
-                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(options =>
-             {
-                 options.Audience = "HasTextileAPI";
-                 options.Authority = "http://localhost:53703";
-                 options.RequireHttpsMetadata = false;
-                 options.TokenValidationParameters.NameClaimType = "name";
-                 options.TokenValidationParameters.RoleClaimType = "role";
-             });
+                options.DefaultScheme = OAuthValidationDefaults.AuthenticationScheme;
+            }).AddOAuthIntrospection(config =>
+            {
+                config.ClientId = "HasTextileAPI";
+                config.ClientSecret = "987654";
+                config.Authority = new System.Uri("http://localhost:53703");
+                config.Audiences.Add("HasTextileAPI");
+                config.RequireHttpsMetadata = false;
+            });
 
+            //services.AddAuthentication(options =>
+            //{
+            //    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            //}).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+            // {
+            //     options.Audience = "HasTextileAPI";
+            //     options.Authority = "http://localhost:53703";
+            //     options.RequireHttpsMetadata = false;
+            //     options.TokenValidationParameters.NameClaimType = "name";
+            //     options.TokenValidationParameters.RoleClaimType = "role";
+            // });
+            services.AddDistributedMemoryCache();
             services.AddControllers();
+            services.AddHealthChecks().AddCheck<ApiHealthChecker>("My-Health-Check");
+            //builder.AddCheck("I'm very sick", () =>
+            //    HealthCheckResult.Unhealthy("Something is not right."), tags: new[] { "unhealthy-one" });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,7 +64,14 @@ namespace HasTextile.API
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-
+            app.UseHealthChecks("/healtcheck", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions()
+            {
+                ResultStatusCodes =
+                {
+                    [HealthStatus.Healthy]=StatusCodes.Status200OK,
+                    [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable
+                }
+            });
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

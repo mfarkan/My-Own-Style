@@ -8,6 +8,12 @@
     <PackageReference Include="AspNet.Security.OAuth.Introspection" Version="2.0.0" />
     <PackageReference Include="AspNet.Security.OAuth.Validation" Version="2.0.0" />
     <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="3.1.4" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.5.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Core.Enumarations\Core.Enumarations.csproj" />
+    <ProjectReference Include="..\..\Domain\Domain.DataLayer\Domain.DataLayer.csproj" />
   </ItemGroup>
 
 

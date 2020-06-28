@@ -1,19 +1,20 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AspNet.Security.OAuth.Validation;
+using HasTextile.API.HealtChecker;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerUI;
 
 namespace HasTextile.API
 {
     public class Startup
     {
+        private const string Doc_Helper_Url_Prefix = "Textile-api";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -24,7 +25,50 @@ namespace HasTextile.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = OAuthValidationDefaults.AuthenticationScheme;
+            }).AddOAuthIntrospection(config =>
+            {
+                config.ClientId = "HasTextileAPI";
+                config.ClientSecret = "987654";
+                config.Authority = new System.Uri("http://localhost:53703");
+                config.Audiences.Add("HasTextileAPI");
+                config.RequireHttpsMetadata = false;
+            });
+            services.AddDistributedMemoryCache();
             services.AddControllers();
+            services.AddSwaggerGen(options =>
+            {
+                options.CustomSchemaIds(x => x.FullName);
+                options.SwaggerDoc("v1.0", new OpenApiInfo
+                {
+                    Version = "v1.0",
+                    Title = $"Legacy API"
+                });
+                options.AddSecurityDefinition(OAuthValidationDefaults.AuthenticationScheme, new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Description = "Specify token with Bearer tag. example: Bearer {access_token}",
+                    BearerFormat = "JWT",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey
+                });
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                       {
+                         new OpenApiSecurityScheme
+                         {
+                           Reference = new OpenApiReference
+                           {
+                             Type = ReferenceType.SecurityScheme,
+                             Id = "Bearer"
+                           }
+                          },
+                          new string[] { }
+                       }
+                });
+            });
+            services.AddHealthChecks().AddCheck<ApiHealthChecker>("My-Health-Check");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -36,9 +80,29 @@ namespace HasTextile.API
             }
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
-
+            app.UseHealthChecks("/healtcheck", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions()
+            {
+                ResultStatusCodes =
+                {
+                    [HealthStatus.Healthy]=StatusCodes.Status200OK,
+                    [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable
+                }
+            }); 
+            app.UseSwagger(c =>
+            {
+                c.RouteTemplate = Doc_Helper_Url_Prefix + "/{documentName}/swagger.json";
+            });
+            app.UseSwaggerUI(c =>
+            {
+                c.RoutePrefix = Doc_Helper_Url_Prefix;
+                c.SwaggerEndpoint("/" + Doc_Helper_Url_Prefix + "/v1.0/swagger.json", "Textile Api v1.0");
+                c.DisplayRequestDuration();
+                c.DocumentTitle = "Textile Api";
+                c.SupportedSubmitMethods(SubmitMethod.Get, SubmitMethod.Post, SubmitMethod.Put, SubmitMethod.Delete);
+                c.DocExpansion(DocExpansion.None);
+            });
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

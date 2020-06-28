@@ -10,15 +10,17 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using System.Net.Http;
 
 namespace HaxTextile.WebAppCore.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly HttpClient httpClient;
+        public HomeController(ILogger<HomeController> logger, IHttpClientFactory httpFactory)
         {
+            httpClient = httpFactory.CreateClient();
             _logger = logger;
         }
 
@@ -36,6 +38,9 @@ namespace HaxTextile.WebAppCore.Controllers
         {
             var token = await HttpContext.GetTokenAsync("access_token");
             var idToken = await HttpContext.GetTokenAsync("id_token");
+
+            httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            var result = await httpClient.GetAsync("http://localhost:53906/api/WeatherForecast/Get");
             return View();
         }
 

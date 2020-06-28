@@ -127,6 +127,7 @@ namespace Security.IdentityServer
                     config.EnableAuthorizationEndpoint("/connect/authorize")
                       .EnableLogoutEndpoint("/connect/logout")
                       .EnableTokenEndpoint("/connect/token")
+                      .EnableIntrospectionEndpoint("/connect/introspect")
                       .EnableUserinfoEndpoint("/api/userinfo");
 
                     config.RegisterScopes(OpenIdConnectConstants.Scopes.Email,
@@ -140,7 +141,6 @@ namespace Security.IdentityServer
                     config.AllowClientCredentialsFlow();
                     config.AllowPasswordFlow();
                     //config.AllowRefreshTokenFlow();
-
                     config.EnableRequestCaching();
                     config.AddSigningCertificate(new FileStream(Directory.GetCurrentDirectory() + "/Certificate.pfx", FileMode.Open), "fatih2626", System.Security.Cryptography.X509Certificates.X509KeyStorageFlags.UserKeySet);
                     config.DisableHttpsRequirement();
@@ -188,6 +188,7 @@ namespace Security.IdentityServer
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<UserManagementDbContext>();
                 var manager = scope.ServiceProvider.GetRequiredService<OpenIddictApplicationManager<OpenIddictApplication<int>>>();
+                var scopeManager = scope.ServiceProvider.GetRequiredService<OpenIddictScopeManager<OpenIddictScope<int>>>();
 
                 var clientApp = await manager.FindByClientIdAsync("HasTextileWebCore");
                 if (clientApp == null)
@@ -197,8 +198,8 @@ namespace Security.IdentityServer
                         ClientId = "HasTextileWebCore",
                         ClientSecret = "123456",
                         DisplayName = "Has Textile Core Web Application",
-                        PostLogoutRedirectUris = { new Uri("http://localhost:55467/signout-callback-oidc") },
-                        RedirectUris = { new Uri("http://localhost:55467/signin-oidc"), new Uri("http://localhost:55467/Home/Index") },
+                        PostLogoutRedirectUris = { new Uri("http://localhost:55467/signout-callback-oidc"), new Uri("http://localhost:55467/Home/Index") },
+                        RedirectUris = { new Uri("http://localhost:55467/signin-oidc") },
                         Permissions =
                         {
                             OpenIddictConstants.Permissions.Endpoints.Authorization,
@@ -207,10 +208,53 @@ namespace Security.IdentityServer
                             OpenIddictConstants.Permissions.GrantTypes.AuthorizationCode,
                             OpenIddictConstants.Permissions.Scopes.Email,
                             OpenIddictConstants.Permissions.Scopes.Profile,
-                            OpenIddictConstants.Permissions.Scopes.Roles
+                            OpenIddictConstants.Permissions.Scopes.Roles,
+                            OpenIddictConstants.Permissions.Prefixes.Scope + "textileApi"
                         }
                     };
                     await manager.CreateAsync(customApp);
+                }
+                var resourceApi = await manager.FindByClientIdAsync("HasTextileAPI");
+                if (resourceApi == null)
+                {
+                    OpenIddictApplicationDescriptor apiClient = new OpenIddictApplicationDescriptor
+                    {
+                        ClientId = "HasTextileAPI",
+                        ClientSecret = "987654",
+                        Permissions =
+                        {
+                            OpenIddictConstants.Permissions.Endpoints.Introspection,
+                        }
+                    };
+                    await manager.CreateAsync(apiClient);
+                }
+                var scopeApi = await scopeManager.FindByNameAsync("textileApi");
+                if (scopeApi == null)
+                {
+                    var textileApiScope = new OpenIddictScopeDescriptor
+                    {
+                        Name = "textileApi",
+                        Resources = { "HasTextileAPI" }
+                    };
+                    await scopeManager.CreateAsync(textileApiScope);
+                }
+                var clientCredentialApp = await manager.FindByClientIdAsync("HaxTextileServerToServer");
+                if (clientCredentialApp == null)
+                {
+                    OpenIddictApplicationDescriptor credentialApp = new OpenIddictApplicationDescriptor
+                    {
+                        ClientId = "HaxTextileServerToServer",
+                        ClientSecret = "gq9jeNhQbE6QFQx7Le8f7maB",
+                        DisplayName = "HasTextile Not Living Client",
+                        Permissions =
+                        {
+                            OpenIddictConstants.Permissions.Endpoints.Token,
+                            OpenIddictConstants.Permissions.GrantTypes.ClientCredentials,
+                            OpenIddictConstants.Permissions.Scopes.Email,
+                            OpenIddictConstants.Permissions.Prefixes.Scope+ "textileApi"
+                        }
+                    };
+                    await manager.CreateAsync(credentialApp);
                 }
             }
         }

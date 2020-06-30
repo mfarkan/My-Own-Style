@@ -1,0 +1,134 @@
+﻿@{
+    Layout = "_AdminLayout";
+}
+@using Core.Enumarations
+<title>Müşteri İşlemleri</title>
+
+<div class="container-fluid">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-12 grid-margin">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <h4 class="card-title text-center font-weight-bold">Müşteri Arama</h4>
+                        <br />
+                        <form class="form-sample">
+                            @*<p class="card-description">
+                                    Personal info
+                                </p>*@
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">İsim</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Açıklama</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Mail Adresi</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Telefon</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Tip</label>
+                                        <div class="col-sm-9">
+                                            @Html.DropDownList("Customer123", Html.GetEnumSelectList<CustomerType>(), "Seçiniz.", new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @*<p class="card-description">
+                                    Address
+                                </p>*@
+                            @*<div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 col-form-label">Address 1</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 col-form-label">State</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>*@
+                            @*<div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 col-form-label">Address 2</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 col-form-label">Postcode</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>*@
+                            @*<div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 col-form-label">City</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 col-form-label">Country</label>
+                                            <div class="col-sm-9">
+                                                <select class="form-control">
+                                                    <option>America</option>
+                                                    <option>Italy</option>
+                                                    <option>Russia</option>
+                                                    <option>Britain</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>*@
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

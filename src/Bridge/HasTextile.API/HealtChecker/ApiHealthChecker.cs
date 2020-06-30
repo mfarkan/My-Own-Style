@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
+﻿using Domain.DataLayer;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,16 +10,19 @@ namespace HasTextile.API.HealtChecker
 {
     public class ApiHealthChecker : IHealthCheck
     {
-        public Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
+        private readonly BusinessContext _businessContext;
+        public ApiHealthChecker(BusinessContext businessContext)
         {
-            var isHealthy = true;
+            _businessContext = businessContext;
+        }
+        public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
+        {
+            var isHealthy = await _businessContext.Database.CanConnectAsync(cancellationToken);
             if (isHealthy)
             {
-                return Task.FromResult(
-                    HealthCheckResult.Healthy("I'm alive..."));
+                return HealthCheckResult.Healthy("I'm alive...");
             }
-            return Task.FromResult(
-                HealthCheckResult.Unhealthy("Service is unavaliable right now , check something..."));
+            return HealthCheckResult.Unhealthy("Service is unavaliable right now , check something...");
         }
     }
 }

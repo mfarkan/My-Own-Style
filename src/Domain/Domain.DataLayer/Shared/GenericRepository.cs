@@ -11,6 +11,10 @@ namespace Domain.DataLayer.Shared
     public abstract class GenericRepository<TContext> : IGenericRepository where TContext : DbContext
     {
         private readonly DbContext _context;
+        public GenericRepository(DbContext context)
+        {
+            _context = context;
+        }
         public void Add<T>(params T[] entities) where T : EntityBase
         {
             _context.Set<T>().AddRange(entities);

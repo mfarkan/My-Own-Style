@@ -142,7 +142,8 @@ namespace Security.IdentityServer
                     config.AllowPasswordFlow();
                     //config.AllowRefreshTokenFlow();
                     config.EnableRequestCaching();
-                    config.AddSigningCertificate(new FileStream(Directory.GetCurrentDirectory() + "/Certificate.pfx", FileMode.Open), "fatih2626", System.Security.Cryptography.X509Certificates.X509KeyStorageFlags.UserKeySet);
+                    config.AddSigningCertificate(new FileStream(Directory.GetCurrentDirectory() + "/Certificate.pfx", FileMode.Open), 
+                        "rRZe9aJyhVxgHSRV9N554VcH", System.Security.Cryptography.X509Certificates.X509KeyStorageFlags.UserKeySet);
                     config.DisableHttpsRequirement();
                 }).AddValidation();
             });

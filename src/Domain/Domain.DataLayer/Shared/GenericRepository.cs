@@ -15,7 +15,12 @@ namespace Domain.DataLayer.Shared
         {
             _context = context;
         }
-        public void Add<T>(params T[] entities) where T : EntityBase
+        public void Add<T>(T entity) where T : EntityBase
+        {
+            _context.Set<T>().Add(entity);
+        }
+
+        public void AddRange<T>(params T[] entities) where T : EntityBase
         {
             _context.Set<T>().AddRange(entities);
         }
@@ -33,6 +38,11 @@ namespace Domain.DataLayer.Shared
         public void Delete<T>(T entity) where T : EntityBase
         {
             _context.Set<T>().Remove(entity);
+        }
+
+        public void Dispose()
+        {
+            _context.Dispose();
         }
 
         public IQueryable<T> Query<T>() where T : EntityBase

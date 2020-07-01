@@ -9,6 +9,8 @@ namespace Domain.DataLayer
 {
     public class BusinessContext : DbContext
     {
+        // we're using Repository pattern because of that we don't need dbSet properties. 
+        //If we'll use dbContext directly into code we should add these properties.
         public BusinessContext(DbContextOptions<BusinessContext> options) : base(options)
         {
 

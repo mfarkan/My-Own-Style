@@ -1,5 +1,6 @@
 using AspNet.Security.OAuth.Validation;
 using Domain.DataLayer;
+using Domain.Service;
 using HasTextile.API.HealtChecker;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -28,6 +29,7 @@ namespace HasTextile.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddBusinessLayer(Configuration);
+            services.AddDomainServices(Configuration);
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = OAuthValidationDefaults.AuthenticationScheme;

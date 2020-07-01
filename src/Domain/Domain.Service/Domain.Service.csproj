@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Domain.DataLayer\Domain.DataLayer.csproj" />
+    <ProjectReference Include="..\Domain.Service.Model\Domain.Service.Model.csproj" />
+  </ItemGroup>
+
+</Project>

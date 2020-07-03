@@ -6,8 +6,8 @@ namespace HasTextile.API.Controllers
 {
 
     [ApiController]
-    [Route("api/[controller]/[action]")]
-    [Authorize(AuthenticationSchemes = OAuthIntrospectionDefaults.AuthenticationScheme)]
+    [Route("api/[controller]")]
+    //[Authorize(AuthenticationSchemes = OAuthIntrospectionDefaults.AuthenticationScheme)]
     public abstract class BaseController : ControllerBase
     {
     }

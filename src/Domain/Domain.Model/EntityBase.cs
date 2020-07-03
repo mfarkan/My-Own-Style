@@ -23,5 +23,9 @@ namespace Domain.Model
             CreatedAt = DateTime.Now;
             Status = StatusType.Active;
         }
+        public void Delete()
+        {
+            Status = StatusType.Deleted;
+        }
     }
 }

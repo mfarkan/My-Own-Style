@@ -1,4 +1,5 @@
 using AspNet.Security.OAuth.Validation;
+using AutoMapper;
 using Domain.DataLayer;
 using Domain.Service;
 using HasTextile.API.HealtChecker;
@@ -74,6 +75,7 @@ namespace HasTextile.API
                 });
             });
             services.AddHealthChecks().AddCheck<ApiHealthChecker>("My-Health-Check");
+            services.AddAutoMapper(typeof(Startup));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -94,7 +96,7 @@ namespace HasTextile.API
                     [HealthStatus.Healthy]=StatusCodes.Status200OK,
                     [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable
                 },
-            }); 
+            });
             app.UseSwagger(c =>
             {
                 c.RouteTemplate = Doc_Helper_Url_Prefix + "/{documentName}/swagger.json";

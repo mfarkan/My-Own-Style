@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using System.IdentityModel.Tokens.Jwt;
+using Core.HttpClient;
 
 namespace HaxTextile.WebAppCore
 {
@@ -64,7 +65,13 @@ namespace HaxTextile.WebAppCore
                 config.TokenValidationParameters.NameClaimType = "name";
                 config.TokenValidationParameters.RoleClaimType = "role";
             });
-            services.AddHttpClient();
+            services.AddHttpClient<IHttpClientWrapper, HttpClientWrapper>(client =>
+            {
+                client.BaseAddress = new Uri(Configuration.GetSection("EndPoints")["TextileApiBaseUrl"]);
+                client.DefaultRequestHeaders.Add("Accept", "application/json");
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json");
+            });
             services.AddHttpContextAccessor();
             services.AddControllersWithViews();
         }

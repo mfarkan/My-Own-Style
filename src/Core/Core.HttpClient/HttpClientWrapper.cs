@@ -1,10 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
-using System;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,6 +15,9 @@ namespace Core.HttpClient
         }
         private void AddHeadersToRequest(Dictionary<string, string> headers)
         {
+            if (headers == null)
+                return;
+
             foreach (var item in headers)
             {
                 _httpClient.DefaultRequestHeaders.Add(item.Key, item.Value);
@@ -31,7 +30,7 @@ namespace Core.HttpClient
             return result;
         }
 
-        public async Task<TResponse> GetAsync<TRequest, TResponse>(string resourceUrl, Dictionary<string, string> headers = null)
+        public async Task<TResponse> GetAsync<TResponse>(string resourceUrl, Dictionary<string, string> headers = null)
         {
             AddHeadersToRequest(headers);
             var result = await _httpClient.GetAsync(resourceUrl);

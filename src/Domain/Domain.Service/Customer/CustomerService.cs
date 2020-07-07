@@ -25,7 +25,7 @@ namespace Domain.Service.Customer
         {
             var customerInstance = await _repository.GetByIdAsync<Domain.Model.Customer.Customer>(Id);
             var result = _mapper.Map<Domain.Model.Customer.Customer, CustomerResponseDTO>(customerInstance);
-            return result;
+            return result ?? new CustomerResponseDTO();
         }
 
         public async Task<List<CustomerResponseDTO>> GetCustomersAsync(int page, int pageSize)
@@ -34,12 +34,11 @@ namespace Domain.Service.Customer
             var customerList = await _repository.QueryWithoutTracking<Domain.Model.Customer.Customer>()
                 .Skip(skipSize).Take(pageSize).ToListAsync();
             var resultList = _mapper.Map<List<Domain.Model.Customer.Customer>, List<CustomerResponseDTO>>(customerList);
-            return resultList;
+            return resultList ?? new List<CustomerResponseDTO>();
         }
 
         public async Task<List<CustomerResponseDTO>> GetCustomersWithFilter(string customerName, string customerAddress, string customerTelephone, string customerEmailAddress, CustomerType? customerType, int page = 1, int pageSize = 10)
         {
-            // asNotracking eklenebilir.
             var query = _repository.QueryWithoutTracking<Domain.Model.Customer.Customer>().Where(q => q.Status == StatusType.Active);
 
             if (!string.IsNullOrEmpty(customerName))
@@ -60,7 +59,7 @@ namespace Domain.Service.Customer
             query.Skip(page).Take(pageSize);
             var customerList = await query.ToListAsync();
             var resultList = _mapper.Map<List<Domain.Model.Customer.Customer>, List<CustomerResponseDTO>>(customerList);
-            return resultList;
+            return resultList ?? new List<CustomerResponseDTO>();
 
         }
 

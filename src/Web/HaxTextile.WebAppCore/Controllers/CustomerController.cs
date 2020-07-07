@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Core.HttpClient;
+using Domain.Service.Model.Customer;
 using HaxTextile.WebAppCore.Models;
 using HaxTextile.WebAppCore.Models.Customer;
 using Microsoft.AspNetCore.Mvc;
@@ -24,8 +25,10 @@ namespace HaxTextile.WebAppCore.Controllers
         [HttpGet]
         public async Task<IActionResult> CustomerList(CustomerSearchRequestDTO requestDTO)
         {
-            var result = await _client.GetAsync<JsonResult>("/api/customer/60F4C877-25A4-4C39-98BB-ECC501D2C7AA");
-            return result;
+            var result = await _client.GetAsync<List<CustomerResponseDTO>>($"/api/customer?CustomerName={requestDTO.CustomerName}" +
+                $"&CustomerAddress={requestDTO.CustomerAddress}&CustomerEmail={requestDTO.CustomerEmail}&CustomerPhoneNumber={requestDTO.CustomerPhoneNumber}" +
+                $"&CustomerType={requestDTO.CustomerType}&Start={requestDTO.Start}&Length={requestDTO.Length}");
+            return new OkObjectResult(result);
         }
     }
 }

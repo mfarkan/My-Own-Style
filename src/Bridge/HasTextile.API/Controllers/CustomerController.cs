@@ -18,12 +18,9 @@ namespace HasTextile.API.Controllers
         }
         [HttpGet("{Id:guid}")]
         [ProducesResponseType(typeof(CustomerResponseDTO), 200)]
-        [ProducesResponseType(typeof(void), 404)]
         public async Task<IActionResult> FindCustomer(Guid Id)
         {
             var result = await _customerService.GetCustomerAsync(Id);
-            if (result == null)
-                return NotFound();
             return new OkObjectResult(result);
         }
         //[HttpGet("{start:int}/{length:int}")]
@@ -36,7 +33,6 @@ namespace HasTextile.API.Controllers
         //}
         [HttpGet]
         [ProducesResponseType(typeof(List<CustomerResponseDTO>), 200)]
-        [ProducesResponseType(typeof(void), 404)]
         public async Task<IActionResult> FilterCustomers([FromQuery] CustomerFilterRequestDTO request)
         {
             var resultList = await _customerService.GetCustomersWithFilter(request.CustomerName, request.CustomerAddress, request.CustomerPhoneNumber,

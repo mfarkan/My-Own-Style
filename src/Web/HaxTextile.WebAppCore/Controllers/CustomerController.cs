@@ -28,7 +28,12 @@ namespace HaxTextile.WebAppCore.Controllers
             var result = await _client.GetAsync<List<CustomerResponseDTO>>($"/api/customer?CustomerName={requestDTO.CustomerName}" +
                 $"&CustomerAddress={requestDTO.CustomerAddress}&CustomerEmail={requestDTO.CustomerEmail}&CustomerPhoneNumber={requestDTO.CustomerPhoneNumber}" +
                 $"&CustomerType={requestDTO.CustomerType}&Start={requestDTO.Start}&Length={requestDTO.Length}");
-            return new OkObjectResult(result);
+            return new OkObjectResult(new { requestDTO.Draw, Customers = result });
+        }
+        public async Task<IActionResult> DeleteCustomer(Guid Id)
+        {
+            await _client.DeleteAsync($"/api/customer/{Id}");
+            return new OkObjectResult(new { Id });
         }
     }
 }

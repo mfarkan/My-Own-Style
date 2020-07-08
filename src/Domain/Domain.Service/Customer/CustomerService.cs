@@ -42,21 +42,21 @@ namespace Domain.Service.Customer
             var query = _repository.QueryWithoutTracking<Domain.Model.Customer.Customer>().Where(q => q.Status == StatusType.Active);
 
             if (!string.IsNullOrEmpty(customerName))
-                query.Where(q => q.CustomerName.Contains(customerName));
+                query = query.Where(q => q.CustomerName.Contains(customerName));
 
             if (!string.IsNullOrEmpty(customerAddress))
-                query.Where(q => q.CustomerAddress.Contains(customerAddress));
+                query = query.Where(q => q.CustomerAddress.Contains(customerAddress));
 
             if (!string.IsNullOrEmpty(customerTelephone))
-                query.Where(q => q.CustomerTelephoneNumber.Contains(customerTelephone));
+                query = query.Where(q => q.CustomerTelephoneNumber.Contains(customerTelephone));
 
             if (!string.IsNullOrEmpty(customerEmailAddress))
-                query.Where(q => q.CustomerEmailAddress.Contains(customerEmailAddress));
+                query = query.Where(q => q.CustomerEmailAddress.Contains(customerEmailAddress));
 
             if (customerType.HasValue)
-                query.Where(q => q.CustomerCompanyType == customerType.Value);
+                query = query.Where(q => q.CustomerCompanyType == customerType.Value);
 
-            query.Skip(page).Take(pageSize);
+            query = query.Skip(page).Take(pageSize);
             var customerList = await query.ToListAsync();
             var resultList = _mapper.Map<List<Domain.Model.Customer.Customer>, List<CustomerResponseDTO>>(customerList);
             return resultList ?? new List<CustomerResponseDTO>();

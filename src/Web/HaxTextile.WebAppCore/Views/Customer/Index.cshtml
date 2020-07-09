@@ -58,7 +58,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <button class="btn btn-info" id="searchButton"><i class="fa fa-search"></i> Müşteri Ara</button>
-                                    <button class="btn btn-info" id="newCustomerButton"><i class="fa fa-plus"></i> Yeni Müşteri</button>
+                                    <button class="btn btn-info" type="button" id="newCustomerButton"><i class="fa fa-plus"></i> Yeni Müşteri</button>
                                 </div>
                             </div>
                         </form>
@@ -89,7 +89,7 @@
 {
     <script>
         function Update(id) {
-            console.log(id);
+            window.location = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Customer/Update?Id=" + id;
         }
         function Delete(id) {
             $.ajax({
@@ -187,6 +187,9 @@
             });
             $('#searchButton').click(function () {
                 fillDataList();
+            });
+            $('#newCustomerButton').click(function () {
+                window.location = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Customer/Create";
             });
         });
     </script>

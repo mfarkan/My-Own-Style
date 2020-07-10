@@ -3,17 +3,13 @@
 }
 @model HaxTextile.WebAppCore.Models.Customer.CreateOrUpdateCustomerViewModel
 <title>Müşteri Oluştur</title>
-<style>
-    .breadcrumb {
-        background-color: #f8f9fc;
-    }
-</style>
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Customer">Müşteri İşlemleri</a></li>
-        <li class="breadcrumb-item"><a class="breadcrumb-item active" aria-current="page">Yeni Müşteri</a></li>
-    </ol>
-</nav>
+<div class="container-fluid">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-12 grid-margin">
+                @{await Html.RenderPartialAsync("Partial/_CreateOrUpdate", Model); }
+            </div>
+        </div>
+    </div>
+</div>
 
-
-@{await Html.RenderPartialAsync("Partial/_CreateOrUpdate", Model); }

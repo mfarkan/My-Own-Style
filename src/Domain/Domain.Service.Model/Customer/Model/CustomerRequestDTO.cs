@@ -30,6 +30,6 @@ namespace Domain.Service.Model.Customer.Model
         /// <summary>
         /// Müşteri Tipi
         /// </summary>
-        public CustomerType CustomerType { get; set; }
+        public CustomerType CustomerCompanyType { get; set; }
     }
 }

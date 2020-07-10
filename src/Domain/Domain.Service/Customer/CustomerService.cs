@@ -77,7 +77,8 @@ namespace Domain.Service.Customer
             Domain.Model.Customer.Customer newCustomer = new Domain.Model.Customer.Customer
             {
                 CustomerAddress = request.CustomerAddress,
-                CustomerCompanyType = request.CustomerType,
+                CustomerCompanyType = request.CustomerCompanyType,
+                CustomerEmailAddress = request.CustomerEmailAddress,
                 CustomerDescription = request.CustomerDescription,
                 CustomerName = request.CustomerName,
                 CustomerTelephoneNumber = request.CustomerTelephoneNumber
@@ -95,7 +96,7 @@ namespace Domain.Service.Customer
             customer.CustomerAddress = request.CustomerAddress;
             customer.CustomerEmailAddress = request.CustomerEmailAddress;
             customer.CustomerDescription = request.CustomerDescription;
-            customer.CustomerCompanyType = request.CustomerType;
+            customer.CustomerCompanyType = request.CustomerCompanyType;
             customer.CustomerName = request.CustomerName;
             customer.CustomerTelephoneNumber = request.CustomerTelephoneNumber;
             _repository.Update(customer);

@@ -35,6 +35,23 @@ namespace HaxTextile.WebAppCore.Controllers
             await _client.DeleteAsync($"/api/customer/{Id}");
             return new OkObjectResult(new { Id });
         }
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateOrUpdateCustomerViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _client.PostAsync<CreateOrUpdateCustomerViewModel, CreateOrUpdateCustomerViewModel>($"/api/customer", model);
+                return RedirectToAction("Index");
+            }
+            return View();
+        }
+        public async Task<IActionResult> Update(CreateOrUpdateCustomerViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View();
+            var result = await _client.PutAsync<CreateOrUpdateCustomerViewModel, CreateOrUpdateCustomerViewModel>($"/api/customer/{model.Id}", model);
+            return RedirectToAction("Index");
+        }
         [HttpGet]
         public IActionResult Create()
         {

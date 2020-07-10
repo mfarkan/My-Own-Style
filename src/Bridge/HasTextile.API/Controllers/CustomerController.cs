@@ -48,14 +48,14 @@ namespace HasTextile.API.Controllers
         [HttpPut("{Id:guid}")]
         public async Task<IActionResult> UpdateCustomer(Guid Id, [FromBody] CustomerRequestDTO request)
         {
-            var result = await _customerService.UpdateCustomer(Id, request);
-            return new OkObjectResult(new { Id = result });
+            await _customerService.UpdateCustomer(Id, request);
+            return new OkObjectResult(new { Id });
         }
         [HttpPost]
         public async Task<IActionResult> CreateNewUser([FromBody] CustomerRequestDTO request)
         {
-            var result = await _customerService.CreateNewCustomer(request);
-            return new OkObjectResult(new { Id = result });
+            var Id = await _customerService.CreateNewCustomer(request);
+            return new OkObjectResult(new { Id });
         }
     }
 }

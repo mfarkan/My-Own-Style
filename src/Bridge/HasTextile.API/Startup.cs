@@ -1,8 +1,12 @@
 using AspNet.Security.OAuth.Validation;
+using AutoMapper;
+using Domain.DataLayer;
+using Domain.Service;
 using HasTextile.API.HealtChecker;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -25,6 +29,8 @@ namespace HasTextile.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddBusinessLayer(Configuration);
+            services.AddDomainServices(Configuration);
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = OAuthValidationDefaults.AuthenticationScheme;
@@ -69,6 +75,7 @@ namespace HasTextile.API
                 });
             });
             services.AddHealthChecks().AddCheck<ApiHealthChecker>("My-Health-Check");
+            services.AddAutoMapper(typeof(Startup));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -88,8 +95,8 @@ namespace HasTextile.API
                 {
                     [HealthStatus.Healthy]=StatusCodes.Status200OK,
                     [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable
-                }
-            }); 
+                },
+            });
             app.UseSwagger(c =>
             {
                 c.RouteTemplate = Doc_Helper_Url_Prefix + "/{documentName}/swagger.json";

@@ -1,5 +1,6 @@
 ﻿using Core.Enumarations;
 using Domain.Model.Customer;
+using Domain.Model.Income;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,15 @@ namespace Domain.DataLayer
                 entity.Property(q => q.CustomerEmailAddress).IsRequired().HasMaxLength(255);
                 entity.Property(q => q.CustomerName).IsRequired().HasMaxLength(255);
                 entity.Property(q => q.CustomerTelephoneNumber).HasMaxLength(50);
+            });
+            modelBuilder.Entity<Expenses>(entity =>
+            {
+                entity.ToTable("Expenses");
+                entity.HasIndex(q => q.CreatedAt);
+                entity.Property(q => q.Status).HasDefaultValue(StatusType.Active);
+                entity.Property(q => q.Description).HasMaxLength(255);
+                entity.Property(q => q.Amount).HasColumnType("decimal(18,2)").IsRequired(true);
+                entity.Property(q => q.DocumentNumber).HasMaxLength(50);
             });
         }
     }

@@ -12,6 +12,6 @@ namespace Domain.Model.Customer
         public virtual string CustomerName { get; set; }
         public virtual string CustomerDescription { get; set; }
         public virtual string CustomerAddress { get; set; }
-        public CustomerType CustomerCompanyType { get; set; }
+        public virtual CustomerType CustomerCompanyType { get; set; }
     }
 }

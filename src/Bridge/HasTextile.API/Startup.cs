@@ -1,5 +1,6 @@
 using AspNet.Security.OAuth.Validation;
 using AutoMapper;
+using Core.Caching;
 using Domain.DataLayer;
 using Domain.Service;
 using HasTextile.API.HealtChecker;
@@ -12,7 +13,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.SwaggerUI;
+using System.Threading.Tasks;
 
 namespace HasTextile.API
 {
@@ -42,7 +45,8 @@ namespace HasTextile.API
                 config.Audiences.Add("HasTextileAPI");
                 config.RequireHttpsMetadata = false;
             });
-            services.AddDistributedMemoryCache();
+            services.AddDistributedMemoryCache();//if we don't configure redis or sql server its working like memory cache in server.
+            services.AddSingleton<CacheProvider>();
             services.AddControllers();
             services.AddSwaggerGen(options =>
             {
@@ -77,7 +81,13 @@ namespace HasTextile.API
             services.AddHealthChecks().AddCheck<ApiHealthChecker>("My-Health-Check");
             services.AddAutoMapper(typeof(Startup));
         }
-
+        //I should look on to this , maybe i should look id server , web application to are they ok ?
+        private static Task WriteAsJson(HttpContext httpContext, HealthReport result)
+        {
+            httpContext.Response.ContentType = "application/json; charset=utf-8";
+            var json = JsonConvert.SerializeObject(result, Formatting.Indented);
+            return httpContext.Response.WriteAsync(json);
+        }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -96,6 +106,7 @@ namespace HasTextile.API
                     [HealthStatus.Healthy]=StatusCodes.Status200OK,
                     [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable
                 },
+                ResponseWriter = WriteAsJson,
             });
             app.UseSwagger(c =>
             {

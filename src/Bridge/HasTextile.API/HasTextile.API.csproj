@@ -17,7 +17,7 @@
     <ProjectReference Include="..\..\Core\Core.Caching\Core.Caching.csproj" />
     <ProjectReference Include="..\..\Core\Core.Enumarations\Core.Enumarations.csproj" />
     <ProjectReference Include="..\..\Domain\Domain.DataLayer\Domain.DataLayer.csproj" />
-    <ProjectReference Include="..\..\Domain\Domain.Integration\Domain.Integration\Domain.Integration.csproj" />
+    <ProjectReference Include="..\..\Domain\Domain.Integration\Domain.Integration.csproj" />
     <ProjectReference Include="..\..\Domain\Domain.Service\Domain.Service.csproj" />
   </ItemGroup>
 

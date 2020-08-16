@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
-using AspNet.Security.OpenIdConnect.Primitives;
+﻿using AspNet.Security.OpenIdConnect.Primitives;
 using Domain.Model.User;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -15,7 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Server.IISIntegration;
 using Microsoft.AspNetCore.WebUtilities;
 using Security.IdentityServer.Models;
-using Security.IdentityServer.Resources.Views.Account;
+using System;
+using System.Linq;
+using System.Security.Claims;
+using System.Security.Principal;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Security.IdentityServer.Controllers
 {

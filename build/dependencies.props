@@ -1,0 +1,15 @@
+﻿<Project>
+  <PropertyGroup>
+    <DotnetSdkVersion>3.1.7</DotnetSdkVersion>
+    <AuthIntrospection>2.0.0</AuthIntrospection>
+    <AuthValidation>2.0.0</AuthValidation>
+    <AutoMapperDependencyInjection>8.0.1</AutoMapperDependencyInjection>
+    <EfPostgresSQL>3.1.4</EfPostgresSQL>
+    <SwashBuckleAspNet>5.5.1</SwashBuckleAspNet>
+    <NewtonSoftJson>12.0.3</NewtonSoftJson>
+    <OpenIdDictEfCore>2.0.1</OpenIdDictEfCore>
+    <AutoMapper>10.0.0</AutoMapper>
+    <VsCodeGeneration>3.1.4</VsCodeGeneration>
+    <OpenIdDict>2.0.1</OpenIdDict>
+  </PropertyGroup>
+</Project>

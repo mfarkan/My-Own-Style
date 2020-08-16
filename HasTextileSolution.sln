@@ -27,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.DataLayer", "src\Dom
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Enumarations", "src\Core\Core.Enumarations\Core.Enumarations.csproj", "{1BF14AFB-F8A6-49AC-8493-4FA80A3600B4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.Integration", "src\Domain\Domain.Integration\Domain.Integration\Domain.Integration.csproj", "{8052FD69-0220-4AB1-B39F-6E2D0C897292}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.Integration", "src\Domain\Domain.Integration\Domain.Integration.csproj", "{8052FD69-0220-4AB1-B39F-6E2D0C897292}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HaxTextile.WebAppCore", "src\Web\HaxTextile.WebAppCore\HaxTextile.WebAppCore.csproj", "{B492C718-24B0-4C99-8619-BA242378D859}"
 EndProject
@@ -39,7 +39,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.HttpClient", "src\Core
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Extensions", "src\Core\Core.Extensions\Core.Extensions.csproj", "{13655EE5-294F-43F6-BA86-42C1E13B9885}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Caching", "src\Core\Core.Caching\Core.Caching.csproj", "{68793A40-DCE7-4181-A6BA-4CF6B4E4B0AA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Caching", "src\Core\Core.Caching\Core.Caching.csproj", "{68793A40-DCE7-4181-A6BA-4CF6B4E4B0AA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{F0942A37-2013-4CAB-B7AB-87F4796DABAC}"
+	ProjectSection(SolutionItems) = preProject
+		build\dependencies.props = build\dependencies.props
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

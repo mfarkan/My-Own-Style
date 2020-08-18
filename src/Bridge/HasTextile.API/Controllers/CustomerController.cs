@@ -1,4 +1,4 @@
-﻿using Core.Enumarations;
+﻿using AutoMapper;
 using Domain.Model.Customer;
 using Domain.Service.Model.Customer;
 using Domain.Service.Model.Customer.Model;
@@ -12,15 +12,22 @@ namespace HasTextile.API.Controllers
     public class CustomerController : BaseController
     {
         private readonly ICustomerService _customerService;
-        public CustomerController(ICustomerService customerService)
+        private readonly IMapper _mapper;
+        public CustomerController(ICustomerService customerService, IMapper mapper)
         {
             _customerService = customerService;
+            _mapper = mapper;
         }
         [HttpGet("{Id:guid}")]
         [ProducesResponseType(typeof(CustomerResponseDTO), 200)]
         public async Task<IActionResult> FindCustomer(Guid Id)
         {
-            var result = await _customerService.GetCustomerAsync(Id);
+            var instance = await _customerService.GetCustomerAsync(Id);
+            if (instance == null)
+            {
+                return new NotFoundResult();
+            }
+            var result = _mapper.Map<Customer, CustomerResponseDTO>(instance);
             return new OkObjectResult(result);
         }
         //[HttpGet("{start:int}/{length:int}")]
@@ -37,7 +44,12 @@ namespace HasTextile.API.Controllers
         {
             var resultList = await _customerService.GetCustomersWithFilter(request.CustomerName, request.CustomerAddress, request.CustomerPhoneNumber,
                 request.CustomerEmail, request.CustomerType, request.Start, request.Length);
-            return new OkObjectResult(resultList);
+            if (resultList == null)
+            {
+                return new OkObjectResult(new List<CustomerResponseDTO>());
+            }
+            var instanceList = _mapper.Map<List<Customer>, List<CustomerResponseDTO>>(resultList);
+            return new OkObjectResult(instanceList);
         }
         [HttpDelete("{Id:guid}")]
         public async Task<IActionResult> DeActivateCustomer(Guid Id)

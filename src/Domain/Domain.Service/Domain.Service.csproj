@@ -4,11 +4,6 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="$(AutoMapper)" />
-  </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Domain.DataLayer\Domain.DataLayer.csproj" />
     <ProjectReference Include="..\Domain.Service.Model\Domain.Service.Model.csproj" />

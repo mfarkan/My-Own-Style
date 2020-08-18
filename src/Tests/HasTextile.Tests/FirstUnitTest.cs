@@ -2,6 +2,7 @@ using NUnit.Framework;
 
 namespace HasTextile.Tests
 {
+    // we should keep focus on writing tests.Especially domain services and repos.
     public class FirstUnitTest
     {
         [SetUp]

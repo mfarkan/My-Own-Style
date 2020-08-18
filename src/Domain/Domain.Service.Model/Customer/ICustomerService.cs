@@ -10,9 +10,9 @@ namespace Domain.Service.Model.Customer
 {
     public interface ICustomerService
     {
-        Task<List<CustomerResponseDTO>> GetCustomersAsync(int page, int pageSize);
-        Task<CustomerResponseDTO> GetCustomerAsync(Guid Id);
-        Task<List<CustomerResponseDTO>> GetCustomersWithFilter(string customerName, string customerAddress,
+        Task<List<Domain.Model.Customer.Customer>> GetCustomersAsync(int page, int pageSize);
+        Task<Domain.Model.Customer.Customer> GetCustomerAsync(Guid Id);
+        Task<List<Domain.Model.Customer.Customer>> GetCustomersWithFilter(string customerName, string customerAddress,
             string customerTelephone, string customerEmailAddress, CustomerType? customerType, int page = 1, int pageSize = 10);
 
         Task PassivateCustomer(Guid Id);

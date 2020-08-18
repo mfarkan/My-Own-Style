@@ -11,6 +11,10 @@
     <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="$(DotnetSdkVersion)" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="$(EfPostgresSQL)" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="$(SwashBuckleAspNet)" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="$(DotnetSdkVersion)">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>

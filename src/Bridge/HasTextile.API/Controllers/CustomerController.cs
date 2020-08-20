@@ -42,8 +42,7 @@ namespace HasTextile.API.Controllers
         [ProducesResponseType(typeof(List<CustomerResponseDTO>), 200)]
         public async Task<IActionResult> FilterCustomers([FromQuery] CustomerFilterRequestDTO request)
         {
-            var resultList = await _customerService.GetCustomersWithFilter(request.CustomerName, request.CustomerAddress, request.CustomerPhoneNumber,
-                request.CustomerEmail, request.CustomerType, request.Start, request.Length);
+            var resultList = await _customerService.GetCustomersWithFilter(request);
             if (resultList == null)
             {
                 return new OkObjectResult(new List<CustomerResponseDTO>());

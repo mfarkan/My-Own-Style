@@ -90,9 +90,10 @@
         }
         function Delete(id) {
             $.ajax({
-                url: 'http://localhost:55467/Customer/DeleteCustomer/' + id,
+                url: 'Customer/DeleteCustomer/' + id,
                 type: 'DELETE',
                 success: function (result) {
+                    console.log(result);
                     swal.fire({
                         type: 'success',
                         title: 'Başarılı',

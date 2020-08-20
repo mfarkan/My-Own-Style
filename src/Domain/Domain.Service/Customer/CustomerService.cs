@@ -33,26 +33,26 @@ namespace Domain.Service.Customer
             return customerList ?? new List<Domain.Model.Customer.Customer>();
         }
 
-        public async Task<List<Domain.Model.Customer.Customer>> GetCustomersWithFilter(string customerName, string customerAddress, string customerTelephone, string customerEmailAddress, CustomerType? customerType, int page = 1, int pageSize = 10)
+        public async Task<List<Domain.Model.Customer.Customer>> GetCustomersWithFilter(CustomerFilterRequestDTO filterRequestDTO)
         {
             var query = _repository.QueryWithoutTracking<Domain.Model.Customer.Customer>().Where(q => q.Status == StatusType.Active);
 
-            if (!string.IsNullOrEmpty(customerName))
-                query = query.Where(q => q.CustomerName.Contains(customerName));
+            if (!string.IsNullOrEmpty(filterRequestDTO.CustomerName))
+                query = query.Where(q => q.CustomerName.Contains(filterRequestDTO.CustomerName));
 
-            if (!string.IsNullOrEmpty(customerAddress))
-                query = query.Where(q => q.CustomerAddress.Contains(customerAddress));
+            if (!string.IsNullOrEmpty(filterRequestDTO.CustomerAddress))
+                query = query.Where(q => q.CustomerAddress.Contains(filterRequestDTO.CustomerAddress));
 
-            if (!string.IsNullOrEmpty(customerTelephone))
-                query = query.Where(q => q.CustomerTelephoneNumber.Contains(customerTelephone));
+            if (!string.IsNullOrEmpty(filterRequestDTO.CustomerPhoneNumber))
+                query = query.Where(q => q.CustomerTelephoneNumber.Contains(filterRequestDTO.CustomerPhoneNumber));
 
-            if (!string.IsNullOrEmpty(customerEmailAddress))
-                query = query.Where(q => q.CustomerEmailAddress.Contains(customerEmailAddress));
+            if (!string.IsNullOrEmpty(filterRequestDTO.CustomerEmail))
+                query = query.Where(q => q.CustomerEmailAddress.Contains(filterRequestDTO.CustomerEmail));
 
-            if (customerType.HasValue)
-                query = query.Where(q => q.CustomerCompanyType == customerType.Value);
+            if (filterRequestDTO.CustomerType.HasValue)
+                query = query.Where(q => q.CustomerCompanyType == filterRequestDTO.CustomerType.Value);
 
-            query = query.Skip(page).Take(pageSize);
+            query = query.Skip(filterRequestDTO.Start).Take(filterRequestDTO.Length);
             var customerList = await query.ToListAsync();
             return customerList ?? new List<Domain.Model.Customer.Customer>();
 

@@ -12,8 +12,7 @@ namespace Domain.Service.Model.Customer
     {
         Task<List<Domain.Model.Customer.Customer>> GetCustomersAsync(int page, int pageSize);
         Task<Domain.Model.Customer.Customer> GetCustomerAsync(Guid Id);
-        Task<List<Domain.Model.Customer.Customer>> GetCustomersWithFilter(string customerName, string customerAddress,
-            string customerTelephone, string customerEmailAddress, CustomerType? customerType, int page = 1, int pageSize = 10);
+        Task<List<Domain.Model.Customer.Customer>> GetCustomersWithFilter(CustomerFilterRequestDTO filterRequestDTO);
 
         Task PassivateCustomer(Guid Id);
         Task<Guid> CreateNewCustomer(CustomerRequestDTO request);

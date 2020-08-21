@@ -5,11 +5,16 @@ using Domain.Service.Model.Customer.Model;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Net.Mime;
 using System.Threading.Tasks;
 
 namespace HasTextile.API.Controllers
 {
-    public class CustomerController : BaseController
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
+    [Consumes(MediaTypeNames.Application.Json)]
+    //[Authorize(AuthenticationSchemes = OAuthIntrospectionDefaults.AuthenticationScheme)]
+    public class CustomerController : ControllerBase
     {
         private readonly ICustomerService _customerService;
         private readonly IMapper _mapper;
@@ -18,8 +23,14 @@ namespace HasTextile.API.Controllers
             _customerService = customerService;
             _mapper = mapper;
         }
+        /// <summary>
+        /// Spesifik olarak Id'si verilen müşteri bilgisini döner.
+        /// </summary>
+        /// <param name="Id">Müşterinin Unique Id bilgisi</param>
+        /// <returns></returns>
         [HttpGet("{Id:guid}")]
         [ProducesResponseType(typeof(CustomerResponseDTO), 200)]
+        [ProducesResponseType(typeof(NotFoundResult), 404)]
         public async Task<IActionResult> FindCustomer(Guid Id)
         {
             var instance = await _customerService.GetCustomerAsync(Id);
@@ -30,14 +41,11 @@ namespace HasTextile.API.Controllers
             var result = _mapper.Map<Customer, CustomerResponseDTO>(instance);
             return new OkObjectResult(result);
         }
-        //[HttpGet("{start:int}/{length:int}")]
-        //[ProducesResponseType(typeof(List<CustomerResponseDTO>), 200)]
-        //[ProducesResponseType(typeof(void), 404)]
-        //public async Task<IActionResult> CustomerList(int start, int length)
-        //{
-        //    var resultList = await _customerService.GetCustomersAsync(start, length);
-        //    return new OkObjectResult(resultList);
-        //}
+        /// <summary>
+        /// Müşterinin bazı bilgilerine göre filtrelenmesini sağlar.
+        /// </summary>
+        /// <param name="request">Query'den gelen request objesi.</param>
+        /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(typeof(List<CustomerResponseDTO>), 200)]
         public async Task<IActionResult> FilterCustomers([FromQuery] CustomerFilterRequestDTO request)
@@ -50,19 +58,37 @@ namespace HasTextile.API.Controllers
             var instanceList = _mapper.Map<List<Customer>, List<CustomerResponseDTO>>(resultList);
             return new OkObjectResult(instanceList);
         }
+        /// <summary>
+        /// Müşteriyi pasivize eder.
+        /// </summary>
+        /// <param name="Id">Müşterinin Unique Id bilgisi</param>
+        /// <returns></returns>
         [HttpDelete("{Id:guid}")]
         public async Task<IActionResult> DeActivateCustomer(Guid Id)
         {
             await _customerService.PassivateCustomer(Id);
             return Ok();
         }
+        /// <summary>
+        /// Müşteriyi günceller.
+        /// </summary>
+        /// <param name="Id">Müşterinin Unique Id bilgisi</param>
+        /// <param name="request">Müşterinin güncellenmiş datalarının bulunduğu request Objesi</param>
+        /// <returns></returns>
         [HttpPut("{Id:guid}")]
+        [ProducesResponseType(200, Type = typeof(Guid))]
         public async Task<IActionResult> UpdateCustomer(Guid Id, [FromBody] CustomerRequestDTO request)
         {
             await _customerService.UpdateCustomer(Id, request);
             return new OkObjectResult(new { Id });
         }
+        /// <summary>
+        /// Yeni müşteri oluşturmak için kullanılır.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPost]
+        [ProducesResponseType(200, Type = typeof(Guid))]
         public async Task<IActionResult> CreateNewUser([FromBody] CustomerRequestDTO request)
         {
             var Id = await _customerService.CreateNewCustomer(request);

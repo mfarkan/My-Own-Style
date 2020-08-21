@@ -18,6 +18,8 @@ using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Swashbuckle.AspNetCore.SwaggerUI;
+using System;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -37,19 +39,19 @@ namespace HasTextile.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddBusinessLayer(Configuration);
-            services.AddDomainServices(Configuration);
-            services.AddAuthentication(options =>
-            {
-                options.DefaultScheme = OAuthValidationDefaults.AuthenticationScheme;
-            }).AddOAuthIntrospection(config =>
-            {
-                config.ClientId = "HasTextileAPI";
-                config.ClientSecret = "987654";
-                config.Authority = new System.Uri("http://localhost:53703");
-                config.Audiences.Add("HasTextileAPI");
-                config.RequireHttpsMetadata = false;
-            });
+            //services.AddBusinessLayer(Configuration);
+            //services.AddDomainServices(Configuration);
+            //services.AddAuthentication(options =>
+            //{
+            //    options.DefaultScheme = OAuthValidationDefaults.AuthenticationScheme;
+            //}).AddOAuthIntrospection(config =>
+            //{
+            //    config.ClientId = "HasTextileAPI";
+            //    config.ClientSecret = "987654";
+            //    config.Authority = new System.Uri("http://localhost:53703");
+            //    config.Audiences.Add("HasTextileAPI");
+            //    config.RequireHttpsMetadata = false;
+            //});
             services.AddDistributedMemoryCache();//if we don't configure redis or sql server its working like memory cache in server.
             services.AddSingleton<CacheProvider>();
             services.AddControllers();
@@ -92,6 +94,9 @@ namespace HasTextile.API
                 });
                 options.OperationFilter<RemoveVersionParameterFilter>();
                 options.DocumentFilter<ReplaceVersionWithExactValueInPathFilter>();
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                options.IncludeXmlComments(xmlPath);
             });
             services.AddHealthChecks().AddCheck<ApiHealthChecker>("My-Health-Check");
             services.AddAutoMapper(typeof(Startup));
@@ -114,15 +119,15 @@ namespace HasTextile.API
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseHealthChecks("/healtcheck", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions()
-            {
-                ResultStatusCodes =
-                {
-                    [HealthStatus.Healthy]=StatusCodes.Status200OK,
-                    [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable
-                },
-                ResponseWriter = WriteAsJson,
-            });
+            //app.UseHealthChecks("/healtcheck", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions()
+            //{
+            //    ResultStatusCodes =
+            //    {
+            //        [HealthStatus.Healthy]=StatusCodes.Status200OK,
+            //        [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable
+            //    },
+            //    ResponseWriter = WriteAsJson,
+            //});
             app.UseSwagger(c =>
             {
                 c.RouteTemplate = Doc_Helper_Url_Prefix + "/{documentName}/swagger.json";

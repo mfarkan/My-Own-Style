@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HasTextile.API</name>
+    </assembly>
+    <members>
+        <member name="M:HasTextile.API.Controllers.CustomerController.FindCustomer(System.Guid)">
+             <remarks>
+             Sample request:
+            
+                 POST /Todo
+                 {
+                    "id": 1,
+                    "name": "Item1",
+                    "isComplete": true
+                 }
+            
+             </remarks>
+             <summary>
+             Spesifik olarak Id'si verilen müşteri bilgisini döner.
+             </summary>
+             <param name="Id">Müşterinin Unique Id bilgisi</param>
+             <returns></returns>
+        </member>
+        <member name="M:HasTextile.API.Controllers.CustomerController.FilterCustomers(Domain.Service.Model.Customer.Model.CustomerFilterRequestDTO)">
+            <summary>
+            Müşterinin bazı bilgilerine göre filtrelenmesini sağlar.
+            </summary>
+            <param name="request">Query'den gelen request objesi.</param>
+            <returns></returns>
+        </member>
+        <member name="M:HasTextile.API.Controllers.CustomerController.DeActivateCustomer(System.Guid)">
+            <summary>
+            Müşteriyi pasivize eder.
+            </summary>
+            <param name="Id">Müşterinin Unique Id bilgisi</param>
+            <returns></returns>
+        </member>
+        <member name="M:HasTextile.API.Controllers.CustomerController.UpdateCustomer(System.Guid,Domain.Service.Model.Customer.Model.CustomerRequestDTO)">
+            <summary>
+            Müşteriyi günceller.
+            </summary>
+            <param name="Id">Müşterinin Unique Id bilgisi</param>
+            <param name="request">Müşterinin güncellenmiş datalarının bulunduğu request Objesi</param>
+            <returns></returns>
+        </member>
+        <member name="M:HasTextile.API.Controllers.CustomerController.CreateNewUser(Domain.Service.Model.Customer.Model.CustomerRequestDTO)">
+            <summary>
+            Yeni müşteri oluşturmak için kullanılır.
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

@@ -10,7 +10,8 @@ namespace HasTextile.API.Controllers
 {
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
-    public class WeatherForecastController : BaseController
+    //[Authorize(AuthenticationSchemes = OAuthIntrospectionDefaults.AuthenticationScheme)]
+    public class WeatherForecastController : ControllerBase
     {
         private readonly CacheProvider _cacheProvider;
         private const string cacheName = "weatherCacheName";

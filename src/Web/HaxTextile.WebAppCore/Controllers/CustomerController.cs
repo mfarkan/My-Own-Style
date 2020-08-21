@@ -25,7 +25,7 @@ namespace HaxTextile.WebAppCore.Controllers
         [HttpGet]
         public async Task<IActionResult> CustomerList(CustomerSearchRequestDTO requestDTO)
         {
-            var result = await _client.GetAsync<List<CustomerResponseDTO>>($"/api/customer?CustomerName={requestDTO.CustomerName}" +
+            var result = await _client.GetAsync<List<CustomerResponseDTO>>($"{baseApiUrl}/customer?CustomerName={requestDTO.CustomerName}" +
                 $"&CustomerAddress={requestDTO.CustomerAddress}&CustomerEmail={requestDTO.CustomerEmail}&CustomerPhoneNumber={requestDTO.CustomerPhoneNumber}" +
                 $"&CustomerType={requestDTO.CustomerType}&Start={requestDTO.Start}&Length={requestDTO.Length}");
             return new OkObjectResult(new { requestDTO.Draw, Customers = result });
@@ -49,7 +49,7 @@ namespace HaxTextile.WebAppCore.Controllers
         {
             if (!ModelState.IsValid)
                 return View();
-            var result = await _client.PutAsync<CreateOrUpdateCustomerViewModel, CreateOrUpdateCustomerViewModel>($"/api/customer/{model.Id}", model);
+            var result = await _client.PutAsync<CreateOrUpdateCustomerViewModel, CreateOrUpdateCustomerViewModel>($"{baseApiUrl}/customer/{model.Id}", model);
             return RedirectToAction("Index");
         }
         [HttpGet]
@@ -64,7 +64,7 @@ namespace HaxTextile.WebAppCore.Controllers
         [HttpGet]
         public async Task<IActionResult> Update(Guid Id)
         {
-            var result = await _client.GetAsync<CustomerResponseDTO>($"/api/customer/{Id}");
+            var result = await _client.GetAsync<CustomerResponseDTO>($"{baseApiUrl}/customer/{Id}");
             CreateOrUpdateCustomerViewModel model = new CreateOrUpdateCustomerViewModel
             {
                 MethodType = "Update",

@@ -8,6 +8,8 @@ using Microsoft.Extensions.Logging;
 
 namespace HasTextile.API.Controllers
 {
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class WeatherForecastController : BaseController
     {
         private readonly CacheProvider _cacheProvider;

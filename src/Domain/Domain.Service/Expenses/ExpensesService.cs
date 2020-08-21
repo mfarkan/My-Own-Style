@@ -45,13 +45,16 @@ namespace Domain.Service.Expenses
 
         public async Task<Domain.Model.Income.Expenses> GetExpense(Guid Id)
         {
-            var result = await _repository.Query<Domain.Model.Income.Expenses>().Where(q => q.Id == Id).FirstOrDefaultAsync();
+            var result = await _repository.GetByIdAsync<Domain.Model.Income.Expenses>(Id);
             return result;
         }
 
-        public Task GetExpenses(int page, int pageSize)
+        public async Task<List<Domain.Model.Income.Expenses>> GetExpenses(int page, int pageSize)
         {
-            throw new NotImplementedException();
+            var skipSize = pageSize * (page - 1);
+            var incomeList = await _repository.QueryWithoutTracking<Domain.Model.Income.Expenses>()
+                .Skip(skipSize).Take(pageSize).ToListAsync();
+            return incomeList ?? new List<Domain.Model.Income.Expenses>();
         }
         public Task GetExpensesWithFilter(ExpenseFilterRequestDTO filterRequestDTO)
         {
@@ -60,7 +63,7 @@ namespace Domain.Service.Expenses
 
         public async Task PassivateExpense(Guid Id)
         {
-            var expense = await _repository.Query<Domain.Model.Income.Expenses>().Where(q => q.Id == Id).FirstOrDefaultAsync();
+            var expense = await _repository.GetByIdAsync<Domain.Model.Income.Expenses>(Id);
             if (expense == null)
                 return;
             expense.Delete();
@@ -70,8 +73,8 @@ namespace Domain.Service.Expenses
 
         public async Task<Guid> UpdateExpense(Guid Id, ExpenseRequestDTO requestDTO)
         {
-            var expense = await _repository.Query<Domain.Model.Income.Expenses>().Where(q => q.Id == Id).FirstOrDefaultAsync();
-            var customer = await _repository.Query<Domain.Model.Customer.Customer>().Where(q => q.Id == requestDTO.CustomerId).FirstOrDefaultAsync();
+            var expense = await _repository.GetByIdAsync<Domain.Model.Income.Expenses>(Id);
+            var customer = await _repository.GetByIdAsync<Domain.Model.Customer.Customer>(Id);
             if (expense == null || customer == null)
                 return Guid.Empty;
 

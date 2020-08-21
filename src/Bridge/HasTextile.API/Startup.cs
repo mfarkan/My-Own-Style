@@ -3,10 +3,12 @@ using AutoMapper;
 using Core.Caching;
 using Domain.DataLayer;
 using Domain.Service;
+using HasTextile.API.Filters;
 using HasTextile.API.HealtChecker;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,7 +16,10 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
+using Swashbuckle.AspNetCore.SwaggerGen;
 using Swashbuckle.AspNetCore.SwaggerUI;
+using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace HasTextile.API
@@ -48,13 +53,21 @@ namespace HasTextile.API
             services.AddDistributedMemoryCache();//if we don't configure redis or sql server its working like memory cache in server.
             services.AddSingleton<CacheProvider>();
             services.AddControllers();
+            services.AddApiVersioning();
             services.AddSwaggerGen(options =>
             {
                 options.CustomSchemaIds(x => x.FullName);
                 options.SwaggerDoc("v1.0", new OpenApiInfo
                 {
                     Version = "v1.0",
-                    Title = $"Legacy API"
+                    Title = $"Textile API"
+                });
+                options.DocInclusionPredicate((apiVersion, apiDescription) =>
+                {
+                    apiDescription.TryGetMethodInfo(out MethodInfo methodInfo);
+                    if (methodInfo == null) return false;
+                    var versions = methodInfo.DeclaringType.GetCustomAttributes<ApiVersionAttribute>(true).SelectMany(q => q.Versions);
+                    return versions.Any(v => $"v{v.ToString()}" == apiVersion);
                 });
                 options.AddSecurityDefinition(OAuthValidationDefaults.AuthenticationScheme, new OpenApiSecurityScheme
                 {
@@ -77,6 +90,8 @@ namespace HasTextile.API
                           new string[] { }
                        }
                 });
+                options.OperationFilter<RemoveVersionParameterFilter>();
+                options.DocumentFilter<ReplaceVersionWithExactValueInPathFilter>();
             });
             services.AddHealthChecks().AddCheck<ApiHealthChecker>("My-Health-Check");
             services.AddAutoMapper(typeof(Startup));

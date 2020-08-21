@@ -14,5 +14,6 @@
     <GenFu>1.6.0</GenFu>
     <MoqFramework>4.14.5</MoqFramework>
     <nUnit>3.12.0</nUnit>
+    <ApiVersioning>4.1.1</ApiVersioning>
   </PropertyGroup>
 </Project>

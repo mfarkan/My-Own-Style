@@ -9,7 +9,7 @@ namespace Domain.Service.Model.Expenses
 {
     public interface IExpensesService
     {
-        Task GetExpenses(int page, int pageSize);
+        Task<List<Domain.Model.Income.Expenses>> GetExpenses(int page, int pageSize);
         Task<Guid> CreateNewExpense(ExpenseRequestDTO requestDTO);
         Task GetExpensesWithFilter(ExpenseFilterRequestDTO filterRequestDTO);
         Task PassivateExpense(Guid Id);

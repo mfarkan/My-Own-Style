@@ -29,7 +29,7 @@ namespace Domain.Service.Customer
         {
             var skipSize = pageSize * (page - 1);
             var customerList = await _repository.QueryWithoutTracking<Domain.Model.Customer.Customer>()
-                .Skip(skipSize).Take(pageSize).ToListAsync();
+                .Skip(skipSize).Take(pageSize).Where(q => q.Status == StatusType.Active).ToListAsync();
             return customerList ?? new List<Domain.Model.Customer.Customer>();
         }
 
@@ -60,7 +60,7 @@ namespace Domain.Service.Customer
 
         public async Task PassivateCustomer(Guid Id)
         {
-            var customer = await _repository.Query<Domain.Model.Customer.Customer>().Where(q => q.Id == Id).FirstOrDefaultAsync();
+            var customer = await _repository.GetByIdAsync<Domain.Model.Customer.Customer>(Id);
             if (customer == null)
                 return;
             customer.Delete();
@@ -84,7 +84,7 @@ namespace Domain.Service.Customer
         }
         public async Task<Guid> UpdateCustomer(Guid Id, CustomerRequestDTO request)
         {
-            var customer = await _repository.Query<Domain.Model.Customer.Customer>().Where(q => q.Id == Id).FirstOrDefaultAsync();
+            var customer = await _repository.GetByIdAsync<Domain.Model.Customer.Customer>(Id);
             if (customer == null)
                 return Guid.Empty;
 

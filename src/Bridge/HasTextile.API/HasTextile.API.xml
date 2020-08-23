@@ -4,23 +4,21 @@
         <name>HasTextile.API</name>
     </assembly>
     <members>
+        <member name="M:HasTextile.API.Controllers.CustomerController.FindExpenses(System.Guid)">
+            <summary>
+            Müşteriye ait gelir/gider bilgilerini dönen servis
+            </summary>
+            <param name="Id">Müşterinin Id Bilgisi</param>
+            <returns>Müşterinin kendisini gelir/gider bilgileriyle döner.</returns>
+            <response code="200">200 OK koduyla müşteri bilgisi döner.</response>
+            <response code="404">404 Not Found Id değeri için müşteri bulunamadı döner.</response>
+        </member>
         <member name="M:HasTextile.API.Controllers.CustomerController.FindCustomer(System.Guid)">
-             <remarks>
-             Sample request:
-            
-                 POST /Todo
-                 {
-                    "id": 1,
-                    "name": "Item1",
-                    "isComplete": true
-                 }
-            
-             </remarks>
-             <summary>
-             Spesifik olarak Id'si verilen müşteri bilgisini döner.
-             </summary>
-             <param name="Id">Müşterinin Unique Id bilgisi</param>
-             <returns></returns>
+            <summary>
+            Spesifik olarak Id'si verilen müşteri bilgisini döner.
+            </summary>
+            <param name="Id">Müşterinin Unique Id bilgisi</param>
+            <returns></returns>
         </member>
         <member name="M:HasTextile.API.Controllers.CustomerController.FilterCustomers(Domain.Service.Model.Customer.Model.CustomerFilterRequestDTO)">
             <summary>

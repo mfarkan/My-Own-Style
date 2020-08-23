@@ -98,5 +98,11 @@ namespace Domain.Service.Customer
             await _repository.CommitAsync();
             return customer.Id;
         }
+        public async Task<Domain.Model.Customer.Customer> GetCustomerExpensesAsync(Guid Id)
+        {
+            var customerData = await _repository.QueryWithoutTracking<Domain.Model.Customer.Customer>()
+                .Include(q => q.Expenses).FirstOrDefaultAsync(q => q.Status == StatusType.Active && q.Id == Id);
+            return customerData;
+        }
     }
 }

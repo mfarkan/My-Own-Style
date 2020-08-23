@@ -17,5 +17,6 @@ namespace Domain.Service.Model.Customer
         Task PassivateCustomer(Guid Id);
         Task<Guid> CreateNewCustomer(CustomerRequestDTO request);
         Task<Guid> UpdateCustomer(Guid Id, CustomerRequestDTO request);
+        Task<Domain.Model.Customer.Customer> GetCustomerExpensesAsync(Guid Id);
     }
 }

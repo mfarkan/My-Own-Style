@@ -1,4 +1,5 @@
 ﻿using Core.Enumarations;
+using Domain.Service.Model.Expenses;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -39,5 +40,9 @@ namespace Domain.Service.Model.Customer
         /// Müşteri oluşturulma tarihi.
         /// </summary>
         public DateTime CreatedAt { get; set; }
+        /// <summary>
+        /// Müşteriye ait Gelir/Gider bilgisi.
+        /// </summary>
+        public List<ExpenseResponseDTO> Expenses { get; set; }
     }
 }

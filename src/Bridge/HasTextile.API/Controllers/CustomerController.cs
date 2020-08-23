@@ -2,6 +2,7 @@
 using Domain.Model.Customer;
 using Domain.Service.Model.Customer;
 using Domain.Service.Model.Customer.Model;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace HasTextile.API.Controllers
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [Consumes(MediaTypeNames.Application.Json)]
+    [Produces(MediaTypeNames.Application.Json)]
     //[Authorize(AuthenticationSchemes = OAuthIntrospectionDefaults.AuthenticationScheme)]
     public class CustomerController : ControllerBase
     {
@@ -22,6 +24,26 @@ namespace HasTextile.API.Controllers
         {
             _customerService = customerService;
             _mapper = mapper;
+        }
+        /// <summary>
+        /// Müşteriye ait gelir/gider bilgilerini dönen servis
+        /// </summary>
+        /// <param name="Id">Müşterinin Id Bilgisi</param>
+        /// <returns>Müşterinin kendisini gelir/gider bilgileriyle döner.</returns>
+        /// <response code="200">müşteri bilgisi döner.</response>
+        /// <response code="404">Id değeri için müşteri bulunamadı döner.</response>
+        [HttpGet("{Id:guid}/Expenses")]
+        [ProducesResponseType(typeof(CustomerResponseDTO), 200)]
+        [ProducesResponseType(typeof(NotFoundResult), 404)]
+        public async Task<IActionResult> FindExpenses(Guid Id)
+        {
+            var instance = await _customerService.GetCustomerExpensesAsync(Id);
+            if (instance == null)
+            {
+                return new NotFoundResult();
+            }
+            var result = _mapper.Map<Customer, CustomerResponseDTO>(instance);
+            return new OkObjectResult(result);
         }
         /// <summary>
         /// Spesifik olarak Id'si verilen müşteri bilgisini döner.
@@ -64,6 +86,7 @@ namespace HasTextile.API.Controllers
         /// <param name="Id">Müşterinin Unique Id bilgisi</param>
         /// <returns></returns>
         [HttpDelete("{Id:guid}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> DeActivateCustomer(Guid Id)
         {
             await _customerService.PassivateCustomer(Id);

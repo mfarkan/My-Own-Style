@@ -11,7 +11,7 @@ namespace Domain.Service.Model.Expenses
     {
         Task<List<Domain.Model.Income.Expenses>> GetExpenses(int page, int pageSize);
         Task<Guid> CreateNewExpense(ExpenseRequestDTO requestDTO);
-        Task GetExpensesWithFilter(ExpenseFilterRequestDTO filterRequestDTO);
+        Task<List<Domain.Model.Income.Expenses>> GetExpensesWithFilter(ExpenseFilterRequestDTO filterRequestDTO);
         Task PassivateExpense(Guid Id);
         Task<Guid> UpdateExpense(Guid Id, ExpenseRequestDTO requestDTO);
         Task<Domain.Model.Income.Expenses> GetExpense(Guid Id);

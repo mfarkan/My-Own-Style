@@ -42,23 +42,39 @@ namespace Domain.Service.Expenses
             }
             return Guid.Empty;
         }
-
         public async Task<Domain.Model.Income.Expenses> GetExpense(Guid Id)
         {
-            var result = await _repository.GetByIdAsync<Domain.Model.Income.Expenses>(Id);
+            var result = await _repository.Query<Domain.Model.Income.Expenses>().Where(q => q.Id == Id && q.Status == StatusType.Active)
+                .Include(q => q.Customer)
+                .FirstOrDefaultAsync();
             return result;
         }
-
         public async Task<List<Domain.Model.Income.Expenses>> GetExpenses(int page, int pageSize)
         {
             var skipSize = pageSize * (page - 1);
-            var incomeList = await _repository.QueryWithoutTracking<Domain.Model.Income.Expenses>()
+            var incomeList = await _repository.QueryWithoutTracking<Domain.Model.Income.Expenses>().Include(q => q.Customer)
                 .Skip(skipSize).Take(pageSize).ToListAsync();
             return incomeList ?? new List<Domain.Model.Income.Expenses>();
         }
-        public Task GetExpensesWithFilter(ExpenseFilterRequestDTO filterRequestDTO)
+        public async Task<List<Domain.Model.Income.Expenses>> GetExpensesWithFilter(ExpenseFilterRequestDTO filterRequestDTO)
         {
-            throw new NotImplementedException();
+            var query = _repository.QueryWithoutTracking<Domain.Model.Income.Expenses>().Where(q => q.Status == StatusType.Active);
+
+            if (filterRequestDTO.CustomerId.HasValue)
+                query = query.Where(q => q.Customer.Id == filterRequestDTO.CustomerId);
+            if (string.IsNullOrEmpty(filterRequestDTO.Description))
+                query = query.Where(q => q.Description.Contains(filterRequestDTO.Description));
+            if (filterRequestDTO.ExpenseType.HasValue)
+                query = query.Where(q => q.Type == filterRequestDTO.ExpenseType.Value);
+            if (string.IsNullOrEmpty(filterRequestDTO.DocumentNumber))
+                query = query.Where(q => q.DocumentNumber == filterRequestDTO.DocumentNumber);
+            if (filterRequestDTO.Expiry.HasValue)
+                query = query.Where(q => q.Expiry == q.Expiry.Value);
+            if (filterRequestDTO.ExpiryDate.HasValue)
+                query = query.Where(q => q.ExpiryDate == q.ExpiryDate.Value);
+            query = query.Skip(filterRequestDTO.Start).Take(filterRequestDTO.Length);
+            var expenseList = await query.ToListAsync();
+            return expenseList;
         }
 
         public async Task PassivateExpense(Guid Id)
@@ -73,8 +89,12 @@ namespace Domain.Service.Expenses
 
         public async Task<Guid> UpdateExpense(Guid Id, ExpenseRequestDTO requestDTO)
         {
-            var expense = await _repository.GetByIdAsync<Domain.Model.Income.Expenses>(Id);
-            var customer = await _repository.GetByIdAsync<Domain.Model.Customer.Customer>(Id);
+            var expense = await _repository.Query<Domain.Model.Income.Expenses>().Where(q => q.Id == Id && q.Status == StatusType.Active)
+               .Include(q => q.Customer)
+               .FirstOrDefaultAsync();
+
+            var customer = await _repository.GetByIdAsync<Domain.Model.Customer.Customer>(requestDTO.CustomerId);
+
             if (expense == null || customer == null)
                 return Guid.Empty;
 

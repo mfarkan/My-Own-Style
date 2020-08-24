@@ -10,8 +10,8 @@
             </summary>
             <param name="Id">Müşterinin Id Bilgisi</param>
             <returns>Müşterinin kendisini gelir/gider bilgileriyle döner.</returns>
-            <response code="200">200 OK koduyla müşteri bilgisi döner.</response>
-            <response code="404">404 Not Found Id değeri için müşteri bulunamadı döner.</response>
+            <response code="200">müşteri bilgisi döner.</response>
+            <response code="404">Id değeri için müşteri bulunamadı döner.</response>
         </member>
         <member name="M:HasTextile.API.Controllers.CustomerController.FindCustomer(System.Guid)">
             <summary>
@@ -48,6 +48,38 @@
             </summary>
             <param name="request"></param>
             <returns></returns>
+        </member>
+        <member name="M:HasTextile.API.Controllers.ExpenseController.FindExpense(System.Guid)">
+            <summary>
+            Spesifik olarak belirtilen gelir/gider bilgisini döner.
+            </summary>
+            <param name="Id">Gelir/Gider Id Bilgisi</param>
+            <returns></returns>
+            <response code="200">Gelir/Gider bilgisi</response>
+            <response code="404">Boş Result</response>
+        </member>
+        <member name="M:HasTextile.API.Controllers.ExpenseController.DeActivateExpense(System.Guid)">
+            <summary>
+            Bir gelir gider bilgisini pasivize eder.
+            </summary>
+            <param name="Id">Gelir/Gider Id bilgisi</param>
+            <returns></returns>
+        </member>
+        <member name="M:HasTextile.API.Controllers.ExpenseController.CreateNewExpense(Domain.Service.Model.Expenses.Model.ExpenseRequestDTO)">
+            <summary>
+            Yeni gelir/gider bilgisi kaydı oluşturmak için kullanılır.
+            </summary>
+            <param name="requestDTO">Yeni gelir/gider oluşturmak için kullanılan request payload.</param>
+            <returns>Kayıt oluşturulursa Id bilgisi geri döner</returns>
+            <response code="200">Başarılı kayıt işlemi. GUID döner.</response>
+        </member>
+        <member name="M:HasTextile.API.Controllers.ExpenseController.FilterExpenses(Domain.Service.Model.Expenses.Model.ExpenseFilterRequestDTO)">
+            <summary>
+            Belirli bir filtreleme parameterlerine göre gelir/gider bilgisini döner.
+            </summary>
+            <param name="requestDTO"></param>
+            <returns></returns>
+            <response code="200">Başarılı sorgulama işlemi.</response>
         </member>
     </members>
 </doc>

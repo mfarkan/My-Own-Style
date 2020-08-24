@@ -1,15 +1,12 @@
 using AspNet.Security.OAuth.Validation;
 using AutoMapper;
 using Core.Caching;
-using Domain.DataLayer;
-using Domain.Service;
 using HasTextile.API.Filters;
 using HasTextile.API.HealtChecker;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -62,7 +59,15 @@ namespace HasTextile.API
                 options.SwaggerDoc("v1.0", new OpenApiInfo
                 {
                     Version = "v1.0",
-                    Title = $"Textile API"
+                    Title = $"Textile API",
+                    Contact = new OpenApiContact
+                    {
+                        Email = "muratfatiharkan@yandex.com.tr",
+                        Name = "Murat Fatih ARKAN",
+                        Url = new Uri("http://mfarkan.github.io/"),
+                    },
+                    Description = "Has Tekstil þirketinin API dökümantasyonu. It's my uncle's company and this application is just dummy application.",
+
                 });
                 options.DocInclusionPredicate((apiVersion, apiDescription) =>
                 {

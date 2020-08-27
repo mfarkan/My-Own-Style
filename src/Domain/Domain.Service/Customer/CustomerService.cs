@@ -19,6 +19,11 @@ namespace Domain.Service.Customer
             //_mapper = mapper;
             _repository = repository;
         }
+        public async Task<List<Domain.Model.Customer.Customer>> GetAllCustomerAsync()
+        {
+            var customerList = await _repository.GetAllAsync<Domain.Model.Customer.Customer>();
+            return customerList;
+        }
         public async Task<Domain.Model.Customer.Customer> GetCustomerAsync(Guid Id)
         {
             var customerInstance = await _repository.GetByIdAsync<Domain.Model.Customer.Customer>(Id);

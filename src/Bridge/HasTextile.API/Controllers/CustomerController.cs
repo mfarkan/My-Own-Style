@@ -26,6 +26,18 @@ namespace HasTextile.API.Controllers
             _mapper = mapper;
         }
         /// <summary>
+        /// Sistemdeki tüm aktif müşterileri döner.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("all")]
+        [ProducesResponseType(typeof(List<CustomerResponseDTO>), 200)]
+        public async Task<IActionResult> FindAllCustomer()
+        {
+            var customerList = await _customerService.GetAllCustomerAsync();
+            var result = _mapper.Map<List<Customer>, CustomerResponseDTO>(customerList);
+            return new OkObjectResult(result);
+        }
+        /// <summary>
         /// Müşteriye ait gelir/gider bilgilerini dönen servis
         /// </summary>
         /// <param name="Id">Müşterinin Id Bilgisi</param>

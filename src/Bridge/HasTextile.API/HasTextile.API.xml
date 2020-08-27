@@ -4,6 +4,12 @@
         <name>HasTextile.API</name>
     </assembly>
     <members>
+        <member name="M:HasTextile.API.Controllers.CustomerController.FindAllCustomer">
+            <summary>
+            Sistemdeki tüm aktif müşterileri döner.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:HasTextile.API.Controllers.CustomerController.FindExpenses(System.Guid)">
             <summary>
             Müşteriye ait gelir/gider bilgilerini dönen servis
@@ -80,6 +86,14 @@
             <param name="requestDTO"></param>
             <returns></returns>
             <response code="200">Başarılı sorgulama işlemi.</response>
+        </member>
+        <member name="M:HasTextile.API.Controllers.ExpenseController.UpdateExpense(System.Guid,Domain.Service.Model.Expenses.Model.ExpenseRequestDTO)">
+            <summary>
+            Belirli bir Id bilgisi verilen Gelir/Gider'in güncelleme işlemine tabi tutulması.
+            </summary>
+            <param name="Id">Gelir/Gider bilgisinin Id bilgisi.</param>
+            <param name="requestDTO"></param>
+            <returns></returns>
         </member>
     </members>
 </doc>

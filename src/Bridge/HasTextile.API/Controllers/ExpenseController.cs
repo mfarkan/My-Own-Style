@@ -85,5 +85,18 @@ namespace HasTextile.API.Controllers
             var mapResult = _mapper.Map<List<Expenses>, List<ExpenseResponseDTO>>(result);
             return new OkObjectResult(mapResult);
         }
+        /// <summary>
+        /// Belirli bir Id bilgisi verilen Gelir/Gider'in güncelleme işlemine tabi tutulması.
+        /// </summary>
+        /// <param name="Id">Gelir/Gider bilgisinin Id bilgisi.</param>
+        /// <param name="requestDTO"></param>
+        /// <returns></returns>
+        [HttpPut("{Id:guid}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Guid))]
+        public async Task<IActionResult> UpdateExpense(Guid Id, [FromBody] ExpenseRequestDTO requestDTO)
+        {
+            var result = await _expensesService.UpdateExpense(Id, requestDTO);
+            return new OkObjectResult(new { Id = result });
+        }
     }
 }

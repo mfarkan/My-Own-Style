@@ -61,7 +61,7 @@
                         </div>
                         <br />
                         <div class="col-md-12">
-                            <table id="datatable-ApiList" class="table table-striped table-bordered dt-responsive nowrap tableSC" cellspacing="0" width="100%">
+                            <table id="datatable-CustomerList" class="table table-striped table-bordered dt-responsive nowrap tableSC" cellspacing="0" width="100%">
                                 <thead>
                                     <tr class="text-center">
                                         <th>Müşteri Adı</th>
@@ -118,7 +118,7 @@
         function fillDataList() {
             if (DataListGrid != null)
                 DataListGrid.destroy();
-            var grid = $('#datatable-ApiList').DataTable({
+            var grid = $('#datatable-CustomerList').DataTable({
                 "destroy": true,
                 "processing": true,
                 "info": false,
@@ -175,11 +175,11 @@
         }
         $(document).ready(function () {
             fillDataList();
-            $('#datatable-ApiList').on('click', '#updateButton', function (e) {
+            $('#datatable-CustomerList').on('click', '#updateButton', function (e) {
                 var data = DataListGrid.row($(this).parents('tr')).data();
                 Update(data["id"]);
             });
-            $('#datatable-ApiList').on('click', '#deleteButton', function (e) {
+            $('#datatable-CustomerList').on('click', '#deleteButton', function (e) {
                 var data = DataListGrid.row($(this).parents('tr')).data();
                 Delete(data["id"]);
             });

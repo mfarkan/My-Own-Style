@@ -34,7 +34,7 @@ namespace HasTextile.API.Controllers
         public async Task<IActionResult> FindAllCustomer()
         {
             var customerList = await _customerService.GetAllCustomerAsync();
-            var result = _mapper.Map<List<Customer>, CustomerResponseDTO>(customerList);
+            var result = _mapper.Map<List<Customer>, List<CustomerResponseDTO>>(customerList);
             return new OkObjectResult(result);
         }
         /// <summary>

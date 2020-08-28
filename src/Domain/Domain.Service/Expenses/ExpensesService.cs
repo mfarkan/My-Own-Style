@@ -69,9 +69,9 @@ namespace Domain.Service.Expenses
             if (string.IsNullOrEmpty(filterRequestDTO.DocumentNumber))
                 query = query.Where(q => q.DocumentNumber == filterRequestDTO.DocumentNumber);
             if (filterRequestDTO.Expiry.HasValue)
-                query = query.Where(q => q.Expiry == q.Expiry.Value);
+                query = query.Where(q => q.Expiry == filterRequestDTO.Expiry.Value);
             if (filterRequestDTO.ExpiryDate.HasValue)
-                query = query.Where(q => q.ExpiryDate == q.ExpiryDate.Value);
+                query = query.Where(q => q.ExpiryDate == filterRequestDTO.ExpiryDate.Value);
             query = query.Skip(filterRequestDTO.Start).Take(filterRequestDTO.Length);
             var expenseList = await query.Include(q => q.Customer).ToListAsync();
             return expenseList;

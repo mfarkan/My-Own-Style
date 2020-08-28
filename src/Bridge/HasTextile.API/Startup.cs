@@ -1,6 +1,8 @@
 using AspNet.Security.OAuth.Validation;
 using AutoMapper;
 using Core.Caching;
+using Domain.DataLayer;
+using Domain.Service;
 using HasTextile.API.Filters;
 using HasTextile.API.HealtChecker;
 using Microsoft.AspNetCore.Builder;
@@ -36,19 +38,19 @@ namespace HasTextile.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddBusinessLayer(Configuration);
-            //services.AddDomainServices(Configuration);
-            //services.AddAuthentication(options =>
-            //{
-            //    options.DefaultScheme = OAuthValidationDefaults.AuthenticationScheme;
-            //}).AddOAuthIntrospection(config =>
-            //{
-            //    config.ClientId = "HasTextileAPI";
-            //    config.ClientSecret = "987654";
-            //    config.Authority = new System.Uri("http://localhost:53703");
-            //    config.Audiences.Add("HasTextileAPI");
-            //    config.RequireHttpsMetadata = false;
-            //});
+            services.AddBusinessLayer(Configuration);
+            services.AddDomainServices(Configuration);
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = OAuthValidationDefaults.AuthenticationScheme;
+            }).AddOAuthIntrospection(config =>
+            {
+                config.ClientId = "HasTextileAPI";
+                config.ClientSecret = "987654";
+                config.Authority = new System.Uri("http://localhost:53703");
+                config.Audiences.Add("HasTextileAPI");
+                config.RequireHttpsMetadata = false;
+            });
             services.AddDistributedMemoryCache();//if we don't configure redis or sql server its working like memory cache in server.
             services.AddSingleton<CacheProvider>();
             services.AddControllers();
@@ -124,15 +126,15 @@ namespace HasTextile.API
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-            //app.UseHealthChecks("/healtcheck", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions()
-            //{
-            //    ResultStatusCodes =
-            //    {
-            //        [HealthStatus.Healthy]=StatusCodes.Status200OK,
-            //        [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable
-            //    },
-            //    ResponseWriter = WriteAsJson,
-            //});
+            app.UseHealthChecks("/healtcheck", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions()
+            {
+                ResultStatusCodes =
+                {
+                    [HealthStatus.Healthy]=StatusCodes.Status200OK,
+                    [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable
+                },
+                ResponseWriter = WriteAsJson,
+            });
             app.UseSwagger(c =>
             {
                 c.RouteTemplate = Doc_Helper_Url_Prefix + "/{documentName}/swagger.json";

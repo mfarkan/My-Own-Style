@@ -31,7 +31,15 @@ namespace HaxTextile.WebAppCore.Controllers
         {
             if (expenseType == 0)
                 return RedirectToAction("Index", "Admin");
-            return View();
+
+            var viewModel = new CreateOrUpdateExpenseViewModel()
+            {
+                MethodType = "Create",
+                ExpenseType = expenseType,
+                ExpiryDate = DateTime.Today,
+                CustomerList = new List<CustomerResponseDTO>()
+            };
+            return View(viewModel);
         }
         [HttpGet]
         public IActionResult ExpenseList(ExpenseSearchRequestDTO requestDTO)

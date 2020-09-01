@@ -2,3 +2,13 @@
     Layout = "_AdminLayout";
 }
 <title>Gelir/Gider Girişi</title>
+@model HaxTextile.WebAppCore.Models.Expense.CreateOrUpdateExpenseViewModel
+<div class="container-fluid">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-12 grid-margin">
+                @{await Html.RenderPartialAsync("Partial/_CreateOrUpdate", Model); }
+            </div>
+        </div>
+    </div>
+</div>

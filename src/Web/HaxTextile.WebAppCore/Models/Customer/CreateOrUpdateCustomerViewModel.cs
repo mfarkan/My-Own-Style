@@ -10,7 +10,7 @@ namespace HaxTextile.WebAppCore.Models.Customer
         public Guid Id { get; set; }
 
         [StringLength(50, ErrorMessage = "Mail adresi maksimum 50 karakter olabilir.")]
-        [DataType(DataType.EmailAddress, ErrorMessage = "Mail Adresinizi kontrol ediniz.")]
+        [EmailAddress(ErrorMessage = "Mail adresinizi kontrol ediniz.")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Bu alan zorunludur.")]
         public string CustomerEmailAddress { get; set; }
         [StringLength(20, ErrorMessage = "Telefon numarası maksimum 50 karakter olabilir.")]

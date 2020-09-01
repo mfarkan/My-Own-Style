@@ -74,8 +74,8 @@
                             </div>
                             <div class="col-md-6">
                                 <button class="btn btn-info" id="searchButton"><i class="fa fa-search"></i> Filtrele</button>
-                                <button class="btn btn-info" asp-controller="Expenses" asp-action="Create" asp-route-expenseType="@(ExpenseType.InCome)" type="button" id="newIncomeButton"><i class="fa fa-plus"></i> Gelir Girişi</button>
-                                <button class="btn btn-info" asp-controller="Expenses" asp-action="Create" asp-route-expenseType="@(ExpenseType.OutGoing)" type="button" id="newOutcomeButton"><i class="fa fa-plus"></i> Gider Girişi</button>
+                                <button class="btn btn-info" type="button" id="newIncomeButton"><i class="fa fa-plus"></i> Gelir Girişi</button>
+                                <button class="btn btn-info" type="button" id="newOutcomeButton"><i class="fa fa-plus"></i> Gider Girişi</button>
                             </div>
                         </div>
                         <br />
@@ -88,7 +88,7 @@
                                         <th>Vade</th>
                                         <th>Vade Tarihi</th>
                                         <th>Açıklama</th>
-                                        <th>Dök. Numarası</th>
+                                        <th>Dök. No.</th>
                                         <th style="width:80px;">#</th>
                                     </tr>
                                 </thead>
@@ -220,6 +220,12 @@
             });
             $('#searchButton').click(function () {
                 fillDataList();
+            });
+            $('#newIncomeButton').click(function () {
+                window.location = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Expenses/Create?expenseType=2";
+            });
+            $('#newOutcomeButton').click(function () {
+                window.location = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Expenses/Create?expenseType=1";
             });
         });
     </script>

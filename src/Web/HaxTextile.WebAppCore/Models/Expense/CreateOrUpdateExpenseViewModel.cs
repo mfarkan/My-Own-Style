@@ -12,10 +12,10 @@ namespace HaxTextile.WebAppCore.Models.Expense
     {
         public IEnumerable<CustomerResponseDTO> CustomerList { get; set; }
         public string MethodType { get; set; }
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Bu alan zorunludur.")]
         public ExpenseType ExpenseType { get; set; }
 
         public Guid Id { get; set; }
-
         [Required(AllowEmptyStrings = false, ErrorMessage = "Bu alan zorunludur.")]
         public Guid CustomerId { get; set; }
         [Required(AllowEmptyStrings = false, ErrorMessage = "Bu alan zorunludur.")]
@@ -30,7 +30,6 @@ namespace HaxTextile.WebAppCore.Models.Expense
         public string DocumentNumber { get; set; }
         [Range(1, 10000, ErrorMessage = "Vade alanı 1 ila 10.000 arasında olmalıdır.")]
         public int? Expiry { get; set; }
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? ExpiryDate { get; set; }
     }
 }

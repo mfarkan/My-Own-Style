@@ -26,6 +26,38 @@ namespace HaxTextile.WebAppCore.Controllers
             //searchDto.CustomerList = customerList;
             return View(searchDto);
         }
+        [HttpPost]
+        public IActionResult Update(CreateOrUpdateExpenseViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                return View(model);
+            }
+            return View(model);
+        }
+        [HttpGet]
+        public IActionResult Update(Guid Id)
+        {
+            if (Id == Guid.Empty)
+                return RedirectToAction("Index", "Admin");
+
+            var viewModel = new CreateOrUpdateExpenseViewModel()
+            {
+                MethodType = "Update",
+                ExpiryDate = DateTime.Today,
+                CustomerList = new List<CustomerResponseDTO>()
+            };
+            return View(viewModel);
+        }
+        [HttpPost]
+        public IActionResult Create(CreateOrUpdateExpenseViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                return View(model);
+            }
+            return View(model);
+        }
         [HttpGet]
         public IActionResult Create(ExpenseType expenseType)
         {

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Core.Caching;
 using Domain.Model.Customer;
 using Domain.Service.Model.Customer;
 using Domain.Service.Model.Customer.Model;
@@ -20,10 +21,13 @@ namespace HasTextile.API.Controllers
     {
         private readonly ICustomerService _customerService;
         private readonly IMapper _mapper;
-        public CustomerController(ICustomerService customerService, IMapper mapper)
+        private readonly CacheProvider _cacheProvider;
+        private const string cacheName = "customerCacheName";
+        public CustomerController(ICustomerService customerService, IMapper mapper, CacheProvider cacheProvider)
         {
             _customerService = customerService;
             _mapper = mapper;
+            _cacheProvider = cacheProvider;
         }
         /// <summary>
         /// Sistemdeki tüm aktif müşterileri döner.
@@ -33,8 +37,11 @@ namespace HasTextile.API.Controllers
         [ProducesResponseType(typeof(List<CustomerResponseDTO>), 200)]
         public async Task<IActionResult> FindAllCustomer()
         {
-            var customerList = await _customerService.GetAllCustomerAsync();
-            var result = _mapper.Map<List<Customer>, List<CustomerResponseDTO>>(customerList);
+            var cacheResult = await _cacheProvider.GetOrAddAsync("getAllCustomer", cacheName, TimeSpan.FromMinutes(15), Core.Enumarations.ExpirationMode.Absolute, async () =>
+            {
+                return await _customerService.GetAllCustomerAsync();
+            });
+            var result = _mapper.Map<List<Customer>, List<CustomerResponseDTO>>(cacheResult);
             return new OkObjectResult(result);
         }
         /// <summary>
@@ -102,6 +109,7 @@ namespace HasTextile.API.Controllers
         public async Task<IActionResult> DeActivateCustomer(Guid Id)
         {
             await _customerService.PassivateCustomer(Id);
+            await DeleteCache("getAllCustomer", cacheName);
             return Ok();
         }
         /// <summary>
@@ -115,6 +123,9 @@ namespace HasTextile.API.Controllers
         public async Task<IActionResult> UpdateCustomer(Guid Id, [FromBody] CustomerRequestDTO request)
         {
             await _customerService.UpdateCustomer(Id, request);
+            if (Id != null && Id != Guid.Empty)
+                await DeleteCache("getAllCustomer", cacheName);
+
             return new OkObjectResult(new { Id });
         }
         /// <summary>
@@ -127,7 +138,13 @@ namespace HasTextile.API.Controllers
         public async Task<IActionResult> CreateNewUser([FromBody] CustomerRequestDTO request)
         {
             var Id = await _customerService.CreateNewCustomer(request);
+            if (Id != null)
+                await DeleteCache("getAllCustomer", cacheName);
             return new OkObjectResult(new { Id });
+        }
+        private async Task DeleteCache(string cacheKey, string cacheName)
+        {
+            await _cacheProvider.RemoveAsync(cacheKey, cacheName);
         }
     }
 }

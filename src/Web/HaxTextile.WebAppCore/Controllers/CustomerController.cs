@@ -45,10 +45,11 @@ namespace HaxTextile.WebAppCore.Controllers
             }
             return View();
         }
+        [HttpPost]
         public async Task<IActionResult> Update(CreateOrUpdateCustomerViewModel model)
         {
             if (!ModelState.IsValid)
-                return View();
+                return View(model);
             var result = await _client.PutAsync<CreateOrUpdateCustomerViewModel, CreateOrUpdateCustomerViewModel>($"{baseApiUrl}/customer/{model.Id}", model);
             return RedirectToAction("Index");
         }

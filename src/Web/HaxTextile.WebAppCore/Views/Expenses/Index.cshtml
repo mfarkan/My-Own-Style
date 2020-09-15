@@ -64,7 +64,7 @@
                                 <div class="form-group row">
                                     <label class="col-sm-4 col-form-label">Vade Tarihi</label>
                                     <div class="col-sm-8">
-                                        <input type="date" asp-format="{0:dd/MM/yyyy}" asp-for='ExpiryDate' class="form-control">
+                                        <input type="date" asp-for='ExpiryDate' class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -103,7 +103,7 @@
 
 
 @section Scripts{
-    <script type="text/javascript">
+    <script>
         function Update(id) {
             window.location = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Expense/Update?Id=" + id;
         }
@@ -147,7 +147,7 @@
                 "ajax": {
                     "url": 'http://localhost:55467/Expenses/ExpenseList',
                     "dataSrc": 'expenses',
-                    cache: false,
+                    "cache": false,
                     "data": function (data) {
                         data.CustomerId = $('#CustomerId').val();
                         data.ExpenseType = $('#ExpenseType').val();
@@ -158,24 +158,24 @@
                     },
                 },
                 "columns": [
-                    { "data": "Customer.CustomerName" },
+                    { "data": "customerName" },
                     {
                         "data": function (data, type, dataToSet) {
-                            switch (data.Type) {
+                            switch (data.type) {
                                 case 1:// gider
-                                    return "<p class='text-danger'>" + data.Amount + ' ' + data.CurrencyType + "</p>"
+                                    return "<label class='text-danger'>" + data.amount + ' ' + data.currencyDescription + "</label>"
                                     break;
                                 case 2://gelir
-                                    return "<p class='text-success'>" + data.Amount + ' ' + data.CurrencyType + "</p>"
+                                    return "<label class='text-success'>" + data.amount + ' ' + data.currencyDescription + "</label>"
                                     break;
                                 default:
                             }
                         }
                     },
-                    { "data": "Expiry" },
-                    { "data": "ExpiryDate" },
-                    { "data": "Description" },
-                    { "data": "DocumentNumber" },
+                    { "data": "expiry" },
+                    { "data": "expiryDate" },
+                    { "data": "description" },
+                    { "data": "documentNumber" },
                     { "data": "#" }
                 ],
                 "language": {
@@ -191,20 +191,14 @@
                     "defaultContent":
                         "<button type='button' id='updateButton' class='btn btn-link'><i class='fas fa-pen-alt'></i></button>" +
                         "<button type='button' id='deleteButton' class='btn btn-link'><i class='far fa-trash-alt'></i></button>"
-                }
-                    //{
-                    //    targets: [2],
-                    //    render: function (data, type, row) {
-                    //        switch (data) {
-                    //            case 1:
-                    //                return 'Tüzel';
-                    //            case 2:
-                    //                return 'Şahıs';
-                    //            default:
-                    //        }
-                    //    }
-                    //}
-                ]
+                },
+                {
+                    targets: [3],
+                    render: function (data, type, row) {
+                        var dateTime = new Date(Date.parse(data));
+                        return dateTime.toLocaleDateString();
+                    }
+                }]
             });
             DataListGrid = grid;
         };

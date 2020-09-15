@@ -16,7 +16,6 @@ namespace HaxTextile.WebAppCore.Models.Expense
         public string Description { get; set; }
         public string DocumentNumber { get; set; }
         public int? Expiry { get; set; }
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? ExpiryDate { get; set; }
     }
 }

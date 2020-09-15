@@ -13,6 +13,11 @@ namespace HaxTextile.WebAppCore.Controllers
 {
     public class ExpensesController : BaseController
     {
+        private async Task<List<CustomerResponseDTO>> GetAllCustomerList()
+        {
+            var customerList = await _client.GetAsync<List<CustomerResponseDTO>>($"{baseApiUrl}/customer/all");
+            return customerList;
+        }
         private readonly IHttpClientWrapper _client;
         public ExpensesController(IHttpClientWrapper client)
         {
@@ -22,62 +27,75 @@ namespace HaxTextile.WebAppCore.Controllers
         {
             var searchDto = new ExpenseSearchRequestDTO();
             searchDto.CustomerList = new List<CustomerResponseDTO>();
-            //var customerList = await _client.GetAsync<List<CustomerResponseDTO>>($"{baseApiUrl}/customer/all");
-            //searchDto.CustomerList = customerList;
+            searchDto.CustomerList = await GetAllCustomerList();
             return View(searchDto);
         }
         [HttpPost]
-        public IActionResult Update(CreateOrUpdateExpenseViewModel model)
+        public async Task<IActionResult> Update(CreateOrUpdateExpenseViewModel model)
         {
             if (ModelState.IsValid)
-            {
                 return View(model);
-            }
-            return View(model);
+            await _client.PutAsync<CreateOrUpdateExpenseViewModel, CreateOrUpdateExpenseViewModel>($"{baseApiUrl}/expense/{model.Id}", model);
+            return RedirectToAction("Index");
         }
         [HttpGet]
-        public IActionResult Update(Guid Id)
+        public async Task<IActionResult> Update(Guid Id)
         {
             if (Id == Guid.Empty)
                 return RedirectToAction("Index", "Admin");
 
+            var result = await _client.GetAsync<ExpenseResponseDTO>($"{baseApiUrl}/expense/{Id}");
+            var customerList = await GetAllCustomerList();
             var viewModel = new CreateOrUpdateExpenseViewModel()
             {
                 MethodType = "Update",
-                ExpiryDate = DateTime.Today,
-                CustomerList = new List<CustomerResponseDTO>()
+                ExpiryDate = result.ExpiryDate,
+                Expiry = result.Expiry,
+                CustomerId = result.CustomerId,
+                Amount = result.Amount,
+                Id = result.Id,
+                CurrencyType = result.CurrencyType,
+                Description = result.Description,
+                DocumentNumber = result.DocumentNumber,
+                Type = result.Type,
+                CustomerList = customerList
             };
             return View(viewModel);
         }
         [HttpPost]
-        public IActionResult Create(CreateOrUpdateExpenseViewModel model)
+        public async Task<IActionResult> Create(CreateOrUpdateExpenseViewModel model)
         {
             if (ModelState.IsValid)
             {
-                return View(model);
+                await _client.PostAsync<CreateOrUpdateExpenseViewModel, CreateOrUpdateExpenseViewModel>($"{baseApiUrl}/expense", model);
+                return RedirectToAction("Index");
             }
             return View(model);
         }
         [HttpGet]
-        public IActionResult Create(ExpenseType expenseType)
+        public async Task<IActionResult> Create(ExpenseType expenseType)
         {
             if (expenseType == 0)
                 return RedirectToAction("Index", "Admin");
 
+            var customerList = await GetAllCustomerList();
+
             var viewModel = new CreateOrUpdateExpenseViewModel()
             {
                 MethodType = "Create",
-                ExpenseType = expenseType,
+                Type = expenseType,
                 ExpiryDate = DateTime.Today,
-                CustomerList = new List<CustomerResponseDTO>()
+                CustomerList = customerList
             };
             return View(viewModel);
         }
         [HttpGet]
-        public IActionResult ExpenseList(ExpenseSearchRequestDTO requestDTO)
+        public async Task<IActionResult> ExpenseList(ExpenseSearchRequestDTO requestDTO)
         {
-            List<ExpenseResponseDTO> k = new List<ExpenseResponseDTO>();
-            return new OkObjectResult(new { requestDTO.Draw, Expenses = k });
+            var result = await _client.GetAsync<List<ExpenseResponseDTO>>($"{baseApiUrl}/expense?ExpenseType={requestDTO.ExpenseType}" +
+                $"&CustomerId={requestDTO.CustomerId}&Description={requestDTO.Description}&DocumentNumber={requestDTO.DocumentNumber}" +
+                $"&Expiry={requestDTO.Expiry}&ExpiryDate={requestDTO.ExpiryDate}&Start={requestDTO.Start}&Length={requestDTO.Length}");
+            return new OkObjectResult(new { requestDTO.Draw, Expenses = result });
         }
     }
 }

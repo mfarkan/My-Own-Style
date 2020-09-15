@@ -62,11 +62,11 @@ namespace Domain.Service.Expenses
 
             if (filterRequestDTO.CustomerId.HasValue)
                 query = query.Where(q => q.Customer.Id == filterRequestDTO.CustomerId);
-            if (string.IsNullOrEmpty(filterRequestDTO.Description))
+            if (!string.IsNullOrEmpty(filterRequestDTO.Description))
                 query = query.Where(q => q.Description.Contains(filterRequestDTO.Description));
             if (filterRequestDTO.ExpenseType.HasValue)
                 query = query.Where(q => q.Type == filterRequestDTO.ExpenseType.Value);
-            if (string.IsNullOrEmpty(filterRequestDTO.DocumentNumber))
+            if (!string.IsNullOrEmpty(filterRequestDTO.DocumentNumber))
                 query = query.Where(q => q.DocumentNumber == filterRequestDTO.DocumentNumber);
             if (filterRequestDTO.Expiry.HasValue)
                 query = query.Where(q => q.Expiry == filterRequestDTO.Expiry.Value);

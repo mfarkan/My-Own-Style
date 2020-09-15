@@ -12,7 +12,10 @@ namespace HasTextile.API.Infrastructure.Mapper
     {
         public ExpensesMapperProfile()
         {
-            CreateMap<Expenses, ExpenseResponseDTO>();
+            CreateMap<Expenses, ExpenseResponseDTO>()
+                .ForMember(dest => dest.CustomerId, src => src.MapFrom(map => map.Customer.Id))
+                .ForMember(dest => dest.CurrencyDescription, src => src.MapFrom(map => map.CurrencyType.ToString()))
+                .ForMember(dest => dest.CustomerName, src => src.MapFrom(map => map.Customer.CustomerName));
         }
     }
 }

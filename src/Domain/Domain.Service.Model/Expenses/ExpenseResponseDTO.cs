@@ -10,10 +10,12 @@ namespace Domain.Service.Model.Expenses
     {
         public Guid Id { get; set; }
         public DateTime CreatedAt { get; set; }
-        public CustomerResponseDTO Customer { get; set; }
+        public Guid CustomerId { get; set; }
+        public string CustomerName { get; set; }
         public ExpenseType Type { get; set; }
         public decimal Amount { get; set; }
         public CurrencyType CurrencyType { get; set; }
+        public string CurrencyDescription { get; set; }
         public string Description { get; set; }
         public string DocumentNumber { get; set; }
         public int? Expiry { get; set; }

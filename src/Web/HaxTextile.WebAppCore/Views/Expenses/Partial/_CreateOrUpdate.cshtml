@@ -9,14 +9,17 @@
             <div class="row">
                 @Html.HiddenFor(q => q.Id)
                 @Html.HiddenFor(q => q.MethodType)
-                @Html.HiddenFor(q => q.ExpenseType)
+                @Html.HiddenFor(q => q.Type)
                 <div class="col-md-6">
                     <div class="form-group row">
                         <label class="col-sm-4 col-form-label">Müşteri Adı:</label>
-                        <div class="col-sm-8">
+                        <div class="col-sm-7">
                             @Html.DropDownListFor(q => q.CustomerId, new SelectList(Model.CustomerList, "Id", "CustomerName"), "Seçiniz.", new { @class = "form-control" })
                             <span asp-validation-for="CustomerId" class="text-danger"></span>
                         </div>
+                        <a asp-action="Create" asp-controller="Customer" class="btn btn-info btn-circle btn-sm">
+                            <i class="fas fa-plus"></i>
+                        </a>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -83,8 +86,8 @@
                     <div class="form-group row">
                         <label class="col-sm-4 col-form-label">İşlem Tipi:</label>
                         <div class="col-sm-8">
-                            @Html.DropDownListFor(q => q.ExpenseType, Html.GetEnumSelectList<ExpenseType>(), "Seçiniz.", new { @class = "form-control" })
-                            <span asp-validation-for="ExpenseType" class="text-danger"></span>
+                            @Html.DropDownListFor(q => q.Type, Html.GetEnumSelectList<ExpenseType>(), "Seçiniz.", new { @class = "form-control" })
+                            <span asp-validation-for="Type" class="text-danger"></span>
                         </div>
                     </div>
                 </div>

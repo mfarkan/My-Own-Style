@@ -57,7 +57,7 @@ namespace Domain.Service.Customer
             if (filterRequestDTO.CustomerType.HasValue)
                 query = query.Where(q => q.CustomerCompanyType == filterRequestDTO.CustomerType.Value);
 
-            query = query.Skip(filterRequestDTO.Start).Take(filterRequestDTO.Length);
+            query = query.Skip(filterRequestDTO.Start * filterRequestDTO.Length).Take(filterRequestDTO.Length);
             var customerList = await query.ToListAsync();
             return customerList ?? new List<Domain.Model.Customer.Customer>();
 

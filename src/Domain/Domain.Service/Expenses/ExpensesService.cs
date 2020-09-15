@@ -72,7 +72,7 @@ namespace Domain.Service.Expenses
                 query = query.Where(q => q.Expiry == filterRequestDTO.Expiry.Value);
             if (filterRequestDTO.ExpiryDate.HasValue)
                 query = query.Where(q => q.ExpiryDate == filterRequestDTO.ExpiryDate.Value);
-            query = query.Skip(filterRequestDTO.Start).Take(filterRequestDTO.Length);
+            query = query.Skip(filterRequestDTO.Start * filterRequestDTO.Length).Take(filterRequestDTO.Length);
             var expenseList = await query.Include(q => q.Customer).ToListAsync();
             return expenseList;
         }

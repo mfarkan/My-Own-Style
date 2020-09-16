@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Domain.Model.User
 {
     public class ApplicationUser : IdentityUser<Guid>
     {
+        //Kurum özelinde kullanıcıların olması gerekiyor ve ayrıca admin kullanıcısının da olması gerekiyor.
         public ApplicationUser()
         {
 

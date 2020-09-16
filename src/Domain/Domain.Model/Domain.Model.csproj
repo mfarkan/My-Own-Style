@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <Folder Include="MessageProvider\" />
+    <Folder Include="Institution\" />
   </ItemGroup>
 
 </Project>

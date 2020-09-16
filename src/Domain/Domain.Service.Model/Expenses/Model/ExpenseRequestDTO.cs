@@ -14,7 +14,7 @@ namespace Domain.Service.Model.Expenses.Model
         /// <summary>
         /// Gelir mi Gider mi?
         /// </summary>
-        public ExpenseType Type { get; set; }
+        public ExpenseType ExpenseType { get; set; }
         /// <summary>
         /// Tutar
         /// </summary>

@@ -33,7 +33,7 @@ namespace HaxTextile.WebAppCore.Controllers
         [HttpPost]
         public async Task<IActionResult> Update(CreateOrUpdateExpenseViewModel model)
         {
-            if (ModelState.IsValid)
+            if (! ModelState.IsValid)
                 return View(model);
             await _client.PutAsync<CreateOrUpdateExpenseViewModel, CreateOrUpdateExpenseViewModel>($"{baseApiUrl}/expense/{model.Id}", model);
             return RedirectToAction("Index");
@@ -57,7 +57,7 @@ namespace HaxTextile.WebAppCore.Controllers
                 CurrencyType = result.CurrencyType,
                 Description = result.Description,
                 DocumentNumber = result.DocumentNumber,
-                Type = result.Type,
+                ExpenseType = result.Type,
                 CustomerList = customerList
             };
             return View(viewModel);
@@ -65,12 +65,11 @@ namespace HaxTextile.WebAppCore.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateOrUpdateExpenseViewModel model)
         {
-            if (ModelState.IsValid)
-            {
-                await _client.PostAsync<CreateOrUpdateExpenseViewModel, CreateOrUpdateExpenseViewModel>($"{baseApiUrl}/expense", model);
-                return RedirectToAction("Index");
-            }
-            return View(model);
+            if (!ModelState.IsValid)
+                return View(model);
+
+            await _client.PostAsync<CreateOrUpdateExpenseViewModel, CreateOrUpdateExpenseViewModel>($"{baseApiUrl}/expense", model);
+            return RedirectToAction("Index");
         }
         [HttpGet]
         public async Task<IActionResult> Create(ExpenseType expenseType)
@@ -83,7 +82,7 @@ namespace HaxTextile.WebAppCore.Controllers
             var viewModel = new CreateOrUpdateExpenseViewModel()
             {
                 MethodType = "Create",
-                Type = expenseType,
+                ExpenseType = expenseType,
                 ExpiryDate = DateTime.Today,
                 CustomerList = customerList
             };

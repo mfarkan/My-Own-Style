@@ -33,7 +33,7 @@ namespace Domain.Service.Expenses
                     DocumentNumber = requestDTO.DocumentNumber,
                     Expiry = requestDTO.Expiry,
                     ExpiryDate = requestDTO.ExpiryDate,
-                    Type = requestDTO.Type,
+                    Type = requestDTO.ExpenseType,
                     Customer = customer,
                 };
                 _repository.Add(newInstance);
@@ -104,7 +104,7 @@ namespace Domain.Service.Expenses
             expense.DocumentNumber = requestDTO.DocumentNumber;
             expense.Expiry = requestDTO.Expiry;
             expense.ExpiryDate = requestDTO.ExpiryDate;
-            expense.Type = requestDTO.Type;
+            expense.Type = requestDTO.ExpenseType;
             expense.Customer = customer;
 
             _repository.Update(expense);

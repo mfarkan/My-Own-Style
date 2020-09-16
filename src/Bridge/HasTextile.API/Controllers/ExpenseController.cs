@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Net.Mime;
-using System.Runtime.Versioning;
 using System.Threading.Tasks;
 
 namespace HasTextile.API.Controllers

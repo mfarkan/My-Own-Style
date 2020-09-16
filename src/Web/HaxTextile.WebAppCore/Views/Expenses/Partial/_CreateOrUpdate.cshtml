@@ -9,7 +9,6 @@
             <div class="row">
                 @Html.HiddenFor(q => q.Id)
                 @Html.HiddenFor(q => q.MethodType)
-                @Html.HiddenFor(q => q.Type)
                 <div class="col-md-6">
                     <div class="form-group row">
                         <label class="col-sm-4 col-form-label">Müşteri Adı:</label>
@@ -86,8 +85,8 @@
                     <div class="form-group row">
                         <label class="col-sm-4 col-form-label">İşlem Tipi:</label>
                         <div class="col-sm-8">
-                            @Html.DropDownListFor(q => q.Type, Html.GetEnumSelectList<ExpenseType>(), "Seçiniz.", new { @class = "form-control" })
-                            <span asp-validation-for="Type" class="text-danger"></span>
+                            @Html.DropDownListFor(q => q.ExpenseType, Html.GetEnumSelectList<ExpenseType>(), "Seçiniz.", new { @class = "form-control" })
+                            <span asp-validation-for="ExpenseType" class="text-danger"></span>
                         </div>
                     </div>
                 </div>

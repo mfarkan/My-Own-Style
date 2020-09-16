@@ -18,7 +18,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group row">
-                                    <label class="col-sm-4 col-form-label">Müşteri Ad:</label>
+                                    <label class="col-sm-4 col-form-label">Müşteri Ad</label>
                                     <div class="col-sm-8">
                                         @Html.DropDownListFor(q => q.CustomerId, new SelectList(Model.CustomerList, "Id", "CustomerName"), "Seçiniz.", new { @class = "form-control" })
                                     </div>
@@ -88,7 +88,7 @@
                                         <th>Vade</th>
                                         <th>Vade Tarihi</th>
                                         <th>Açıklama</th>
-                                        <th>Dök. No.</th>
+                                        <th>Dök.No</th>
                                         <th style="width:80px;">#</th>
                                     </tr>
                                 </thead>
@@ -100,12 +100,13 @@
         </div>
     </div>
 </div>
-
+<link href="~/jQueryDataTable/dataTables.bootstrap4.min.css" rel="stylesheet" />
+<script src="~/jQueryDataTable/dataTables.bootstrap4.min.js"></script>
 
 @section Scripts{
     <script>
         function Update(id) {
-            window.location = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Expense/Update?Id=" + id;
+            window.location = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/Expenses/Update?Id=" + id;
         }
         function Delete(id) {
             $.ajax({
@@ -163,10 +164,10 @@
                         "data": function (data, type, dataToSet) {
                             switch (data.type) {
                                 case 1:// gider
-                                    return "<label class='text-danger'>" + data.amount + ' ' + data.currencyDescription + "</label>"
+                                    return "<label class='text-danger font-weight-bold'>" + data.amount + ' ' + data.currencyDescription + "</label>"
                                     break;
                                 case 2://gelir
-                                    return "<label class='text-success'>" + data.amount + ' ' + data.currencyDescription + "</label>"
+                                    return "<label class='text-success font-weight-bold'>" + data.amount + ' ' + data.currencyDescription + "</label>"
                                     break;
                                 default:
                             }
@@ -189,8 +190,8 @@
                     "targets": -1,
                     "data": null,
                     "defaultContent":
-                        "<button type='button' id='updateButton' class='btn btn-link'><i class='fas fa-pen-alt'></i></button>" +
-                        "<button type='button' id='deleteButton' class='btn btn-link'><i class='far fa-trash-alt'></i></button>"
+                        "<button type='button' id='updateButton' class='btn btn-sm btn-link'><i class='fas fa-pen-alt'></i></button>" +
+                        "<button type='button' id='deleteButton' class='btn btn-sm btn-link'><i class='far fa-trash-alt'></i></button>"
                 },
                 {
                     targets: [3],

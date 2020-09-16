@@ -13,7 +13,7 @@ namespace HaxTextile.WebAppCore.Models.Expense
         public IEnumerable<CustomerResponseDTO> CustomerList { get; set; }
         public string MethodType { get; set; }
         [Required(AllowEmptyStrings = false, ErrorMessage = "Bu alan zorunludur.")]
-        public ExpenseType Type { get; set; }
+        public ExpenseType ExpenseType { get; set; }
 
         public Guid Id { get; set; }
         [Required(AllowEmptyStrings = false, ErrorMessage = "Bu alan zorunludur.")]

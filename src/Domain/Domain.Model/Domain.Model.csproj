@@ -1,12 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="..\..\..\build\dependencies.props" />
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="3.1.5" />
-    <PackageReference Include="OpenIddict.EntityFrameworkCore.Models" Version="2.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="$(DotnetSdkVersion)" />
+    <PackageReference Include="OpenIddict.EntityFrameworkCore.Models" Version="$(OpenIdDictEfCore)" />
   </ItemGroup>
 
   <ItemGroup>
@@ -15,6 +16,7 @@
 
   <ItemGroup>
     <Folder Include="MessageProvider\" />
+    <Folder Include="Institution\" />
   </ItemGroup>
 
 </Project>

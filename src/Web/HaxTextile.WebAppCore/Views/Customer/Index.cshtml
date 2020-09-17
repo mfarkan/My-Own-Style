@@ -18,7 +18,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group row">
-                                    <label class="col-sm-4 col-form-label">Müşteri Ad:</label>
+                                    <label class="col-sm-4 col-form-label">Müşteri Ad</label>
                                     <div class="col-sm-8">
                                         <input type="text" asp-for="CustomerName" class="form-control">
                                     </div>
@@ -26,7 +26,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group row">
-                                    <label class="col-sm-4 col-form-label">Müşteri Tip:</label>
+                                    <label class="col-sm-4 col-form-label">Müşteri Tip</label>
                                     <div class="col-sm-8">
                                         @Html.DropDownListFor(q => q.CustomerType, Html.GetEnumSelectList<CustomerType>(), "Seçiniz.", new { @class = "form-control" })
                                     </div>
@@ -36,7 +36,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group row">
-                                    <label class="col-sm-4 col-form-label">Müşteri Mail:</label>
+                                    <label class="col-sm-4 col-form-label">Müşteri Mail</label>
                                     <div class="col-sm-8">
                                         <input type="email" asp-for="CustomerEmail" class="form-control">
                                     </div>
@@ -44,7 +44,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group row">
-                                    <label class="col-sm-4 col-form-label">Müşteri Telefon:</label>
+                                    <label class="col-sm-4 col-form-label">Müşteri Telefon</label>
                                     <div class="col-sm-8">
                                         <input type="text" asp-for="CustomerPhoneNumber" class="form-control">
                                     </div>
@@ -61,7 +61,7 @@
                         </div>
                         <br />
                         <div class="col-md-12">
-                            <table id="datatable-ApiList" class="table table-striped table-bordered dt-responsive nowrap tableSC" cellspacing="0" width="100%">
+                            <table id="datatable-CustomerList" class="table table-striped table-bordered dt-responsive nowrap tableSC" cellspacing="0" width="100%">
                                 <thead>
                                     <tr class="text-center">
                                         <th>Müşteri Adı</th>
@@ -90,9 +90,10 @@
         }
         function Delete(id) {
             $.ajax({
-                url: 'http://localhost:55467/Customer/DeleteCustomer/' + id,
+                url: 'Customer/DeleteCustomer/' + id,
                 type: 'DELETE',
                 success: function (result) {
+                    console.log(result);
                     swal.fire({
                         type: 'success',
                         title: 'Başarılı',
@@ -117,7 +118,7 @@
         function fillDataList() {
             if (DataListGrid != null)
                 DataListGrid.destroy();
-            var grid = $('#datatable-ApiList').DataTable({
+            var grid = $('#datatable-CustomerList').DataTable({
                 "destroy": true,
                 "processing": true,
                 "info": false,
@@ -127,7 +128,7 @@
                 "ajax": {
                     "url": 'http://localhost:55467/Customer/CustomerList',
                     "dataSrc": 'customers',
-                    cache: false,
+                    "cache": false,
                     "data": function (data) {
                         data.CustomerName = $('#CustomerName').val();
                         data.CustomerType = $('#CustomerType').val();
@@ -154,8 +155,8 @@
                     "targets": -1,
                     "data": null,
                     "defaultContent":
-                        "<button type='button' id='updateButton' class='btn btn-link'><i class='fas fa-pen-alt'></i></button>" +
-                        "<button type='button' id='deleteButton' class='btn btn-link'><i class='far fa-trash-alt'></i></button>"
+                        "<button type='button' id='updateButton' class='btn btn-sm btn-link'><i class='fas fa-pen-alt'></i></button>" +
+                        "<button type='button' id='deleteButton' class='btn btn-sm btn-link'><i class='far fa-trash-alt'></i></button>"
                 },
                 {
                     targets: [2],
@@ -174,11 +175,11 @@
         }
         $(document).ready(function () {
             fillDataList();
-            $('#datatable-ApiList').on('click', '#updateButton', function (e) {
+            $('#datatable-CustomerList').on('click', '#updateButton', function (e) {
                 var data = DataListGrid.row($(this).parents('tr')).data();
                 Update(data["id"]);
             });
-            $('#datatable-ApiList').on('click', '#deleteButton', function (e) {
+            $('#datatable-CustomerList').on('click', '#deleteButton', function (e) {
                 var data = DataListGrid.row($(this).parents('tr')).data();
                 Delete(data["id"]);
             });

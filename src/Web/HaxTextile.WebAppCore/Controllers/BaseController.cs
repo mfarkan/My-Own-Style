@@ -13,6 +13,7 @@ namespace HaxTextile.WebAppCore.Controllers
     //[Authorize]
     public abstract class BaseController : Controller
     {
+        protected const string baseApiUrl = "/api/v1.0";
         protected async Task<Dictionary<string, string>> GetDefaultHeaders()
         {
             var headers = new Dictionary<string, string>();

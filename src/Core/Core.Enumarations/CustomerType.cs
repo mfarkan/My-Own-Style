@@ -8,10 +8,14 @@ namespace Core.Enumarations
 {
     public enum CustomerType
     {
+        /// <summary>
+        /// Tüzel Müşteri
+        /// </summary>
         [Display(Name = "Tüzel")]
-        // Tüzel kişi ve şirket
         Corporate = 1,
-        // Şahıs şirketi veya şahıs.
+        /// <summary>
+        /// Şahız Müşteri
+        /// </summary>
         [Display(Name = "Şahıs")]
         individual = 2,
     }

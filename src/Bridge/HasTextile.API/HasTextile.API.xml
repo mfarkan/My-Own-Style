@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HasTextile.API</name>
+    </assembly>
+    <members>
+        <member name="M:HasTextile.API.Controllers.CustomerController.FindAllCustomer">
+            <summary>
+            Sistemdeki tüm aktif müşterileri döner.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:HasTextile.API.Controllers.CustomerController.FindExpenses(System.Guid)">
+            <summary>
+            Müşteriye ait gelir/gider bilgilerini dönen servis
+            </summary>
+            <param name="Id">Müşterinin Id Bilgisi</param>
+            <returns>Müşterinin kendisini gelir/gider bilgileriyle döner.</returns>
+            <response code="200">müşteri bilgisi döner.</response>
+            <response code="404">Id değeri için müşteri bulunamadı döner.</response>
+        </member>
+        <member name="M:HasTextile.API.Controllers.CustomerController.FindCustomer(System.Guid)">
+            <summary>
+            Spesifik olarak Id'si verilen müşteri bilgisini döner.
+            </summary>
+            <param name="Id">Müşterinin Unique Id bilgisi</param>
+            <returns></returns>
+        </member>
+        <member name="M:HasTextile.API.Controllers.CustomerController.FilterCustomers(Domain.Service.Model.Customer.Model.CustomerFilterRequestDTO)">
+            <summary>
+            Müşterinin bazı bilgilerine göre filtrelenmesini sağlar.
+            </summary>
+            <param name="request">Query'den gelen request objesi.</param>
+            <returns></returns>
+        </member>
+        <member name="M:HasTextile.API.Controllers.CustomerController.DeActivateCustomer(System.Guid)">
+            <summary>
+            Müşteriyi pasivize eder.
+            </summary>
+            <param name="Id">Müşterinin Unique Id bilgisi</param>
+            <returns></returns>
+        </member>
+        <member name="M:HasTextile.API.Controllers.CustomerController.UpdateCustomer(System.Guid,Domain.Service.Model.Customer.Model.CustomerRequestDTO)">
+            <summary>
+            Müşteriyi günceller.
+            </summary>
+            <param name="Id">Müşterinin Unique Id bilgisi</param>
+            <param name="request">Müşterinin güncellenmiş datalarının bulunduğu request Objesi</param>
+            <returns></returns>
+        </member>
+        <member name="M:HasTextile.API.Controllers.CustomerController.CreateNewUser(Domain.Service.Model.Customer.Model.CustomerRequestDTO)">
+            <summary>
+            Yeni müşteri oluşturmak için kullanılır.
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HasTextile.API.Controllers.ExpenseController.FindExpense(System.Guid)">
+            <summary>
+            Spesifik olarak belirtilen gelir/gider bilgisini döner.
+            </summary>
+            <param name="Id">Gelir/Gider Id Bilgisi</param>
+            <returns></returns>
+            <response code="200">Gelir/Gider bilgisi</response>
+            <response code="404">Boş Result</response>
+        </member>
+        <member name="M:HasTextile.API.Controllers.ExpenseController.DeActivateExpense(System.Guid)">
+            <summary>
+            Bir gelir gider bilgisini pasivize eder.
+            </summary>
+            <param name="Id">Gelir/Gider Id bilgisi</param>
+            <returns></returns>
+        </member>
+        <member name="M:HasTextile.API.Controllers.ExpenseController.CreateNewExpense(Domain.Service.Model.Expenses.Model.ExpenseRequestDTO)">
+            <summary>
+            Yeni gelir/gider bilgisi kaydı oluşturmak için kullanılır.
+            </summary>
+            <param name="requestDTO">Yeni gelir/gider oluşturmak için kullanılan request payload.</param>
+            <returns>Kayıt oluşturulursa Id bilgisi geri döner</returns>
+            <response code="200">Başarılı kayıt işlemi. GUID döner.</response>
+        </member>
+        <member name="M:HasTextile.API.Controllers.ExpenseController.FilterExpenses(Domain.Service.Model.Expenses.Model.ExpenseFilterRequestDTO)">
+            <summary>
+            Belirli bir filtreleme parameterlerine göre gelir/gider bilgisini döner.
+            </summary>
+            <param name="requestDTO"></param>
+            <returns></returns>
+            <response code="200">Başarılı sorgulama işlemi.</response>
+        </member>
+        <member name="M:HasTextile.API.Controllers.ExpenseController.UpdateExpense(System.Guid,Domain.Service.Model.Expenses.Model.ExpenseRequestDTO)">
+            <summary>
+            Belirli bir Id bilgisi verilen Gelir/Gider'in güncelleme işlemine tabi tutulması.
+            </summary>
+            <param name="Id">Gelir/Gider bilgisinin Id bilgisi.</param>
+            <param name="requestDTO"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

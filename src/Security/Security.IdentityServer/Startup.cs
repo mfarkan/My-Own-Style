@@ -142,7 +142,7 @@ namespace Security.IdentityServer
                     config.AllowPasswordFlow();
                     //config.AllowRefreshTokenFlow();
                     config.EnableRequestCaching();
-                    config.AddSigningCertificate(new FileStream(Directory.GetCurrentDirectory() + "/Certificate.pfx", FileMode.Open), 
+                    config.AddSigningCertificate(new FileStream(Directory.GetCurrentDirectory() + "/Certificate.pfx", FileMode.Open),
                         "rRZe9aJyhVxgHSRV9N554VcH", System.Security.Cryptography.X509Certificates.X509KeyStorageFlags.UserKeySet);
                     config.DisableHttpsRequirement();
                 }).AddValidation();
@@ -210,10 +210,35 @@ namespace Security.IdentityServer
                             OpenIddictConstants.Permissions.Scopes.Email,
                             OpenIddictConstants.Permissions.Scopes.Profile,
                             OpenIddictConstants.Permissions.Scopes.Roles,
-                            OpenIddictConstants.Permissions.Prefixes.Scope + "textileApi"
+                            OpenIddictConstants.Permissions.Prefixes.Scope + "textileApi",
+                            OpenIddictConstants.Permissions.Prefixes.Scope + "textileUserApi",
                         }
                     };
                     await manager.CreateAsync(customApp);
+                }
+                var userApi = await manager.FindByClientIdAsync("HasTextileUserAPI");
+                if (userApi == null)
+                {
+                    OpenIddictApplicationDescriptor apiClient = new OpenIddictApplicationDescriptor
+                    {
+                        ClientId = "HasTextileUserAPI",
+                        ClientSecret = "159753",
+                        Permissions =
+                        {
+                            OpenIddictConstants.Permissions.Endpoints.Introspection,
+                        }
+                    };
+                    await manager.CreateAsync(apiClient);
+                }
+                var scopeUser = await scopeManager.FindByNameAsync("textileUserApi");
+                if (scopeUser == null)
+                {
+                    var textileApiScope = new OpenIddictScopeDescriptor
+                    {
+                        Name = "textileUserApi",
+                        Resources = { "HasTextileUserAPI" }
+                    };
+                    await scopeManager.CreateAsync(textileApiScope);
                 }
                 var resourceApi = await manager.FindByClientIdAsync("HasTextileAPI");
                 if (resourceApi == null)
@@ -253,6 +278,7 @@ namespace Security.IdentityServer
                             OpenIddictConstants.Permissions.GrantTypes.ClientCredentials,
                             OpenIddictConstants.Permissions.Scopes.Email,
                             OpenIddictConstants.Permissions.Prefixes.Scope+ "textileApi"
+                            OpenIddictConstants.Permissions.Prefixes.Scope + "textileUserApi",
                         }
                     };
                     await manager.CreateAsync(credentialApp);

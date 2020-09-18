@@ -5,7 +5,7 @@ namespace Domain.Model.User
 {
     public class ApplicationUser : IdentityUser<Guid>
     {
-        //Kurum özelinde kullanıcıların olması gerekiyor ve ayrıca admin kullanıcısının da olması gerekiyor.
+        //Kurum özelinde kullanıcıların ve rollerin olması gerekiyor.
         public ApplicationUser()
         {
 

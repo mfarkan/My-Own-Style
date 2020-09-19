@@ -25,6 +25,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.Caching\Core.Caching.csproj" />
     <ProjectReference Include="..\..\Core\Core.Enumarations\Core.Enumarations.csproj" />
+    <ProjectReference Include="..\..\Core\Core.Extensions\Core.Extensions.csproj" />
     <ProjectReference Include="..\..\Domain\Domain.DataLayer\Domain.DataLayer.csproj" />
     <ProjectReference Include="..\..\Domain\Domain.Integration\Domain.Integration.csproj" />
     <ProjectReference Include="..\..\Domain\Domain.Service\Domain.Service.csproj" />
@@ -32,7 +33,9 @@
 
   <ItemGroup>
     <Folder Include="Models\" />
+    <Content Include="..\..\..\build\sharedSettings*.json">
+      <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
-
-
 </Project>

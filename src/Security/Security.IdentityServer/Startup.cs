@@ -277,7 +277,7 @@ namespace Security.IdentityServer
                             OpenIddictConstants.Permissions.Endpoints.Token,
                             OpenIddictConstants.Permissions.GrantTypes.ClientCredentials,
                             OpenIddictConstants.Permissions.Scopes.Email,
-                            OpenIddictConstants.Permissions.Prefixes.Scope+ "textileApi"
+                            OpenIddictConstants.Permissions.Prefixes.Scope+ "textileApi",
                             OpenIddictConstants.Permissions.Prefixes.Scope + "textileUserApi",
                         }
                     };

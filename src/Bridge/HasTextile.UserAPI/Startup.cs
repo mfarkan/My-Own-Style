@@ -1,5 +1,6 @@
 using AspNet.Security.OAuth.Validation;
 using Core.Caching;
+using Core.Extensions.Configuration;
 using HasTextile.UserAPI.Filters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -20,13 +21,14 @@ namespace HasTextile.UserAPI
     public class Startup
     {
         private const string Doc_Helper_Url_Prefix = "Textile-User-Api";
-        public Startup(IConfiguration configuration)
+        public Startup(IWebHostEnvironment webHost)
         {
-            Configuration = configuration;
+            environment = webHost;
+            Configuration = new ConfigurationBuilder().BuildConfig(environment.ContentRootPath, environment.EnvironmentName).Build();
         }
 
         public IConfiguration Configuration { get; }
-
+        public IWebHostEnvironment environment { get; }
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -41,7 +43,6 @@ namespace HasTextile.UserAPI
                 config.Audiences.Add("HasTextileUserAPI");
                 config.RequireHttpsMetadata = false;
             });
-
             services.AddDistributedMemoryCache();//if we don't configure redis or sql server its working like memory cache in server.
             services.AddSingleton<CacheProvider>();
             services.AddControllers();

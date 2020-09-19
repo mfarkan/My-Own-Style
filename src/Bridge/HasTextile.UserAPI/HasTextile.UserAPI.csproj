@@ -4,7 +4,8 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'"> 
+    <NoWarn>$(NoWarn);1591</NoWarn>
     <DocumentationFile>C:\Users\muratfatiharkan\source\repos\HasTextile\src\Bridge\HasTextile.UserAPI\HasTextile.UserAPI.xml</DocumentationFile>
   </PropertyGroup>
 
@@ -23,8 +24,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="..\..\..\build\sharedSettings*.json">
+      <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <ProjectReference Include="..\..\Core\Core.Caching\Core.Caching.csproj" />
     <ProjectReference Include="..\..\Core\Core.Enumarations\Core.Enumarations.csproj" />
+    <ProjectReference Include="..\..\Core\Core.Extensions\Core.Extensions.csproj" />
     <ProjectReference Include="..\..\Domain\Domain.DataLayer\Domain.DataLayer.csproj" />
     <ProjectReference Include="..\..\Domain\Domain.Integration\Domain.Integration.csproj" />
     <ProjectReference Include="..\..\Domain\Domain.Service\Domain.Service.csproj" />

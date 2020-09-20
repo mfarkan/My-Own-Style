@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Core.Extensions.Configuration;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -16,10 +18,12 @@ namespace HasTextile.UserAPI.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
-
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        private readonly IConfiguration _configuration;
+        public WeatherForecastController(IConfiguration configuration, ILogger<WeatherForecastController> logger)
         {
             _logger = logger;
+            _configuration = configuration;
+            var value = _configuration.GetValue("Application", "Deneme");
         }
 
         [HttpGet]

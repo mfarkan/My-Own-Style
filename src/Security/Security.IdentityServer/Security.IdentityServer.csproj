@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Core\Core.Extensions\Core.Extensions.csproj" />
     <ProjectReference Include="..\..\Domain\Domain.DataLayer\Domain.DataLayer.csproj" />
   </ItemGroup>
 

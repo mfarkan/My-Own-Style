@@ -21,10 +21,10 @@ namespace HasTextile.UserAPI
     public class Startup
     {
         private const string Doc_Helper_Url_Prefix = "Textile-User-Api";
-        public Startup(IWebHostEnvironment webHost)
+        public Startup(IConfiguration configuration, IWebHostEnvironment webHost)
         {
             environment = webHost;
-            Configuration = new ConfigurationBuilder().BuildConfig(environment.ContentRootPath, environment.EnvironmentName).Build();
+            Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }

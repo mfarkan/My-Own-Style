@@ -13,13 +13,11 @@ namespace Core.Extensions.Configuration
         {
             config.SetBasePath(contentRootPath)
                 .AddJsonFile("appsettings.json", false, true)
-                //.AddJsonFile("sharedSettings.json", false, true)
                 .AddSharedSettings(contentRootPath, enviromentName, "sharedSettings.json")
                 .AddEnvironmentVariables();
             if (string.IsNullOrEmpty(enviromentName))
             {
                 config.AddJsonFile($"appsettings.{enviromentName}.json", true, true);
-                //config.AddJsonFile($"sharedSettings.{enviromentName}.json", true, true);
             }
             return config;
         }

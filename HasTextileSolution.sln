@@ -44,8 +44,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{F0942A37-2013-4CAB-B7AB-87F4796DABAC}"
 	ProjectSection(SolutionItems) = preProject
 		build\dependencies.props = build\dependencies.props
-		sharedSettings.Development.json = sharedSettings.Development.json
-		sharedSettings.json = sharedSettings.json
+		build\sharedSettings.Development.json = build\sharedSettings.Development.json
+		build\sharedSettings.json = build\sharedSettings.json
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HasTextile.Tests", "src\Tests\HasTextile.Tests\HasTextile.Tests.csproj", "{39205E32-2D2D-4DFA-A2DE-E788200120A1}"

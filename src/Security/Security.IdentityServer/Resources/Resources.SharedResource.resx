@@ -172,7 +172,7 @@
     <value>Logout</value>
   </data>
   <data name="ExternalSource" xml:space="preserve">
-    <value>Use another service to log in.</value>
+    <value>Use administrator entrance to log in.</value>
   </data>
   <data name="Female" xml:space="preserve">
     <value>Female</value>

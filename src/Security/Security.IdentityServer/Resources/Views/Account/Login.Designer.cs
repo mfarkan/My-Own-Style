@@ -61,6 +61,15 @@ namespace Security.IdentityServer.Resources.Views.Account {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Administrator.
+        /// </summary>
+        public static string AdminGate {
+            get {
+                return ResourceManager.GetString("AdminGate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Forgot your password.
         /// </summary>
         public static string ForgotPassword {
@@ -93,6 +102,15 @@ namespace Security.IdentityServer.Resources.Views.Account {
         public static string NoExternalProvider {
             get {
                 return ResourceManager.GetString("NoExternalProvider", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Entrance.
+        /// </summary>
+        public static string UserGate {
+            get {
+                return ResourceManager.GetString("UserGate", resourceCulture);
             }
         }
     }

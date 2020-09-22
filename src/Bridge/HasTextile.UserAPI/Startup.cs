@@ -1,10 +1,15 @@
 using AspNet.Security.OAuth.Validation;
 using Core.Caching;
 using Core.Extensions.Configuration;
+using Domain.DataLayer;
+using Domain.Model.User;
+using Domain.Service;
 using HasTextile.UserAPI.Filters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -32,6 +37,20 @@ namespace HasTextile.UserAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<UserManagementDbContext>(options =>
+            {
+                options.UseNpgsql(Configuration.GetConnectionString("ConnectionStringSecurity"), sql =>
+                {
+                    sql.MigrationsHistoryTable("MigrationHistory", "public");
+                    sql.MigrationsAssembly("Domain.DataLayer");
+                });
+                options.UseOpenIddict<int>();
+            });
+            services.AddIdentity<ApplicationUser, ApplicationRole>()
+                .AddEntityFrameworkStores<UserManagementDbContext>().AddDefaultTokenProviders();
+
+            services.AddIdentityOptions();
+
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = OAuthValidationDefaults.AuthenticationScheme;
@@ -43,6 +62,7 @@ namespace HasTextile.UserAPI
                 config.Audiences.Add("HasTextileUserAPI");
                 config.RequireHttpsMetadata = false;
             });
+            services.AddUserServices();
             services.AddDistributedMemoryCache();//if we don't configure redis or sql server its working like memory cache in server.
             services.AddSingleton<CacheProvider>();
             services.AddControllers();

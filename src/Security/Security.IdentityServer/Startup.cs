@@ -36,14 +36,12 @@ namespace Security.IdentityServer
         {
             services.AddDbContext<UserManagementDbContext>(options =>
             {
-
                 options.UseNpgsql(Configuration.GetConnectionString("ConnectionStringSecurity"), sql =>
                  {
                      sql.MigrationsHistoryTable("MigrationHistory", "public");
-                     sql.MigrationsAssembly("Security.IdentityServer");
+                     sql.MigrationsAssembly("Domain.DataLayer");
                  });
                 options.UseOpenIddict<int>();
-
             });
             services.AddIdentity<ApplicationUser, ApplicationRole>()
                 .AddEntityFrameworkStores<UserManagementDbContext>().AddDefaultTokenProviders();
@@ -54,36 +52,7 @@ namespace Security.IdentityServer
                 config.ExpireTimeSpan = TimeSpan.FromMinutes(20);
             });
 
-            services.Configure<IdentityOptions>(options =>
-            {
-                options.ClaimsIdentity.UserNameClaimType = OpenIdConnectConstants.Claims.Name;
-                options.ClaimsIdentity.UserIdClaimType = OpenIdConnectConstants.Claims.Subject;
-                options.ClaimsIdentity.RoleClaimType = OpenIdConnectConstants.Claims.Role;
-                options.Lockout = new LockoutOptions
-                {
-                    MaxFailedAccessAttempts = 6,
-                    DefaultLockoutTimeSpan = TimeSpan.FromMinutes(20)
-                };
-                options.SignIn = new SignInOptions
-                {
-                    RequireConfirmedAccount = true,
-                    RequireConfirmedEmail = true,
-                    RequireConfirmedPhoneNumber = false
-                };
-                options.User = new UserOptions
-                {
-                    RequireUniqueEmail = true,
-                };
-                options.Password = new PasswordOptions
-                {
-                    RequireDigit = true,
-                    RequiredLength = 6,
-                    RequireUppercase = false,
-                    RequiredUniqueChars = 0,
-                    RequireLowercase = true,
-                    RequireNonAlphanumeric = false
-                };
-            });
+            services.AddIdentityOptions();
 
             services.AddAntiforgery(option => option.HeaderName = "X-XSRF-Token");
             #region Localization Services

@@ -1,4 +1,7 @@
 ﻿using Core.Extensions.Configuration;
+using Domain.Model.User;
+using Domain.Service.Model.User;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -16,13 +19,14 @@ namespace HasTextile.UserAPI.Controllers
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
-
+        private readonly IUserService _userService;
         private readonly ILogger<WeatherForecastController> _logger;
         private readonly IConfiguration _configuration;
-        public WeatherForecastController(IConfiguration configuration, ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(IConfiguration configuration, ILogger<WeatherForecastController> logger,IUserService userService)
         {
             _logger = logger;
             _configuration = configuration;
+            _userService = userService;
             var value = _configuration.GetValue("Application", "Deneme");
         }
 

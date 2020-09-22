@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace Security.IdentityServer.Migrations.IdentityServer.UserManagementDb
+namespace Domain.DataLayer.Migrations.UserManagementDb
 {
-    public partial class FirstMigrationUserDb : Migration
+    public partial class FirstMigrationUserDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

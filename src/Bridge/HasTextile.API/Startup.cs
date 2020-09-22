@@ -40,7 +40,7 @@ namespace HasTextile.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddBusinessLayer(Configuration);
-            services.AddDomainServices(Configuration);
+            services.AddDomainServices();
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = OAuthValidationDefaults.AuthenticationScheme;

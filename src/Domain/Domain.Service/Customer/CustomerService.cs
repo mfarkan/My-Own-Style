@@ -13,7 +13,6 @@ namespace Domain.Service.Customer
     public class CustomerService : ICustomerService
     {
         private readonly IBusinessRepository _repository;
-        //private readonly IMapper _mapper;
         public CustomerService(IBusinessRepository repository)
         {
             //_mapper = mapper;

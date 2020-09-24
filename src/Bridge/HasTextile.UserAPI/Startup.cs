@@ -37,7 +37,7 @@ namespace HasTextile.UserAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<UserManagementDbContext>(options =>
+            services.AddDbContext<ManagementDbContext>(options =>
             {
                 options.UseNpgsql(Configuration.GetConnectionString("ConnectionStringSecurity"), sql =>
                 {
@@ -47,7 +47,7 @@ namespace HasTextile.UserAPI
                 options.UseOpenIddict<int>();
             });
             services.AddIdentity<ApplicationUser, ApplicationRole>()
-                .AddEntityFrameworkStores<UserManagementDbContext>().AddDefaultTokenProviders();
+                .AddEntityFrameworkStores<ManagementDbContext>().AddDefaultTokenProviders();
 
             services.AddIdentityOptions();
 
@@ -80,7 +80,7 @@ namespace HasTextile.UserAPI
                         Name = "Murat Fatih ARKAN",
                         Url = new Uri("http://mfarkan.github.io/"),
                     },
-                    Description = "Has Tekstil þirketinin API dökümantasyonu. It's my uncle's company and this application is just dummy application.",
+                    Description = "Has Tekstil þirketinin User API dökümantasyonu.",
 
                 });
                 options.DocInclusionPredicate((apiVersion, apiDescription) =>

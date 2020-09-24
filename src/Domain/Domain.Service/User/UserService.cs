@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Domain.Service.User
 {
@@ -15,6 +16,44 @@ namespace Domain.Service.User
         {
             _userManager = userManager;
             _roleManager = roleManager;
+        }
+
+        public async Task AssignRoleToUserAsync(Guid userId, Guid roleId)
+        {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            if (user == null)
+                return;
+            var role = await _roleManager.FindByIdAsync(roleId.ToString());
+            if (role == null)
+                return;
+
+            var result = await _userManager.AddToRoleAsync(user, role.Name);
+            
+        }
+
+        public Task CreateRoleAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task CreateUserAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task DeleteRoleAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task DeleteUserAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UpdateUserAsync()
+        {
+            throw new NotImplementedException();
         }
     }
 }

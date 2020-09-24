@@ -34,9 +34,9 @@ namespace Security.IdentityServer
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<UserManagementDbContext>(options =>
+            services.AddDbContext<ManagementDbContext>(options =>
             {
-                options.UseNpgsql(Configuration.GetConnectionString("ConnectionStringSecurity"), sql =>
+                options.UseNpgsql(Configuration.GetConnectionString("ConnectionStringBusiness"), sql =>
                  {
                      sql.MigrationsHistoryTable("MigrationHistory", "public");
                      sql.MigrationsAssembly("Domain.DataLayer");
@@ -44,7 +44,7 @@ namespace Security.IdentityServer
                 options.UseOpenIddict<int>();
             });
             services.AddIdentity<ApplicationUser, ApplicationRole>()
-                .AddEntityFrameworkStores<UserManagementDbContext>().AddDefaultTokenProviders();
+                .AddEntityFrameworkStores<ManagementDbContext>().AddDefaultTokenProviders();
 
             services.ConfigureApplicationCookie(config =>
             {
@@ -89,7 +89,7 @@ namespace Security.IdentityServer
                 options.AddCore(config =>
                 {
                     config.UseEntityFrameworkCore()
-                        .UseDbContext<UserManagementDbContext>().ReplaceDefaultEntities<int>();
+                        .UseDbContext<ManagementDbContext>().ReplaceDefaultEntities<int>();
                 });
                 options.AddServer(config =>
                 {
@@ -156,7 +156,7 @@ namespace Security.IdentityServer
         {
             using (var scope = service.CreateScope())
             {
-                var dbContext = scope.ServiceProvider.GetRequiredService<UserManagementDbContext>();
+                var dbContext = scope.ServiceProvider.GetRequiredService<ManagementDbContext>();
                 var manager = scope.ServiceProvider.GetRequiredService<OpenIddictApplicationManager<OpenIddictApplication<int>>>();
                 var scopeManager = scope.ServiceProvider.GetRequiredService<OpenIddictScopeManager<OpenIddictScope<int>>>();
 

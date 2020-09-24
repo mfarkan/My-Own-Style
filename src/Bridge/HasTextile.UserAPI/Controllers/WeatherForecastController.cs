@@ -19,15 +19,11 @@ namespace HasTextile.UserAPI.Controllers
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
-        private readonly IUserService _userService;
         private readonly ILogger<WeatherForecastController> _logger;
         private readonly IConfiguration _configuration;
-        public WeatherForecastController(IConfiguration configuration, ILogger<WeatherForecastController> logger,IUserService userService)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger)
         {
             _logger = logger;
-            _configuration = configuration;
-            _userService = userService;
-            var value = _configuration.GetValue("Application", "Deneme");
         }
 
         [HttpGet]

@@ -12,6 +12,7 @@ namespace Domain.Model.Income
         public virtual string Description { get; set; }
         public virtual string DocumentNumber { get; set; }
         public virtual int? Expiry { get; set; }
+        public virtual Institution.Institution Institution { get; set; }
         public virtual DateTime? ExpiryDate { get; set; }
     }
 }

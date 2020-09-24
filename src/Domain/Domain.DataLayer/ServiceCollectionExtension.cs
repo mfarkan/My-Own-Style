@@ -11,7 +11,7 @@ namespace Domain.DataLayer
     {
         public static void AddBusinessLayer(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<BusinessContext>(options =>
+            services.AddDbContext<ManagementDbContext>(options =>
             {
                 options.UseNpgsql(configuration.GetConnectionString("ConnectionStringBusiness"), sql =>
                 {

@@ -3,15 +3,17 @@ using System;
 using Domain.DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace Domain.DataLayer.Migrations.UserManagementDb
+namespace Domain.DataLayer.Migrations
 {
-    [DbContext(typeof(UserManagementDbContext))]
-    partial class UserManagementDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(ManagementDbContext))]
+    [Migration("20200924185815_UserMigration")]
+    partial class UserMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -19,6 +21,200 @@ namespace Domain.DataLayer.Migrations.UserManagementDb
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
                 .HasAnnotation("ProductVersion", "3.1.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
+
+            modelBuilder.Entity("Domain.Model.Customer.Customer", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("CreatedByIp")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CreatedByUserName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CustomerAddress")
+                        .IsRequired()
+                        .HasColumnType("character varying(255)")
+                        .HasMaxLength(255);
+
+                    b.Property<int>("CustomerCompanyType")
+                        .HasColumnType("integer")
+                        .HasMaxLength(255);
+
+                    b.Property<string>("CustomerDescription")
+                        .IsRequired()
+                        .HasColumnType("character varying(255)")
+                        .HasMaxLength(255);
+
+                    b.Property<string>("CustomerEmailAddress")
+                        .IsRequired()
+                        .HasColumnType("character varying(255)")
+                        .HasMaxLength(255);
+
+                    b.Property<string>("CustomerName")
+                        .IsRequired()
+                        .HasColumnType("character varying(255)")
+                        .HasMaxLength(255);
+
+                    b.Property<string>("CustomerTelephoneNumber")
+                        .HasColumnType("character varying(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<Guid?>("InstitutionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(1);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("InstitutionId");
+
+                    b.ToTable("Customers");
+                });
+
+            modelBuilder.Entity("Domain.Model.Income.Expenses", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("CreatedByIp")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CreatedByUserName")
+                        .HasColumnType("text");
+
+                    b.Property<int>("CurrencyType")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid?>("CustomerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("character varying(255)")
+                        .HasMaxLength(255);
+
+                    b.Property<string>("DocumentNumber")
+                        .HasColumnType("character varying(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<int?>("Expiry")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("ExpiryDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<Guid?>("InstitutionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(1);
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("InstitutionId");
+
+                    b.ToTable("Expenses");
+                });
+
+            modelBuilder.Entity("Domain.Model.Institution.Institution", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("character varying(255)")
+                        .HasMaxLength(255);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("CreatedByIp")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CreatedByUserName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("EmailAddress")
+                        .IsRequired()
+                        .HasColumnType("character varying(255)")
+                        .HasMaxLength(255);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("character varying(255)")
+                        .HasMaxLength(255);
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("character varying(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<int>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(1);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.ToTable("Institution");
+                });
+
+            modelBuilder.Entity("Domain.Model.Institution.InstitutionSettings", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("CreatedByIp")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CreatedByUserName")
+                        .HasColumnType("text");
+
+                    b.Property<Guid?>("InstitutionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(1);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("InstitutionId");
+
+                    b.ToTable("InstitutionSettings");
+                });
 
             modelBuilder.Entity("Domain.Model.User.ApplicationRole", b =>
                 {
@@ -67,6 +263,9 @@ namespace Domain.DataLayer.Migrations.UserManagementDb
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("boolean");
 
+                    b.Property<Guid?>("InstitutionId")
+                        .HasColumnType("uuid");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("boolean");
 
@@ -101,6 +300,8 @@ namespace Domain.DataLayer.Migrations.UserManagementDb
                         .HasMaxLength(256);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("InstitutionId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
@@ -403,6 +604,38 @@ namespace Domain.DataLayer.Migrations.UserManagementDb
                     b.HasIndex("ApplicationId", "Status", "Subject", "Type");
 
                     b.ToTable("OpenIddictTokens");
+                });
+
+            modelBuilder.Entity("Domain.Model.Customer.Customer", b =>
+                {
+                    b.HasOne("Domain.Model.Institution.Institution", "Institution")
+                        .WithMany("CustomerList")
+                        .HasForeignKey("InstitutionId");
+                });
+
+            modelBuilder.Entity("Domain.Model.Income.Expenses", b =>
+                {
+                    b.HasOne("Domain.Model.Customer.Customer", "Customer")
+                        .WithMany("Expenses")
+                        .HasForeignKey("CustomerId");
+
+                    b.HasOne("Domain.Model.Institution.Institution", "Institution")
+                        .WithMany("ExpenseList")
+                        .HasForeignKey("InstitutionId");
+                });
+
+            modelBuilder.Entity("Domain.Model.Institution.InstitutionSettings", b =>
+                {
+                    b.HasOne("Domain.Model.Institution.Institution", "Institution")
+                        .WithMany()
+                        .HasForeignKey("InstitutionId");
+                });
+
+            modelBuilder.Entity("Domain.Model.User.ApplicationUser", b =>
+                {
+                    b.HasOne("Domain.Model.Institution.Institution", null)
+                        .WithMany("UserList")
+                        .HasForeignKey("InstitutionId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>

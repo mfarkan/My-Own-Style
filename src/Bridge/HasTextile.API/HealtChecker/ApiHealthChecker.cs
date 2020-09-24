@@ -10,14 +10,14 @@ namespace HasTextile.API.HealtChecker
 {
     public class ApiHealthChecker : IHealthCheck
     {
-        private readonly BusinessContext _businessContext;
-        public ApiHealthChecker(BusinessContext businessContext)
+        private readonly ManagementDbContext _dbContext;
+        public ApiHealthChecker(ManagementDbContext dbContext)
         {
-            _businessContext = businessContext;
+            _dbContext = dbContext;
         }
         public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
         {
-            var isHealthy = await _businessContext.Database.CanConnectAsync(cancellationToken);
+            var isHealthy = await _dbContext.Database.CanConnectAsync(cancellationToken);
             if (isHealthy)
             {
                 return HealthCheckResult.Healthy("I'm alive...");

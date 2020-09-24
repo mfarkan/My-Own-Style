@@ -5,9 +5,9 @@ using System.Text;
 
 namespace Domain.DataLayer.Business
 {
-    public class BusinessRepository : GenericRepository<BusinessContext>, IBusinessRepository
+    public class BusinessRepository : GenericRepository<ManagementDbContext>, IBusinessRepository
     {
-        public BusinessRepository(BusinessContext businessContext):base(businessContext)
+        public BusinessRepository(ManagementDbContext businessContext) : base(businessContext)
         {
 
         }

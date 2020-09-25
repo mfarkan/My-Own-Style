@@ -1,5 +1,6 @@
 ﻿using Core.Enumarations;
 using Domain.DataLayer.Business;
+using Domain.Model.Institution;
 using Domain.Service.Model.Customer;
 using Domain.Service.Model.Customer.Model;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +16,6 @@ namespace Domain.Service.Customer
         private readonly IBusinessRepository _repository;
         public CustomerService(IBusinessRepository repository)
         {
-            //_mapper = mapper;
             _repository = repository;
         }
         public async Task<List<Domain.Model.Customer.Customer>> GetAllCustomerAsync()
@@ -25,7 +25,8 @@ namespace Domain.Service.Customer
         }
         public async Task<Domain.Model.Customer.Customer> GetCustomerAsync(Guid Id)
         {
-            var customerInstance = await _repository.GetByIdAsync<Domain.Model.Customer.Customer>(Id);
+            var customerInstance = await _repository.Query<Domain.Model.Customer.Customer>().Where(q => q.Id == Id && q.Status == StatusType.Active)
+                .Include(q => q.Institution).FirstOrDefaultAsync();
             return customerInstance;
         }
 
@@ -39,7 +40,8 @@ namespace Domain.Service.Customer
 
         public async Task<List<Domain.Model.Customer.Customer>> GetCustomersWithFilter(CustomerFilterRequestDTO filterRequestDTO)
         {
-            var query = _repository.QueryWithoutTracking<Domain.Model.Customer.Customer>().Where(q => q.Status == StatusType.Active);
+            var query = _repository.QueryWithoutTracking<Domain.Model.Customer.Customer>().Where(q => q.Status == StatusType.Active
+            && q.Institution.Id == filterRequestDTO.InstitutionId);
 
             if (!string.IsNullOrEmpty(filterRequestDTO.CustomerName))
                 query = query.Where(q => q.CustomerName.Contains(filterRequestDTO.CustomerName));
@@ -73,6 +75,10 @@ namespace Domain.Service.Customer
         }
         public async Task<Guid> CreateNewCustomer(CustomerRequestDTO request)
         {
+            var institution = await _repository.GetByIdAsync<Institution>(request.InstitutionId);
+            if (institution == null)
+                return Guid.Empty;
+
             Domain.Model.Customer.Customer newCustomer = new Domain.Model.Customer.Customer
             {
                 CustomerAddress = request.CustomerAddress,
@@ -80,7 +86,8 @@ namespace Domain.Service.Customer
                 CustomerEmailAddress = request.CustomerEmailAddress,
                 CustomerDescription = request.CustomerDescription,
                 CustomerName = request.CustomerName,
-                CustomerTelephoneNumber = request.CustomerTelephoneNumber
+                CustomerTelephoneNumber = request.CustomerTelephoneNumber,
+                Institution = institution
             };
             _repository.Add(newCustomer);
             await _repository.CommitAsync();
@@ -89,7 +96,8 @@ namespace Domain.Service.Customer
         public async Task<Guid> UpdateCustomer(Guid Id, CustomerRequestDTO request)
         {
             var customer = await _repository.GetByIdAsync<Domain.Model.Customer.Customer>(Id);
-            if (customer == null)
+            var institution = await _repository.GetByIdAsync<Institution>(request.InstitutionId);
+            if (customer == null || institution == null)
                 return Guid.Empty;
 
             customer.CustomerAddress = request.CustomerAddress;
@@ -97,6 +105,7 @@ namespace Domain.Service.Customer
             customer.CustomerDescription = request.CustomerDescription;
             customer.CustomerCompanyType = request.CustomerCompanyType;
             customer.CustomerName = request.CustomerName;
+            customer.Institution = institution;
             customer.CustomerTelephoneNumber = request.CustomerTelephoneNumber;
             _repository.Update(customer);
             await _repository.CommitAsync();

@@ -42,6 +42,7 @@ namespace Domain.DataLayer
                 options.User = new UserOptions
                 {
                     RequireUniqueEmail = true,
+                    AllowedUserNameCharacters= @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+\/"
                 };
                 options.Password = new PasswordOptions
                 {

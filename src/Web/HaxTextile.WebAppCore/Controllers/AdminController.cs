@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Core.HttpClient;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HaxTextile.WebAppCore.Controllers
 {
+    [Authorize(Roles = "HasTextileSystemAdmin")]
     public class AdminController : BaseAdminController
     {
 

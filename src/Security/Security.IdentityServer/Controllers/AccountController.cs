@@ -20,8 +20,11 @@ namespace Security.IdentityServer.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        private readonly RoleManager<ApplicationRole> _roleManager;
+        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,
+            RoleManager<ApplicationRole> roleManager)
         {
+            _roleManager = roleManager;
             _userManager = userManager;
             _signInManager = signInManager;
         }
@@ -149,9 +152,19 @@ namespace Security.IdentityServer.Controllers
                     EmailConfirmed = true,
                     PhoneNumberConfirmed = true,
                 };
-
-                var passWord = "123456";
-                await _userManager.CreateAsync(user, passWord);
+                string roleName = "HasTextileSystemAdmin";
+                ApplicationRole systemRole = await _roleManager.FindByNameAsync(roleName);
+                if (systemRole == null)
+                {
+                    systemRole = new ApplicationRole
+                    {
+                        Name = "HasTextileSystemAdmin",
+                    };
+                    await _roleManager.CreateAsync(systemRole);
+                }
+                var passWord = "fatih2626";
+                var result = await _userManager.CreateAsync(user, passWord);
+                await _userManager.AddToRoleAsync(user, systemRole.Name);
             }
             var loginInfo = new UserLoginInfo(IISDefaults.AuthenticationScheme, userName, IISDefaults.AuthenticationScheme);
             var identityAddLoginResult = await _userManager.AddLoginAsync(user, loginInfo);

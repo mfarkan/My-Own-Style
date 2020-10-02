@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Domain.Service.Model.Expenses.Model
 {
-    public class ExpenseFilterRequestDTO : BaseRequestDTO
+    public class ExpenseFilterRequestDTO : BaseFilterRequestDTO
     {
         /// <summary>
         /// Gelir mi(1) Gider mi(2) ?

@@ -11,7 +11,7 @@ namespace HaxTextile.WebAppCore.Controllers
     [Authorize(Roles = "HasTextileSystemAdmin")]
     public class AdminController : BaseAdminController
     {
-
+        // sol taraftaki menüyü admin rolüne göre yapabiliriz.
         private readonly IHttpClientWrapper _client;
         public AdminController(IHttpClientWrapper client)
         {

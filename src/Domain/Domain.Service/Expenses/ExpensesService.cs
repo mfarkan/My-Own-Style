@@ -24,7 +24,7 @@ namespace Domain.Service.Expenses
         public async Task<Guid> CreateNewExpense(ExpenseRequestDTO requestDTO)
         {
             var customer = await _repository.GetByIdAsync<Domain.Model.Customer.Customer>(requestDTO.CustomerId);
-            var institution = await _repository.GetByIdAsync<Institution>(requestDTO.InstitutionId);
+            var institution = await _repository.GetByIdAsync<Domain.Model.Institution.Institution>(requestDTO.InstitutionId);
 
             if (customer == null || institution == null)
                 return Guid.Empty;
@@ -83,12 +83,8 @@ namespace Domain.Service.Expenses
 
         public async Task PassivateExpense(Guid Id)
         {
-            var expense = await _repository.GetByIdAsync<Domain.Model.Income.Expenses>(Id);
-            if (expense == null)
-                return;
-            expense.Delete();
-            _repository.Update(expense);
-            await _repository.CommitAsync();
+            await _repository.PassivateEntityAsync<Domain.Model.Income.Expenses>(Id);
+            await Task.CompletedTask;
         }
 
         public async Task<Guid> UpdateExpense(Guid Id, ExpenseRequestDTO requestDTO)
@@ -99,7 +95,7 @@ namespace Domain.Service.Expenses
                .FirstOrDefaultAsync();
 
             var customer = await _repository.GetByIdAsync<Domain.Model.Customer.Customer>(requestDTO.CustomerId);
-            var institution = await _repository.GetByIdAsync<Institution>(requestDTO.InstitutionId);
+            var institution = await _repository.GetByIdAsync<Domain.Model.Institution.Institution>(requestDTO.InstitutionId);
             if (expense == null || customer == null || institution == null)
                 return Guid.Empty;
 

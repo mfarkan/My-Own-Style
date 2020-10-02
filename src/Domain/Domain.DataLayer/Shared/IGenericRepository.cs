@@ -20,5 +20,6 @@ namespace Domain.DataLayer.Shared
         IQueryable<T> QueryWithoutTracking<T>() where T : EntityBase;
         Task<List<T>> GetAllAsync<T>() where T : EntityBase;
         Task<T> GetByIdAsync<T>(Guid Id) where T : EntityBase;
+        Task PassivateEntityAsync<T>(Guid Id) where T : EntityBase;
     }
 }

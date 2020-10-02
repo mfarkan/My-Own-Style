@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Server.IISIntegration;
 using Microsoft.AspNetCore.WebUtilities;
 using Security.IdentityServer.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
@@ -138,6 +139,7 @@ namespace Security.IdentityServer.Controllers
                         ((ClaimsIdentity)claimsPrincipal.Identity).AddClaim(item);
                     }
                 }
+                // if institutionId is null when redirect user to Admin pages.
                 await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme, claimsPrincipal);
                 return Redirect(returnUrl);
             }
@@ -180,6 +182,7 @@ namespace Security.IdentityServer.Controllers
                     }
                 }
                 await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme, claimsPrincipal);
+                // if institutionId is null when redirect user to Admin pages.
                 return Redirect(returnUrl);
             }
             return RedirectToAction(nameof(Login));

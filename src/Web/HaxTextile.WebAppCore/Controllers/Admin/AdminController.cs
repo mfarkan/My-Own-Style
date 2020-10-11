@@ -6,7 +6,7 @@ using Core.HttpClient;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace HaxTextile.WebAppCore.Controllers
+namespace HaxTextile.WebAppCore.Controllers.Admin
 {
     [Authorize(Roles = "HasTextileSystemAdmin")]
     public class AdminController : BaseAdminController

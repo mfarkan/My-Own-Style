@@ -4,9 +4,7 @@ using Domain.Service.Model.Customer;
 using Domain.Service.Model.Expenses;
 using Domain.Service.Model.User;
 using Domain.Service.User;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace Domain.Service
 {

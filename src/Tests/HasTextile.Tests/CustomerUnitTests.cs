@@ -71,8 +71,21 @@ namespace HasTextile.Tests
                 .Fill(q => q.CustomerName).AsMusicArtistName()
                 .Fill(q => q.CustomerTelephoneNumber).AsPhoneNumber()
                 .Fill(q => q.Status)
+                .Fill(q => q.Expenses, GetExpenses())
                 .Fill(q => q.Id).WithRandom(Guids);
             return GenFu.GenFu.ListOf<Customer>(2);
+        }
+        private CustomerRequestDTO GetRequestDTO()
+        {
+            GenFu.GenFu.Configure<CustomerRequestDTO>()
+                .Fill(q => q.CustomerAddress).AsAddress()
+                .Fill(q => q.CustomerCompanyType)
+                .Fill(q => q.CustomerDescription).AsLoremIpsumSentences(1)
+                .Fill(q => q.CustomerEmailAddress).AsEmailAddressForDomain("mfarkan.com")
+                .Fill(q => q.CustomerName).AsFirstName()
+                .Fill(q => q.CustomerTelephoneNumber).AsPhoneNumber();
+
+            return GenFu.GenFu.New<CustomerRequestDTO>();
         }
         private CustomerFilterRequestDTO GetFilterRequestDTO()
         {
@@ -100,6 +113,8 @@ namespace HasTextile.Tests
             moqCustomerService.Setup(q => q.CreateNewCustomer(It.IsAny<CustomerRequestDTO>())).ReturnsAsync(new Guid("D7093A7E-6953-4FA6-BE65-235BA8ADC583"));
             moqCustomerService.Setup(q => q.GetAllCustomerAsync()).ReturnsAsync(customerList);
             moqCustomerService.Setup(q => q.GetCustomerExpensesAsync(new Guid("D7093A7E-6953-4FA6-BE65-235BA8ADC583"))).ReturnsAsync(fakeCustomer);
+            moqCustomerService.Setup(q => q.GetCustomerExpensesAsync(new Guid("8C4DA32F-EE15-4807-AF6D-15D3349CF6BB"))).ReturnsAsync(default(Customer));
+            moqCustomerService.Setup(q => q.GetCustomerExpensesAsync(new Guid("E2156639-E8DC-46E0-B8CE-10907F01B428"))).ReturnsAsync(default(Customer));
             moqCustomerService.Setup(q => q.GetCustomersWithFilter(customerFilterRequestDTO)).ReturnsAsync(customerList);
             moqCustomerService.Setup(q => q.UpdateCustomer(It.IsAny<Guid>(), It.IsAny<CustomerRequestDTO>())).ReturnsAsync(new Guid("D7093A7E-6953-4FA6-BE65-235BA8ADC583"));
             moqCustomerService.Setup(q => q.PassivateCustomer(new Guid("D7093A7E-6953-4FA6-BE65-235BA8ADC583"))).Returns(Task.CompletedTask);
@@ -126,9 +141,37 @@ namespace HasTextile.Tests
             var customerList = await _customerService.GetAllCustomerAsync();
 
             Assert.IsNotNull(customerList, "Customer list must not be empty.");
-            Assert.AreEqual(expectedResult, customerList.Count == 2);
+            Assert.AreEqual(expectedResult, customerList.Count == expectedCount);
 
-
+        }
+        [TestCase(true, "D7093A7E-6953-4FA6-BE65-235BA8ADC583")]
+        [TestCase(false, "389EE5D3-09C2-4492-A623-281D173D0C71")]
+        [TestCase(false, "E556DC5B-685D-4E2C-BD45-3FF3C5A459F7")]
+        public async Task Customer_CreateNewCustomer_Result_Id(bool expectedResult, Guid expectedID)
+        {
+            var customerRequestDTo = this.GetRequestDTO();
+            var resultId = await _customerService.CreateNewCustomer(customerRequestDTo);
+            Assert.IsNotNull(resultId, "Id must not empty");
+            Assert.AreEqual(expectedResult, resultId == expectedID);
+        }
+        [TestCase(true, 2)]
+        [TestCase(false, 3)]
+        [TestCase(false, 5)]
+        public async Task Customer_GetAllCustomer_Result_CustomerList(bool expectedResult, int expectedCount)
+        {
+            var customerList = await _customerService.GetAllCustomerAsync();
+            Assert.IsNotNull(customerList, "Customer list must not empty");
+            Assert.AreEqual(expectedResult, customerList.Count == expectedCount);
+        }
+        [TestCase("D7093A7E-6953-4FA6-BE65-235BA8ADC583", true, 2)]
+        [TestCase("8C4DA32F-EE15-4807-AF6D-15D3349CF6BB", false, 0)]
+        [TestCase("E2156639-E8DC-46E0-B8CE-10907F01B428", false, 0)]
+        public async Task Customer_GetCustomersExpenses_Result_Customer_WithFillExpenses(Guid customerId, bool expectedResult, int expectedExpenseCount)
+        {
+            var customerWithExpenses = await _customerService.GetCustomerExpensesAsync(customerId);
+            Assert.AreEqual(expectedResult, customerWithExpenses != null);
+            int expensesCount = customerWithExpenses == null ? 0 : customerWithExpenses.Expenses.Count;
+            Assert.AreEqual(expectedExpenseCount, expensesCount, "Counts must be equal");
         }
     }
 }

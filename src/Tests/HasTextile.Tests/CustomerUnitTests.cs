@@ -105,7 +105,6 @@ namespace HasTextile.Tests
         {
             List<Customer> customerList = this.GetCustomers();
             var fakeCustomer = this.GetCustomer();
-            var customerFilterRequestDTO = this.GetFilterRequestDTO();
             var moqCustomerService = new Mock<ICustomerService>();
             moqCustomerService.Setup(q => q.GetCustomerAsync(new Guid("D7093A7E-6953-4FA6-BE65-235BA8ADC583"))).ReturnsAsync(fakeCustomer);
             moqCustomerService.Setup(q => q.GetCustomerAsync(new Guid("8C4DA32F-EE15-4807-AF6D-15D3349CF6BB"))).ReturnsAsync(default(Customer));
@@ -115,7 +114,7 @@ namespace HasTextile.Tests
             moqCustomerService.Setup(q => q.GetCustomerExpensesAsync(new Guid("D7093A7E-6953-4FA6-BE65-235BA8ADC583"))).ReturnsAsync(fakeCustomer);
             moqCustomerService.Setup(q => q.GetCustomerExpensesAsync(new Guid("8C4DA32F-EE15-4807-AF6D-15D3349CF6BB"))).ReturnsAsync(default(Customer));
             moqCustomerService.Setup(q => q.GetCustomerExpensesAsync(new Guid("E2156639-E8DC-46E0-B8CE-10907F01B428"))).ReturnsAsync(default(Customer));
-            moqCustomerService.Setup(q => q.GetCustomersWithFilter(customerFilterRequestDTO)).ReturnsAsync(customerList);
+            moqCustomerService.Setup(q => q.GetCustomersWithFilter(It.IsAny<CustomerFilterRequestDTO>())).ReturnsAsync(customerList);
             moqCustomerService.Setup(q => q.UpdateCustomer(It.IsAny<Guid>(), It.IsAny<CustomerRequestDTO>())).ReturnsAsync(new Guid("D7093A7E-6953-4FA6-BE65-235BA8ADC583"));
             moqCustomerService.Setup(q => q.PassivateCustomer(new Guid("D7093A7E-6953-4FA6-BE65-235BA8ADC583"))).Returns(Task.CompletedTask);
 
@@ -172,6 +171,14 @@ namespace HasTextile.Tests
             Assert.AreEqual(expectedResult, customerWithExpenses != null);
             int expensesCount = customerWithExpenses == null ? 0 : customerWithExpenses.Expenses.Count;
             Assert.AreEqual(expectedExpenseCount, expensesCount, "Counts must be equal");
+        }
+        [TestCase(true)]
+        public async Task Customer_GetCustomers_With_Filter_NotEmpty(bool expectedResult)
+        {
+            var customerFilterRequestDTO = this.GetFilterRequestDTO();
+            var customerList = await _customerService.GetCustomersWithFilter(customerFilterRequestDTO);
+            Assert.IsNotNull(customerList, "Customer List must not empty");
+            Assert.AreEqual(expectedResult, customerList == null, "Result should be the same");
         }
     }
 }

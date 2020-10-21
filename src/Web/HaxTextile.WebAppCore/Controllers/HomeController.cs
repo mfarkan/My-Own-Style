@@ -39,8 +39,8 @@ namespace HaxTextile.WebAppCore.Controllers
             var token = await HttpContext.GetTokenAsync("access_token");
             var idToken = await HttpContext.GetTokenAsync("id_token");
 
-            httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-            var result = await httpClient.GetAsync("http://localhost:53906/api/WeatherForecast/Get");
+            //httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            //var result = await httpClient.GetAsync("http://localhost:53906/api/WeatherForecast/Get");
             return View();
         }
 

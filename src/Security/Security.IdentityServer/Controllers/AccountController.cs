@@ -63,8 +63,14 @@ namespace Security.IdentityServer.Controllers
                 {
                     return RedirectToAction("LockedOut", "Account");
                 }
+                else
+                {
+                    var externalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+                    model.ExternalLogins = externalLogins;
+                    return View(model);
+                }
             }
-            return View();
+            return View(model);
         }
         public async Task<IActionResult> VerifyUser(string userId, string token)
         {

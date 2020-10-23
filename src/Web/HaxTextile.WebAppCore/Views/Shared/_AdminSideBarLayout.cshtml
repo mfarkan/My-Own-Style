@@ -1,7 +1,7 @@
 ﻿@using Core.Enumarations
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
     <a class="sidebar-brand d-flex align-items-center justify-content-center" asp-controller="Admin" asp-action="Index">
-        <div class="sidebar-brand-text mx-3">Has Tekstil</div>
+        <div class="sidebar-brand-text mx-3">Has Tekstil Yönetici Paneli</div>
     </a>
     <hr class="sidebar-divider my-0">
     <li class="nav-item active">
@@ -15,22 +15,22 @@
         Tanımlamalar
     </div>
     <li class="nav-item">
-        <a class="nav-link" asp-action="Index" asp-controller="Customer">
+        <a class="nav-link" asp-action="Index" asp-controller="Institution">
             <i class="fas fa-fw fa-users"></i>
-            <span>Müşteri İşlemleri</span>
+            <span>Kurum İşlemleri</span>
         </a>
     </li>
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
             <i class="fas fa-fw fa-money-check-alt"></i>
-            <span>Gelir/Gider İşlemleri</span>
+            <span>Kurum Kullanıcı İşlemleri</span>
         </a>
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 @*<h6 class="collapse-header">Custom Utilities:</h6>*@
-                <a class="collapse-item" asp-controller="Expenses" asp-action="Index">Gelir/Gider Takibi</a>
-                <a class="collapse-item" asp-controller="Expenses" asp-action="Create" asp-route-expenseType="@(ExpenseType.InCome)">Gelir Girişi</a>
-                <a class="collapse-item" asp-controller="Expenses" asp-action="Create" asp-route-expenseType="@(ExpenseType.OutGoing)">Gider Girişi</a>
+                <a class="collapse-item">Yeni Kurum Kullanıcısı</a>
+                @*<a class="collapse-item">Gelir Girişi</a>
+                    <a class="collapse-item">Gider Girişi</a>*@
             </div>
         </div>
     </li>
@@ -41,8 +41,8 @@
         </a>
         <div id="collapseCheque" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">-->
-                @*<h6 class="collapse-header">Custom Utilities:</h6>*@
-                <!--<a class="collapse-item" href="utilities-color.html">Yeni Çek Girişi</a>
+    @*<h6 class="collapse-header">Custom Utilities:</h6>*@
+    <!--<a class="collapse-item" href="utilities-color.html">Yeni Çek Girişi</a>
                 <a class="collapse-item" href="utilities-border.html">Müşteri Çek Takip</a>
             </div>
         </div>

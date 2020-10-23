@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Domain.Service.Model.Shared;
 
 namespace Domain.Service.Model.Institution.Model
 {
-    public class InstitutionRequestDTO
+    public class InstitutionRequestDTO : BaseRequestDTO
     {
         public string Code { get; set; }
         public string Name { get; set; }

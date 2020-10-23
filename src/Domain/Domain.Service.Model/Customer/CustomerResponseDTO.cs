@@ -1,17 +1,13 @@
 ﻿using Core.Enumarations;
 using Domain.Service.Model.Expenses;
+using Domain.Service.Model.Shared;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Domain.Service.Model.Customer
 {
-    public class CustomerResponseDTO
+    public class CustomerResponseDTO : BaseResponseDTO
     {
-        /// <summary>
-        /// Müşteri Id Bilgisi
-        /// </summary>
-        public Guid Id { get; set; }
         /// <summary>
         /// Müşteri Email
         /// </summary>
@@ -36,10 +32,6 @@ namespace Domain.Service.Model.Customer
         /// Müşteri tipi ( 1: tüzel , 2 : şirket)
         /// </summary>
         public CustomerType CustomerCompanyType { get; set; }
-        /// <summary>
-        /// Müşteri oluşturulma tarihi.
-        /// </summary>
-        public DateTime CreatedAt { get; set; }
         /// <summary>
         /// Müşteriye ait Gelir/Gider bilgisi.
         /// </summary>

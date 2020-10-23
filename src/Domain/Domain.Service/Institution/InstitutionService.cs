@@ -65,7 +65,7 @@ namespace Domain.Service.Institution
             institution.EmailAddress = requestDTO.EmailAddress;
             institution.PhoneNumber = requestDTO.PhoneNumber;
             institution.Name = requestDTO.Name;
-
+            institution.Status = requestDTO.Status;
             _repository.Update(institution);
             await _repository.CommitAsync();
             return Id;

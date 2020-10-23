@@ -1,15 +1,14 @@
 ﻿using Core.Enumarations;
 using Domain.Service.Model.Customer;
+using Domain.Service.Model.Shared;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Domain.Service.Model.Expenses
 {
-    public class ExpenseResponseDTO
+    public class ExpenseResponseDTO : BaseResponseDTO
     {
-        public Guid Id { get; set; }
-        public DateTime CreatedAt { get; set; }
         public Guid CustomerId { get; set; }
         public string CustomerName { get; set; }
         public ExpenseType Type { get; set; }

@@ -95,5 +95,47 @@
             <param name="requestDTO"></param>
             <returns></returns>
         </member>
+        <member name="M:HasTextile.API.Controllers.InstitutionController.FindAllInstitutions">
+            <summary>
+            Sistemdeki tüm kurumları döner.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:HasTextile.API.Controllers.InstitutionController.FindInstitution(System.Guid)">
+            <summary>
+            Id bilgisi verilen kurumu döner.
+            </summary>
+            <param name="Id">Kurum Id Bilgisi</param>
+            <returns></returns>
+        </member>
+        <member name="M:HasTextile.API.Controllers.InstitutionController.FindInstitutionsWithFilter(Domain.Service.Model.Institution.Model.InstitutionFilterRequestDTO)">
+            <summary>
+            Kurumları filtreleyerek geri döner.
+            </summary>
+            <param name="requestDTO"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HasTextile.API.Controllers.InstitutionController.DeActivateInstitution(System.Guid)">
+            <summary>
+            Kurumu pasivize eder.
+            </summary>
+            <param name="Id">Kurum Unique Id bilgisi</param>
+            <returns></returns>
+        </member>
+        <member name="M:HasTextile.API.Controllers.InstitutionController.UpdateInstitution(System.Guid,Domain.Service.Model.Institution.Model.InstitutionRequestDTO)">
+            <summary>
+            Kurum güncelleme
+            </summary>
+            <param name="Id"></param>
+            <param name="requestDTO"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HasTextile.API.Controllers.InstitutionController.CreateNewInstitution(Domain.Service.Model.Institution.Model.InstitutionRequestDTO)">
+            <summary>
+            Yeni kurum oluşturma.
+            </summary>
+            <param name="requestDTO">Request objesi</param>
+            <returns></returns>
+        </member>
     </members>
 </doc>

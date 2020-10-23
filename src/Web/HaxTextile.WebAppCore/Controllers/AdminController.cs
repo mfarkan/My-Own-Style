@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HaxTextile.WebAppCore.Controllers
 {
+    //Admin operations with this role.
     [Authorize(Roles = "HasTextileSystemAdmin")]
     public class AdminController : BaseController
     {

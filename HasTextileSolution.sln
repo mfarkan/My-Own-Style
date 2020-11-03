@@ -13,8 +13,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{53B86615-0EF
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{674C6E3A-2FC1-43ED-AA91-718C8E902644}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{AC82AFE1-F080-44F8-9120-689B876CD073}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Security.IdentityServer", "src\Security\Security.IdentityServer\Security.IdentityServer.csproj", "{8640ED73-30A0-43F2-BB83-7E065F1A3F37}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bridge", "Bridge", "{7CAE6BBF-418E-405F-A1D1-23BE981270C5}"

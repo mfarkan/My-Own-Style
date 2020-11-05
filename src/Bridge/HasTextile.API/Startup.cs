@@ -28,18 +28,19 @@ namespace HasTextile.API
     public class Startup
     {
         private const string Doc_Helper_Url_Prefix = "Textile-api";
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
+            Environment = env;
             Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
-
+        public IWebHostEnvironment Environment { get; }
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddBusinessLayer(Configuration);
-            services.AddDomainServices(Configuration);
+            services.AddDomainServices();
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = OAuthValidationDefaults.AuthenticationScheme;
@@ -68,7 +69,7 @@ namespace HasTextile.API
                         Name = "Murat Fatih ARKAN",
                         Url = new Uri("http://mfarkan.github.io/"),
                     },
-                    Description = "Has Tekstil þirketinin API dökümantasyonu. It's my uncle's company and this application is just dummy application.",
+                    Description = "Has Tekstil þirketinin API dökümantasyonu.",
 
                 });
                 options.DocInclusionPredicate((apiVersion, apiDescription) =>
@@ -144,7 +145,7 @@ namespace HasTextile.API
                 c.RoutePrefix = Doc_Helper_Url_Prefix;
                 c.SwaggerEndpoint("/" + Doc_Helper_Url_Prefix + "/v1.0/swagger.json", "Textile Api v1.0");
                 c.DisplayRequestDuration();
-                c.DocumentTitle = "Textile Api";
+                c.DocumentTitle = "Textile Business Api";
                 c.SupportedSubmitMethods(SubmitMethod.Get, SubmitMethod.Post, SubmitMethod.Put, SubmitMethod.Delete);
                 c.DocExpansion(DocExpansion.None);
             });

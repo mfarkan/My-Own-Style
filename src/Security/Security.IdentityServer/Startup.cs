@@ -34,19 +34,17 @@ namespace Security.IdentityServer
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<UserManagementDbContext>(options =>
+            services.AddDbContext<ManagementDbContext>(options =>
             {
-
-                options.UseNpgsql(Configuration.GetConnectionString("ConnectionStringSecurity"), sql =>
+                options.UseNpgsql(Configuration.GetConnectionString("ConnectionStringBusiness"), sql =>
                  {
                      sql.MigrationsHistoryTable("MigrationHistory", "public");
-                     sql.MigrationsAssembly("Security.IdentityServer");
+                     sql.MigrationsAssembly("Domain.DataLayer");
                  });
                 options.UseOpenIddict<int>();
-
             });
             services.AddIdentity<ApplicationUser, ApplicationRole>()
-                .AddEntityFrameworkStores<UserManagementDbContext>().AddDefaultTokenProviders();
+                .AddEntityFrameworkStores<ManagementDbContext>().AddDefaultTokenProviders();
 
             services.ConfigureApplicationCookie(config =>
             {
@@ -54,36 +52,7 @@ namespace Security.IdentityServer
                 config.ExpireTimeSpan = TimeSpan.FromMinutes(20);
             });
 
-            services.Configure<IdentityOptions>(options =>
-            {
-                options.ClaimsIdentity.UserNameClaimType = OpenIdConnectConstants.Claims.Name;
-                options.ClaimsIdentity.UserIdClaimType = OpenIdConnectConstants.Claims.Subject;
-                options.ClaimsIdentity.RoleClaimType = OpenIdConnectConstants.Claims.Role;
-                options.Lockout = new LockoutOptions
-                {
-                    MaxFailedAccessAttempts = 6,
-                    DefaultLockoutTimeSpan = TimeSpan.FromMinutes(20)
-                };
-                options.SignIn = new SignInOptions
-                {
-                    RequireConfirmedAccount = true,
-                    RequireConfirmedEmail = true,
-                    RequireConfirmedPhoneNumber = false
-                };
-                options.User = new UserOptions
-                {
-                    RequireUniqueEmail = true,
-                };
-                options.Password = new PasswordOptions
-                {
-                    RequireDigit = true,
-                    RequiredLength = 6,
-                    RequireUppercase = false,
-                    RequiredUniqueChars = 0,
-                    RequireLowercase = true,
-                    RequireNonAlphanumeric = false
-                };
-            });
+            services.AddIdentityOptions();
 
             services.AddAntiforgery(option => option.HeaderName = "X-XSRF-Token");
             #region Localization Services
@@ -120,7 +89,7 @@ namespace Security.IdentityServer
                 options.AddCore(config =>
                 {
                     config.UseEntityFrameworkCore()
-                        .UseDbContext<UserManagementDbContext>().ReplaceDefaultEntities<int>();
+                        .UseDbContext<ManagementDbContext>().ReplaceDefaultEntities<int>();
                 });
                 options.AddServer(config =>
                 {
@@ -142,7 +111,7 @@ namespace Security.IdentityServer
                     config.AllowPasswordFlow();
                     //config.AllowRefreshTokenFlow();
                     config.EnableRequestCaching();
-                    config.AddSigningCertificate(new FileStream(Directory.GetCurrentDirectory() + "/Certificate.pfx", FileMode.Open), 
+                    config.AddSigningCertificate(new FileStream(Directory.GetCurrentDirectory() + "/Certificate.pfx", FileMode.Open),
                         "rRZe9aJyhVxgHSRV9N554VcH", System.Security.Cryptography.X509Certificates.X509KeyStorageFlags.UserKeySet);
                     config.DisableHttpsRequirement();
                 }).AddValidation();
@@ -187,7 +156,7 @@ namespace Security.IdentityServer
         {
             using (var scope = service.CreateScope())
             {
-                var dbContext = scope.ServiceProvider.GetRequiredService<UserManagementDbContext>();
+                var dbContext = scope.ServiceProvider.GetRequiredService<ManagementDbContext>();
                 var manager = scope.ServiceProvider.GetRequiredService<OpenIddictApplicationManager<OpenIddictApplication<int>>>();
                 var scopeManager = scope.ServiceProvider.GetRequiredService<OpenIddictScopeManager<OpenIddictScope<int>>>();
 
@@ -210,10 +179,35 @@ namespace Security.IdentityServer
                             OpenIddictConstants.Permissions.Scopes.Email,
                             OpenIddictConstants.Permissions.Scopes.Profile,
                             OpenIddictConstants.Permissions.Scopes.Roles,
-                            OpenIddictConstants.Permissions.Prefixes.Scope + "textileApi"
+                            OpenIddictConstants.Permissions.Prefixes.Scope + "textileApi",
+                            OpenIddictConstants.Permissions.Prefixes.Scope + "textileUserApi",
                         }
                     };
                     await manager.CreateAsync(customApp);
+                }
+                var userApi = await manager.FindByClientIdAsync("HasTextileUserAPI");
+                if (userApi == null)
+                {
+                    OpenIddictApplicationDescriptor apiClient = new OpenIddictApplicationDescriptor
+                    {
+                        ClientId = "HasTextileUserAPI",
+                        ClientSecret = "159753",
+                        Permissions =
+                        {
+                            OpenIddictConstants.Permissions.Endpoints.Introspection,
+                        }
+                    };
+                    await manager.CreateAsync(apiClient);
+                }
+                var scopeUser = await scopeManager.FindByNameAsync("textileUserApi");
+                if (scopeUser == null)
+                {
+                    var textileApiScope = new OpenIddictScopeDescriptor
+                    {
+                        Name = "textileUserApi",
+                        Resources = { "HasTextileUserAPI" }
+                    };
+                    await scopeManager.CreateAsync(textileApiScope);
                 }
                 var resourceApi = await manager.FindByClientIdAsync("HasTextileAPI");
                 if (resourceApi == null)
@@ -252,7 +246,8 @@ namespace Security.IdentityServer
                             OpenIddictConstants.Permissions.Endpoints.Token,
                             OpenIddictConstants.Permissions.GrantTypes.ClientCredentials,
                             OpenIddictConstants.Permissions.Scopes.Email,
-                            OpenIddictConstants.Permissions.Prefixes.Scope+ "textileApi"
+                            OpenIddictConstants.Permissions.Prefixes.Scope+ "textileApi",
+                            OpenIddictConstants.Permissions.Prefixes.Scope + "textileUserApi",
                         }
                     };
                     await manager.CreateAsync(credentialApp);

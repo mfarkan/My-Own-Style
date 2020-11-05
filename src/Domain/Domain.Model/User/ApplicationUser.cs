@@ -1,11 +1,13 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Domain.Model.Institution;
+using Microsoft.AspNetCore.Identity;
 using System;
 
 namespace Domain.Model.User
 {
     public class ApplicationUser : IdentityUser<Guid>
     {
-        //Kurum özelinde kullanıcıların olması gerekiyor ve ayrıca admin kullanıcısının da olması gerekiyor.
+        public virtual Institution.Institution Institution { get; set; }
+        //Kurum özelinde kullanıcıların ve rollerin olması gerekiyor.
         public ApplicationUser()
         {
 

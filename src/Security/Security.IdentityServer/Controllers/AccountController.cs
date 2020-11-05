@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Server.IISIntegration;
 using Microsoft.AspNetCore.WebUtilities;
 using Security.IdentityServer.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
@@ -20,8 +21,11 @@ namespace Security.IdentityServer.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        private readonly RoleManager<ApplicationRole> _roleManager;
+        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,
+            RoleManager<ApplicationRole> roleManager)
         {
+            _roleManager = roleManager;
             _userManager = userManager;
             _signInManager = signInManager;
         }
@@ -59,8 +63,14 @@ namespace Security.IdentityServer.Controllers
                 {
                     return RedirectToAction("LockedOut", "Account");
                 }
+                else
+                {
+                    var externalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+                    model.ExternalLogins = externalLogins;
+                    return View(model);
+                }
             }
-            return View();
+            return View(model);
         }
         public async Task<IActionResult> VerifyUser(string userId, string token)
         {
@@ -135,6 +145,7 @@ namespace Security.IdentityServer.Controllers
                         ((ClaimsIdentity)claimsPrincipal.Identity).AddClaim(item);
                     }
                 }
+                // if institutionId is null when redirect user to Admin pages.
                 await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme, claimsPrincipal);
                 return Redirect(returnUrl);
             }
@@ -149,9 +160,19 @@ namespace Security.IdentityServer.Controllers
                     EmailConfirmed = true,
                     PhoneNumberConfirmed = true,
                 };
-
-                var passWord = "123456";
-                await _userManager.CreateAsync(user, passWord);
+                string roleName = "HasTextileSystemAdmin";
+                ApplicationRole systemRole = await _roleManager.FindByNameAsync(roleName);
+                if (systemRole == null)
+                {
+                    systemRole = new ApplicationRole
+                    {
+                        Name = "HasTextileSystemAdmin",
+                    };
+                    await _roleManager.CreateAsync(systemRole);
+                }
+                var passWord = "fatih2626";
+                var result = await _userManager.CreateAsync(user, passWord);
+                await _userManager.AddToRoleAsync(user, systemRole.Name);
             }
             var loginInfo = new UserLoginInfo(IISDefaults.AuthenticationScheme, userName, IISDefaults.AuthenticationScheme);
             var identityAddLoginResult = await _userManager.AddLoginAsync(user, loginInfo);
@@ -167,6 +188,7 @@ namespace Security.IdentityServer.Controllers
                     }
                 }
                 await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme, claimsPrincipal);
+                // if institutionId is null when redirect user to Admin pages.
                 return Redirect(returnUrl);
             }
             return RedirectToAction(nameof(Login));

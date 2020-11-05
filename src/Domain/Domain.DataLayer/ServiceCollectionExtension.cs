@@ -1,7 +1,9 @@
 ﻿using Domain.DataLayer.Business;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace Domain.DataLayer
 {
@@ -9,7 +11,7 @@ namespace Domain.DataLayer
     {
         public static void AddBusinessLayer(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<BusinessContext>(options =>
+            services.AddDbContext<ManagementDbContext>(options =>
             {
                 options.UseNpgsql(configuration.GetConnectionString("ConnectionStringBusiness"), sql =>
                 {
@@ -18,6 +20,40 @@ namespace Domain.DataLayer
                 });
             });
             services.AddScoped<IBusinessRepository, BusinessRepository>();
+        }
+        public static void AddIdentityOptions(this IServiceCollection services)
+        {
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.ClaimsIdentity.UserNameClaimType = "name";
+                options.ClaimsIdentity.UserIdClaimType = "sub";
+                options.ClaimsIdentity.RoleClaimType = "role";
+                options.Lockout = new LockoutOptions
+                {
+                    MaxFailedAccessAttempts = 6,
+                    DefaultLockoutTimeSpan = TimeSpan.FromMinutes(20)
+                };
+                options.SignIn = new SignInOptions
+                {
+                    RequireConfirmedAccount = true,
+                    RequireConfirmedEmail = true,
+                    RequireConfirmedPhoneNumber = false
+                };
+                options.User = new UserOptions
+                {
+                    RequireUniqueEmail = true,
+                    AllowedUserNameCharacters= @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+\/"
+                };
+                options.Password = new PasswordOptions
+                {
+                    RequireDigit = true,
+                    RequiredLength = 6,
+                    RequireUppercase = false,
+                    RequiredUniqueChars = 0,
+                    RequireLowercase = true,
+                    RequireNonAlphanumeric = false
+                };
+            });
         }
     }
 }

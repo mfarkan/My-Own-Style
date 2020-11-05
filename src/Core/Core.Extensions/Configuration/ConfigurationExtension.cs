@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System;
 
-namespace Core.Extensions
+namespace Core.Extensions.Configuration
 {
     public static class ConfigurationExtension
     {

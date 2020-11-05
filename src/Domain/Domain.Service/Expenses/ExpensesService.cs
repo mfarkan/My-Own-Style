@@ -1,6 +1,7 @@
 ﻿using Core.Enumarations;
 using Domain.DataLayer.Business;
 using Domain.Model.Income;
+using Domain.Model.Institution;
 using Domain.Service.Model.Expenses;
 using Domain.Service.Model.Expenses.Model;
 using Microsoft.EntityFrameworkCore;
@@ -22,30 +23,33 @@ namespace Domain.Service.Expenses
 
         public async Task<Guid> CreateNewExpense(ExpenseRequestDTO requestDTO)
         {
-            var customer = await _repository.Query<Domain.Model.Customer.Customer>().Where(q => q.Id == requestDTO.CustomerId).FirstOrDefaultAsync();
-            if (customer != null)
+            var customer = await _repository.GetByIdAsync<Domain.Model.Customer.Customer>(requestDTO.CustomerId);
+            var institution = await _repository.GetByIdAsync<Domain.Model.Institution.Institution>(requestDTO.InstitutionId);
+
+            if (customer == null || institution == null)
+                return Guid.Empty;
+
+            var newInstance = new Domain.Model.Income.Expenses
             {
-                var newInstance = new Domain.Model.Income.Expenses
-                {
-                    Amount = requestDTO.Amount,
-                    CurrencyType = requestDTO.CurrencyType,
-                    Description = requestDTO.Description,
-                    DocumentNumber = requestDTO.DocumentNumber,
-                    Expiry = requestDTO.Expiry,
-                    ExpiryDate = requestDTO.ExpiryDate,
-                    Type = requestDTO.ExpenseType,
-                    Customer = customer,
-                };
-                _repository.Add(newInstance);
-                await _repository.CommitAsync();
-                return newInstance.Id;
-            }
-            return Guid.Empty;
+                Amount = requestDTO.Amount,
+                CurrencyType = requestDTO.CurrencyType,
+                Description = requestDTO.Description,
+                DocumentNumber = requestDTO.DocumentNumber,
+                Expiry = requestDTO.Expiry,
+                ExpiryDate = requestDTO.ExpiryDate,
+                Type = requestDTO.ExpenseType,
+                Customer = customer,
+                Institution = institution,
+            };
+            _repository.Add(newInstance);
+            await _repository.CommitAsync();
+            return newInstance.Id;
         }
         public async Task<Domain.Model.Income.Expenses> GetExpense(Guid Id)
         {
             var result = await _repository.Query<Domain.Model.Income.Expenses>().Where(q => q.Id == Id && q.Status == StatusType.Active)
                 .Include(q => q.Customer)
+                .Include(q => q.Institution)
                 .FirstOrDefaultAsync();
             return result;
         }
@@ -79,23 +83,20 @@ namespace Domain.Service.Expenses
 
         public async Task PassivateExpense(Guid Id)
         {
-            var expense = await _repository.GetByIdAsync<Domain.Model.Income.Expenses>(Id);
-            if (expense == null)
-                return;
-            expense.Delete();
-            _repository.Update(expense);
-            await _repository.CommitAsync();
+            await _repository.PassivateEntityAsync<Domain.Model.Income.Expenses>(Id);
+            await Task.CompletedTask;
         }
 
         public async Task<Guid> UpdateExpense(Guid Id, ExpenseRequestDTO requestDTO)
         {
             var expense = await _repository.Query<Domain.Model.Income.Expenses>().Where(q => q.Id == Id && q.Status == StatusType.Active)
                .Include(q => q.Customer)
+               .Include(q => q.Institution)
                .FirstOrDefaultAsync();
 
             var customer = await _repository.GetByIdAsync<Domain.Model.Customer.Customer>(requestDTO.CustomerId);
-
-            if (expense == null || customer == null)
+            var institution = await _repository.GetByIdAsync<Domain.Model.Institution.Institution>(requestDTO.InstitutionId);
+            if (expense == null || customer == null || institution == null)
                 return Guid.Empty;
 
             expense.Amount = requestDTO.Amount;

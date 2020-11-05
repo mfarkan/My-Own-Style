@@ -3,73 +3,94 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <title>@sharedLocalizer["SafeEntry"]</title>
-<div class="row">
-    <div class="col-md-4">
-        <section>
-            <form id="account" method="post" asp-action="Login" asp-controller="Account" autocomplete="off">
-                <h4>@viewLocalizer["LocalAccount"]</h4>
-                <input type="hidden" asp-for="ReturnUrl" />
+<div class="container">
+    <br>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#localAccount">@viewLocalizer["UserGate"]</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#systemAdmin">@viewLocalizer["AdminGate"]</a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div id="localAccount" class="container tab-pane active">
+            <div class="col-md-4">
+                <br />
+                <section>
+                    <form id="account" method="post" asp-action="Login" asp-controller="Account" autocomplete="off">
+                        <h4>@viewLocalizer["LocalAccount"]</h4>
+                        <input type="hidden" asp-for="ReturnUrl" />
+                        <hr />
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="Username"></label>
+                            <input asp-for="Username" class="form-control" />
+                            <span asp-validation-for="Username" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Password"></label>
+                            <input asp-for="Password" class="form-control" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label asp-for="RememberMe">
+                                    <input asp-for="RememberMe" />
+                                    @Html.DisplayNameFor(m => m.RememberMe)
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">@sharedLocalizer["Enter"]</button>
+                        </div>
+                        <div class="form-group">
+                            <p>
+                                <a id="forgot-password" asp-action="ForgotPassword" asp-route-returnUrl="@Model.ReturnUrl" asp-controller="Account">@viewLocalizer["ForgotPassword"]</a>
+                            </p>
+                            @*<p>
+                                    <a asp-action="Register" asp-controller="Account" asp-route-returnUrl="@Model.ReturnUrl">@viewLocalizer["NewUser"]</a>
+                                </p>*@
+                        </div>
+                    </form>
+                </section>
+            </div>
+        </div>
+        <div id="systemAdmin" class="container tab-pane fade">
+            <br />
+            <section>
+                <h4>@sharedLocalizer["ExternalSource"]</h4>
                 <hr />
-                <div asp-validation-summary="All" class="text-danger"></div>
-                <div class="form-group">
-                    <label asp-for="Username"></label>
-                    <input asp-for="Username" class="form-control" />
-                    <span asp-validation-for="Username" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Password"></label>
-                    <input asp-for="Password" class="form-control" />
-                    <span asp-validation-for="Password" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <div class="checkbox">
-                        <label asp-for="RememberMe">
-                            <input asp-for="RememberMe" />
-                            @Html.DisplayNameFor(m => m.RememberMe)
-                        </label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary">@sharedLocalizer["Enter"]</button>
-                </div>
-                <div class="form-group">
-                    <p>
-                        <a id="forgot-password" asp-action="ForgotPassword" asp-route-returnUrl="@Model.ReturnUrl" asp-controller="Account">@viewLocalizer["ForgotPassword"]</a>
-                    </p>
-                    <p>
-                        <a asp-action="Register" asp-controller="Account" asp-route-returnUrl="@Model.ReturnUrl">@viewLocalizer["NewUser"]</a>
-                    </p>
-                </div>
-            </form>
-        </section>
-    </div>
-    <div class="col-md-6 col-md-offset-2">
-        <section>
-            <h4>@sharedLocalizer["ExternalSource"]</h4>
-            <hr />
-            @{
-                if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                {
-                    <div>
-                        <p>
-                            @viewLocalizer["NoExternalProvider"]
-                        </p>
-                    </div>
-                }
-                else
-                {
-                    <form id="external-account" asp-controller="Account" asp-action="ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                @{
+                    if ((Model.ExternalLogins?.Count ?? 0) == 0)
+                    {
+                        <div>
+                            <p>
+                                @viewLocalizer["NoExternalProvider"]
+                            </p>
+                        </div>
+                    }
+                    else
+                    {
                         <div>
                             <p>
                                 @foreach (var provider in Model.ExternalLogins)
                                 {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                    <a class="btn btn-primary"
+                                       asp-controller="Account"
+                                       asp-action="ExternalLogin"
+                                       asp-route-scheme="@(provider.Name)"
+                                       asp-route-returnUrl="@Model.ReturnUrl">
+                                        @(provider.DisplayName)
+                                    </a>
+
                                 }
                             </p>
                         </div>
-                    </form>
+                    }
                 }
-            }
-        </section>
+            </section>
+        </div>
     </div>
 </div>

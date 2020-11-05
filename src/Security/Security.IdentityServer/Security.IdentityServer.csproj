@@ -16,9 +16,14 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <Content Include="..\..\..\build\sharedSettings*.json">
+      <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Core\Core.Extensions\Core.Extensions.csproj" />
     <ProjectReference Include="..\..\Domain\Domain.DataLayer\Domain.DataLayer.csproj" />
   </ItemGroup>
 

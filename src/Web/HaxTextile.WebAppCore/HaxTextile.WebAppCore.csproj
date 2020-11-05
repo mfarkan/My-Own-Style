@@ -13,5 +13,9 @@
     <ProjectReference Include="..\..\Core\Core.Extensions\Core.Extensions.csproj" />
     <ProjectReference Include="..\..\Core\Core.HttpClient\Core.HttpClient.csproj" />
     <ProjectReference Include="..\..\Domain\Domain.Service.Model\Domain.Service.Model.csproj" />
+    <Content Include="..\..\..\build\sharedSettings*.json">
+      <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 </Project>

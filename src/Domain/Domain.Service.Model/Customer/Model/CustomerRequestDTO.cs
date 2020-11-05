@@ -31,5 +31,9 @@ namespace Domain.Service.Model.Customer.Model
         /// Müşteri Tipi
         /// </summary>
         public CustomerType CustomerCompanyType { get; set; }
+        /// <summary>
+        /// Müşterinin bağlı olduğu kurum.
+        /// </summary>
+        public Guid InstitutionId { get; set; }
     }
 }

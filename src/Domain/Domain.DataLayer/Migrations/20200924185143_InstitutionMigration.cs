@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace Security.IdentityServer.Migrations.IdentityServer.UserManagementDb
+namespace Domain.DataLayer.Migrations
 {
-    public partial class FirstMigrationUserDb : Migration
+    public partial class InstitutionMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -27,71 +27,23 @@ namespace Security.IdentityServer.Migrations.IdentityServer.UserManagementDb
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUsers",
+                name: "Institution",
                 schema: "public",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    UserName = table.Column<string>(maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
-                    Email = table.Column<string>(maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(nullable: false),
-                    PasswordHash = table.Column<string>(nullable: true),
-                    SecurityStamp = table.Column<string>(nullable: true),
-                    ConcurrencyStamp = table.Column<string>(nullable: true),
-                    PhoneNumber = table.Column<string>(nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
-                    LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false)
+                    Status = table.Column<int>(nullable: false, defaultValue: 1),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    CreatedByIp = table.Column<string>(nullable: true),
+                    CreatedByUserName = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(maxLength: 255, nullable: false),
+                    Code = table.Column<string>(maxLength: 255, nullable: false),
+                    EmailAddress = table.Column<string>(maxLength: 255, nullable: false),
+                    PhoneNumber = table.Column<string>(maxLength: 50, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "OpenIddictApplications",
-                schema: "public",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    ClientId = table.Column<string>(maxLength: 100, nullable: false),
-                    ClientSecret = table.Column<string>(nullable: true),
-                    ConcurrencyToken = table.Column<string>(maxLength: 50, nullable: true),
-                    ConsentType = table.Column<string>(nullable: true),
-                    DisplayName = table.Column<string>(nullable: true),
-                    Permissions = table.Column<string>(nullable: true),
-                    PostLogoutRedirectUris = table.Column<string>(nullable: true),
-                    Properties = table.Column<string>(nullable: true),
-                    RedirectUris = table.Column<string>(nullable: true),
-                    Type = table.Column<string>(maxLength: 25, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_OpenIddictApplications", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "OpenIddictScopes",
-                schema: "public",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    ConcurrencyToken = table.Column<string>(maxLength: 50, nullable: true),
-                    Description = table.Column<string>(nullable: true),
-                    DisplayName = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(maxLength: 200, nullable: false),
-                    Properties = table.Column<string>(nullable: true),
-                    Resources = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_OpenIddictScopes", x => x.Id);
+                    table.PrimaryKey("PK_Institution", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -115,6 +67,94 @@ namespace Security.IdentityServer.Migrations.IdentityServer.UserManagementDb
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUsers",
+                schema: "public",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    UserName = table.Column<string>(maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
+                    Email = table.Column<string>(maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(nullable: false),
+                    PasswordHash = table.Column<string>(nullable: true),
+                    SecurityStamp = table.Column<string>(nullable: true),
+                    ConcurrencyStamp = table.Column<string>(nullable: true),
+                    PhoneNumber = table.Column<string>(nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
+                    LockoutEnabled = table.Column<bool>(nullable: false),
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    InstitutionId = table.Column<Guid>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUsers_Institution_InstitutionId",
+                        column: x => x.InstitutionId,
+                        principalSchema: "public",
+                        principalTable: "Institution",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Customers",
+                schema: "public",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    Status = table.Column<int>(nullable: false, defaultValue: 1),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    CreatedByIp = table.Column<string>(nullable: true),
+                    CreatedByUserName = table.Column<string>(nullable: true),
+                    CustomerEmailAddress = table.Column<string>(maxLength: 255, nullable: false),
+                    CustomerTelephoneNumber = table.Column<string>(maxLength: 50, nullable: true),
+                    CustomerName = table.Column<string>(maxLength: 255, nullable: false),
+                    CustomerDescription = table.Column<string>(maxLength: 255, nullable: false),
+                    CustomerAddress = table.Column<string>(maxLength: 255, nullable: false),
+                    InstitutionId = table.Column<Guid>(nullable: true),
+                    CustomerCompanyType = table.Column<int>(maxLength: 255, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Customers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Customers_Institution_InstitutionId",
+                        column: x => x.InstitutionId,
+                        principalSchema: "public",
+                        principalTable: "Institution",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "InstitutionSettings",
+                schema: "public",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    Status = table.Column<int>(nullable: false, defaultValue: 1),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    CreatedByIp = table.Column<string>(nullable: true),
+                    CreatedByUserName = table.Column<string>(nullable: true),
+                    InstitutionId = table.Column<Guid>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InstitutionSettings", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_InstitutionSettings_Institution_InstitutionId",
+                        column: x => x.InstitutionId,
+                        principalSchema: "public",
+                        principalTable: "Institution",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -212,66 +252,40 @@ namespace Security.IdentityServer.Migrations.IdentityServer.UserManagementDb
                 });
 
             migrationBuilder.CreateTable(
-                name: "OpenIddictAuthorizations",
+                name: "Expenses",
                 schema: "public",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    ApplicationId = table.Column<int>(nullable: true),
-                    ConcurrencyToken = table.Column<string>(maxLength: 50, nullable: true),
-                    Properties = table.Column<string>(nullable: true),
-                    Scopes = table.Column<string>(nullable: true),
-                    Status = table.Column<string>(maxLength: 25, nullable: false),
-                    Subject = table.Column<string>(maxLength: 450, nullable: false),
-                    Type = table.Column<string>(maxLength: 25, nullable: false)
+                    Id = table.Column<Guid>(nullable: false),
+                    Status = table.Column<int>(nullable: false, defaultValue: 1),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    CreatedByIp = table.Column<string>(nullable: true),
+                    CreatedByUserName = table.Column<string>(nullable: true),
+                    CustomerId = table.Column<Guid>(nullable: true),
+                    Type = table.Column<int>(nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    CurrencyType = table.Column<int>(nullable: false),
+                    Description = table.Column<string>(maxLength: 255, nullable: true),
+                    DocumentNumber = table.Column<string>(maxLength: 50, nullable: true),
+                    Expiry = table.Column<int>(nullable: true),
+                    InstitutionId = table.Column<Guid>(nullable: true),
+                    ExpiryDate = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OpenIddictAuthorizations", x => x.Id);
+                    table.PrimaryKey("PK_Expenses", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OpenIddictAuthorizations_OpenIddictApplications_Application~",
-                        column: x => x.ApplicationId,
+                        name: "FK_Expenses_Customers_CustomerId",
+                        column: x => x.CustomerId,
                         principalSchema: "public",
-                        principalTable: "OpenIddictApplications",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "OpenIddictTokens",
-                schema: "public",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    ApplicationId = table.Column<int>(nullable: true),
-                    AuthorizationId = table.Column<int>(nullable: true),
-                    ConcurrencyToken = table.Column<string>(maxLength: 50, nullable: true),
-                    CreationDate = table.Column<DateTimeOffset>(nullable: true),
-                    ExpirationDate = table.Column<DateTimeOffset>(nullable: true),
-                    Payload = table.Column<string>(nullable: true),
-                    Properties = table.Column<string>(nullable: true),
-                    ReferenceId = table.Column<string>(maxLength: 100, nullable: true),
-                    Status = table.Column<string>(maxLength: 25, nullable: false),
-                    Subject = table.Column<string>(maxLength: 450, nullable: false),
-                    Type = table.Column<string>(maxLength: 25, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_OpenIddictTokens", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_OpenIddictTokens_OpenIddictApplications_ApplicationId",
-                        column: x => x.ApplicationId,
-                        principalSchema: "public",
-                        principalTable: "OpenIddictApplications",
+                        principalTable: "Customers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_OpenIddictTokens_OpenIddictAuthorizations_AuthorizationId",
-                        column: x => x.AuthorizationId,
+                        name: "FK_Expenses_Institution_InstitutionId",
+                        column: x => x.InstitutionId,
                         principalSchema: "public",
-                        principalTable: "OpenIddictAuthorizations",
+                        principalTable: "Institution",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -308,6 +322,12 @@ namespace Security.IdentityServer.Migrations.IdentityServer.UserManagementDb
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_InstitutionId",
+                schema: "public",
+                table: "AspNetUsers",
+                column: "InstitutionId");
+
+            migrationBuilder.CreateIndex(
                 name: "EmailIndex",
                 schema: "public",
                 table: "AspNetUsers",
@@ -321,43 +341,52 @@ namespace Security.IdentityServer.Migrations.IdentityServer.UserManagementDb
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_OpenIddictApplications_ClientId",
+                name: "IX_Customers_CreatedAt",
                 schema: "public",
-                table: "OpenIddictApplications",
-                column: "ClientId",
-                unique: true);
+                table: "Customers",
+                column: "CreatedAt");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OpenIddictAuthorizations_ApplicationId_Status_Subject_Type",
+                name: "IX_Customers_InstitutionId",
                 schema: "public",
-                table: "OpenIddictAuthorizations",
-                columns: new[] { "ApplicationId", "Status", "Subject", "Type" });
+                table: "Customers",
+                column: "InstitutionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OpenIddictScopes_Name",
+                name: "IX_Expenses_CreatedAt",
                 schema: "public",
-                table: "OpenIddictScopes",
-                column: "Name",
-                unique: true);
+                table: "Expenses",
+                column: "CreatedAt");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OpenIddictTokens_AuthorizationId",
+                name: "IX_Expenses_CustomerId",
                 schema: "public",
-                table: "OpenIddictTokens",
-                column: "AuthorizationId");
+                table: "Expenses",
+                column: "CustomerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OpenIddictTokens_ReferenceId",
+                name: "IX_Expenses_InstitutionId",
                 schema: "public",
-                table: "OpenIddictTokens",
-                column: "ReferenceId",
-                unique: true);
+                table: "Expenses",
+                column: "InstitutionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OpenIddictTokens_ApplicationId_Status_Subject_Type",
+                name: "IX_Institution_CreatedAt",
                 schema: "public",
-                table: "OpenIddictTokens",
-                columns: new[] { "ApplicationId", "Status", "Subject", "Type" });
+                table: "Institution",
+                column: "CreatedAt");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InstitutionSettings_CreatedAt",
+                schema: "public",
+                table: "InstitutionSettings",
+                column: "CreatedAt");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InstitutionSettings_InstitutionId",
+                schema: "public",
+                table: "InstitutionSettings",
+                column: "InstitutionId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -383,11 +412,11 @@ namespace Security.IdentityServer.Migrations.IdentityServer.UserManagementDb
                 schema: "public");
 
             migrationBuilder.DropTable(
-                name: "OpenIddictScopes",
+                name: "Expenses",
                 schema: "public");
 
             migrationBuilder.DropTable(
-                name: "OpenIddictTokens",
+                name: "InstitutionSettings",
                 schema: "public");
 
             migrationBuilder.DropTable(
@@ -399,11 +428,11 @@ namespace Security.IdentityServer.Migrations.IdentityServer.UserManagementDb
                 schema: "public");
 
             migrationBuilder.DropTable(
-                name: "OpenIddictAuthorizations",
+                name: "Customers",
                 schema: "public");
 
             migrationBuilder.DropTable(
-                name: "OpenIddictApplications",
+                name: "Institution",
                 schema: "public");
         }
     }

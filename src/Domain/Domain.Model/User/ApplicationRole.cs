@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Domain.Model.User
 {
     public class ApplicationRole : IdentityRole<Guid>
     {
+        public virtual Institution.Institution Institution { get; set; }
         public ApplicationRole()
         {
 

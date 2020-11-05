@@ -223,7 +223,7 @@ namespace Security.IdentityServer.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Use another service to log in..
+        ///   Looks up a localized string similar to Use administrator entrance to log in..
         /// </summary>
         public static string ExternalSource {
             get {

@@ -9,7 +9,7 @@ namespace Domain.Service.Model.Customer.Model
     /// <summary>
     /// Müşteriyi filtrelemek için kullanılan class.
     /// </summary>
-    public class CustomerFilterRequestDTO : BaseRequestDTO
+    public class CustomerFilterRequestDTO : BaseFilterRequestDTO
     {
         /// <summary>
         /// Müşteri Ad Bilgisi

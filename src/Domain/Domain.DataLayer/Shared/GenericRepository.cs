@@ -11,7 +11,7 @@ namespace Domain.DataLayer.Shared
     public abstract class GenericRepository<TContext> : IGenericRepository where TContext : DbContext
     {
         private readonly DbContext _context;
-        public GenericRepository(DbContext context)
+        protected GenericRepository(DbContext context)
         {
             _context = context;
         }
@@ -49,7 +49,6 @@ namespace Domain.DataLayer.Shared
         {
             return await _context.Set<T>().Where(q => q.Status == Core.Enumarations.StatusType.Active).AsNoTracking().ToListAsync();
         }
-
         public async Task<T> GetByIdAsync<T>(Guid Id) where T : EntityBase
         {
             var query = _context.Set<T>().Where(q => q.Id == Id && q.Status == Core.Enumarations.StatusType.Active);
@@ -69,6 +68,16 @@ namespace Domain.DataLayer.Shared
         public void Update<T>(T entity) where T : EntityBase
         {
             _context.Entry(entity).State = EntityState.Modified;
+        }
+
+        public async Task PassivateEntityAsync<T>(Guid Id) where T : EntityBase
+        {
+            T entity = await this.GetByIdAsync<T>(Id);
+            if (entity is null)
+                return;
+            entity.Delete();
+            Update(entity);
+            await CommitAsync();
         }
     }
 }

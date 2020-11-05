@@ -55,6 +55,7 @@ namespace HaxTextile.WebAppCore
                 config.Scope.Add("email");
                 config.Scope.Add("roles");
                 config.Scope.Add("textileApi");
+                config.Scope.Add("textileUserApi");
                 //config.Scope.Add("profile");
                 //config.Scope.Add("phone");
 

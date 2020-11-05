@@ -39,5 +39,6 @@ namespace Domain.Service.Model.Expenses.Model
         /// Vade tarihi
         /// </summary>
         public DateTime? ExpiryDate { get; set; }
+        public Guid InstitutionId { get; set; }
     }
 }

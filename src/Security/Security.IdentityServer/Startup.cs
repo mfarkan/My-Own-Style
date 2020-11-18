@@ -13,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using OpenIddict.Abstractions;
 using OpenIddict.Core;
 using OpenIddict.EntityFrameworkCore.Models;
+using Security.IdentityServer.Describer;
 using Security.IdentityServer.Resources;
 using System;
 using System.Collections.Generic;
@@ -44,7 +45,9 @@ namespace Security.IdentityServer
                 options.UseOpenIddict<int>();
             });
             services.AddIdentity<ApplicationUser, ApplicationRole>()
-                .AddEntityFrameworkStores<ManagementDbContext>().AddDefaultTokenProviders();
+                .AddErrorDescriber<CustomErrorDescriber>()
+                .AddEntityFrameworkStores<ManagementDbContext>()
+                .AddDefaultTokenProviders();
 
             services.ConfigureApplicationCookie(config =>
             {
@@ -156,7 +159,6 @@ namespace Security.IdentityServer
         {
             using (var scope = service.CreateScope())
             {
-                var dbContext = scope.ServiceProvider.GetRequiredService<ManagementDbContext>();
                 var manager = scope.ServiceProvider.GetRequiredService<OpenIddictApplicationManager<OpenIddictApplication<int>>>();
                 var scopeManager = scope.ServiceProvider.GetRequiredService<OpenIddictScopeManager<OpenIddictScope<int>>>();
 

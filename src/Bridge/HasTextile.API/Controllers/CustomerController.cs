@@ -29,7 +29,7 @@ namespace HasTextile.API.Controllers
             _cacheProvider = cacheProvider;
         }
         /// <summary>
-        /// Sistemdeki tüm aktif müşterileri döner.
+        /// Returns all active customers.
         /// </summary>
         /// <returns></returns>
         [HttpGet("all")]

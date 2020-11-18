@@ -9,31 +9,31 @@ namespace Domain.Service.Model.Customer
     public class CustomerResponseDTO : BaseResponseDTO
     {
         /// <summary>
-        /// Müşteri Email
+        /// Customer email address
         /// </summary>
         public string CustomerEmailAddress { get; set; }
         /// <summary>
-        /// Müşteri telefon bilgisi
+        /// Customer phone number
         /// </summary>
         public string CustomerTelephoneNumber { get; set; }
         /// <summary>
-        /// Müşteri Ad bilgisi
+        /// Customer name
         /// </summary>
         public string CustomerName { get; set; }
         /// <summary>
-        /// Müşteri açıklaması
+        /// Customer description
         /// </summary>
         public string CustomerDescription { get; set; }
         /// <summary>
-        /// Müşteri adresi
+        /// Customer address
         /// </summary>
         public string CustomerAddress { get; set; }
         /// <summary>
-        /// Müşteri tipi ( 1: tüzel , 2 : şirket)
+        /// Customer Type ( 1: corporate , 2 : individual)
         /// </summary>
         public CustomerType CustomerCompanyType { get; set; }
         /// <summary>
-        /// Müşteriye ait Gelir/Gider bilgisi.
+        /// Customer's expense list.
         /// </summary>
         public List<ExpenseResponseDTO> Expenses { get; set; }
     }

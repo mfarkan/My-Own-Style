@@ -44,12 +44,12 @@ namespace HasTextile.API.Controllers
             return new OkObjectResult(result);
         }
         /// <summary>
-        /// Müşteriye ait gelir/gider bilgilerini dönen servis
+        /// Return customer's expense list
         /// </summary>
-        /// <param name="Id">Müşterinin Id Bilgisi</param>
-        /// <returns>Müşterinin kendisini gelir/gider bilgileriyle döner.</returns>
-        /// <response code="200">müşteri bilgisi döner.</response>
-        /// <response code="404">Id değeri için müşteri bulunamadı döner.</response>
+        /// <param name="Id">Customer Unique Id</param>
+        /// <returns>Return customer's info with expense list.</returns>
+        /// <response code="200">Return Customer Info</response>
+        /// <response code="404">Not found customer.</response>
         [HttpGet("{Id:guid}/Expenses")]
         [ProducesResponseType(typeof(CustomerResponseDTO), 200)]
         [ProducesResponseType(typeof(NotFoundResult), 404)]
@@ -64,9 +64,9 @@ namespace HasTextile.API.Controllers
             return new OkObjectResult(result);
         }
         /// <summary>
-        /// Spesifik olarak Id'si verilen müşteri bilgisini döner.
+        /// Find Customer without expenses.
         /// </summary>
-        /// <param name="Id">Müşterinin Unique Id bilgisi</param>
+        /// <param name="Id">Unique Id</param>
         /// <returns></returns>
         [HttpGet("{Id:guid}")]
         [ProducesResponseType(typeof(CustomerResponseDTO), 200)]
@@ -82,9 +82,9 @@ namespace HasTextile.API.Controllers
             return new OkObjectResult(result);
         }
         /// <summary>
-        /// Müşterinin bazı bilgilerine göre filtrelenmesini sağlar.
+        /// Filterize customer with some properties.
         /// </summary>
-        /// <param name="request">Query'den gelen request objesi.</param>
+        /// <param name="request">QueryString </param>
         /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(typeof(List<CustomerResponseDTO>), 200)]
@@ -99,9 +99,9 @@ namespace HasTextile.API.Controllers
             return new OkObjectResult(instanceList);
         }
         /// <summary>
-        /// Müşteriyi pasivize eder.
+        /// Passivate customer.
         /// </summary>
-        /// <param name="Id">Müşterinin Unique Id bilgisi</param>
+        /// <param name="Id">Customer's Unique Id</param>
         /// <returns></returns>
         [HttpDelete("{Id:guid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -112,11 +112,11 @@ namespace HasTextile.API.Controllers
             return Ok();
         }
         /// <summary>
-        /// Müşteriyi günceller.
+        /// Update customer
         /// </summary>
-        /// <param name="Id">Müşterinin Unique Id bilgisi</param>
-        /// <param name="request">Müşterinin güncellenmiş datalarının bulunduğu request Objesi</param>
-        /// <returns></returns>
+        /// <param name="Id">Unique customer Id</param>
+        /// <param name="request">Request Payload</param>
+        /// <returns>Customer's Id</returns>
         [HttpPut("{Id:guid}")]
         [ProducesResponseType(200, Type = typeof(Guid))]
         public async Task<IActionResult> UpdateCustomer(Guid Id, [FromBody] CustomerRequestDTO request)
@@ -128,10 +128,10 @@ namespace HasTextile.API.Controllers
             return new OkObjectResult(new { Id });
         }
         /// <summary>
-        /// Yeni müşteri oluşturmak için kullanılır.
+        /// create a new customer.
         /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <param name="request">customer request payload</param>
+        /// <returns>New Customer's Id</returns>
         [HttpPost]
         [ProducesResponseType(200, Type = typeof(Guid))]
         public async Task<IActionResult> CreateNewUser([FromBody] CustomerRequestDTO request)

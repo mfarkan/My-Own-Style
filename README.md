@@ -12,9 +12,18 @@ First you should run migrations with PostgreSQL (if you want to change DB just i
  - **API** ; Only db access in here and there are several domain services right now. Domain services communicate database with repository. There is no direct communication with database.
  - **WebApp** ; All clients see this application and web pages. There is no db connection on it and there is no businesses on it. It'll always communicate with **API** only **API**. :confused:
  ## Dummy Photos 
- ![API Swagger Documentation](https://user-images.githubusercontent.com/20838613/91150667-5ce9e680-e6c5-11ea-8dad-d306d918f040.png)
+ **Swagger**
  
+![Swagger](https://user-images.githubusercontent.com/20838613/99772286-89be6600-2b1b-11eb-828a-608a352e7d76.png)
+**Customer API**
 
+![Customer API](https://user-images.githubusercontent.com/20838613/99772351-a5c20780-2b1b-11eb-977a-0e2a3318837b.png)
+**Expense API**
+
+![Expense API](https://user-images.githubusercontent.com/20838613/99772411-c7bb8a00-2b1b-11eb-8fc9-941b74928205.png)
+**Institution API**
+
+![Institution API](https://user-images.githubusercontent.com/20838613/99772449-dbff8700-2b1b-11eb-92ce-0cfe0a389c7c.png)
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 

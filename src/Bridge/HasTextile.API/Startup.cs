@@ -69,7 +69,7 @@ namespace HasTextile.API
                         Name = "Murat Fatih ARKAN",
                         Url = new Uri("http://mfarkan.github.io/"),
                     },
-                    Description = "Has Tekstil þirketinin API dökümantasyonu.",
+                    Description = "Dummy, No make sense, just like killing machine API",
 
                 });
                 options.DocInclusionPredicate((apiVersion, apiDescription) =>

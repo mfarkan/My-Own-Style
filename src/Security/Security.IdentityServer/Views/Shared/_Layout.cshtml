@@ -32,7 +32,7 @@
                 </div>
                 <div class="navbar-right">
                     <ul class="navbar-nav ml-auto">
-                        <form asp-controller="Home" asp-antiforgery="true" asp-action="SetCulture">
+                        <form asp-controller="Home" asp-action="SetCulture">
                             <input type="hidden" name="returnUrl" value="@(Context.Request.Path)@(Context.Request.QueryString.ToUriComponent())" />
                             @if (culture != "tr-TR")
                             {

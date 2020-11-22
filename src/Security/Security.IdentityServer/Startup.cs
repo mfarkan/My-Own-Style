@@ -49,15 +49,7 @@ namespace Security.IdentityServer
                 .AddEntityFrameworkStores<ManagementDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.ConfigureApplicationCookie(config =>
-            {
-                config.Cookie.Name = "HasTextile.Cookie";
-                config.ExpireTimeSpan = TimeSpan.FromMinutes(20);
-            });
-
             services.AddIdentityOptions();
-
-            services.AddAntiforgery(option => option.HeaderName = "X-XSRF-Token");
             #region Localization Services
             services.AddLocalization(o =>
             {
@@ -106,13 +98,14 @@ namespace Security.IdentityServer
                        OpenIdConnectConstants.Scopes.Profile,
                        OpenIdConnectConstants.Scopes.Phone,
                        OpenIdConnectConstants.Scopes.OpenId,
+                       OpenIdConnectConstants.Scopes.OfflineAccess,
                        OpenIdConnectConstants.Scopes.Address,
                        OpenIddictConstants.Scopes.Roles);
 
                     config.AllowAuthorizationCodeFlow();
                     config.AllowClientCredentialsFlow();
                     config.AllowPasswordFlow();
-                    //config.AllowRefreshTokenFlow();
+                    config.AllowRefreshTokenFlow(); // for using refresh tokens for not re-enter user information and register again.
                     config.EnableRequestCaching();
                     config.AddSigningCertificate(new FileStream(Directory.GetCurrentDirectory() + "/Certificate.pfx", FileMode.Open),
                         "rRZe9aJyhVxgHSRV9N554VcH", System.Security.Cryptography.X509Certificates.X509KeyStorageFlags.UserKeySet);
@@ -157,6 +150,7 @@ namespace Security.IdentityServer
         }
         private async Task InitializeAsync(IServiceProvider service)
         {
+            //!TODO : Create Client for SPA application.
             using (var scope = service.CreateScope())
             {
                 var manager = scope.ServiceProvider.GetRequiredService<OpenIddictApplicationManager<OpenIddictApplication<int>>>();

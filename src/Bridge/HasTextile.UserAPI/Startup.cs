@@ -4,10 +4,13 @@ using Core.Extensions.Configuration;
 using Domain.DataLayer;
 using Domain.Model.User;
 using Domain.Service;
+using HasTextile.UserAPI.Describer;
 using HasTextile.UserAPI.Filters;
+using HasTextile.UserAPI.Resource;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -17,6 +20,8 @@ using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -46,7 +51,7 @@ namespace HasTextile.UserAPI
                 });
                 options.UseOpenIddict<int>();
             });
-            services.AddIdentity<ApplicationUser, ApplicationRole>()
+            services.AddIdentity<ApplicationUser, ApplicationRole>().AddErrorDescriber<CustomErrorDescriber>()
                 .AddEntityFrameworkStores<ManagementDbContext>().AddDefaultTokenProviders();
 
             services.AddIdentityOptions();
@@ -65,7 +70,18 @@ namespace HasTextile.UserAPI
             services.AddUserServices();
             services.AddDistributedMemoryCache();//if we don't configure redis or sql server its working like memory cache in server.
             services.AddSingleton<CacheProvider>();
-            services.AddControllers();
+            services.AddLocalization(o =>
+            {
+                o.ResourcesPath = "Resources";
+            });
+            services.AddControllers().AddNewtonsoftJson()
+                .AddDataAnnotationsLocalization(o =>
+                {
+                    o.DataAnnotationLocalizerProvider = (type, factory) =>
+                    {
+                        return factory.Create(typeof(SharedResource));
+                    };
+                });
             services.AddApiVersioning();
             services.AddSwaggerGen(options =>
             {
@@ -148,6 +164,16 @@ namespace HasTextile.UserAPI
             {
                 endpoints.MapControllers();
             });
+            #region Localization
+            var supportedCultures = new List<CultureInfo> { new CultureInfo("tr-TR"), new CultureInfo("en-US") };
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture("tr-TR"),
+                SupportedUICultures = supportedCultures,
+                SupportedCultures = supportedCultures,
+                RequestCultureProviders = new[] { new CookieRequestCultureProvider() },
+            });
+            #endregion
         }
     }
 }

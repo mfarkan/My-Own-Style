@@ -59,7 +59,7 @@ namespace Security.IdentityServer.Controllers
             }, OpenIddictServerDefaults.AuthenticationScheme);
         }
         [Authorize]
-        [HttpPost("~/connect/authorize")]
+        [HttpPost("~/connect/authorize"), ValidateAntiForgeryToken]
         public async Task<IActionResult> Accept()
         {
             var request = HttpContext.GetOpenIdConnectRequest();

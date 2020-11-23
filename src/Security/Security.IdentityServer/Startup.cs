@@ -50,6 +50,9 @@ namespace Security.IdentityServer
                 .AddDefaultTokenProviders();
 
             services.AddIdentityOptions();
+
+            services.AddAntiforgery(option => option.HeaderName = "X-XSRF-Token");
+
             #region Localization Services
             services.AddLocalization(o =>
             {

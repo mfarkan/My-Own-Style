@@ -2,10 +2,13 @@
 using Domain.Model.User;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Server.IISIntegration;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.DependencyInjection;
 using Security.IdentityServer.Models;
 using System;
 using System.Collections.Generic;
@@ -38,7 +41,17 @@ namespace Security.IdentityServer.Controllers
         public async Task<IActionResult> Login(string returnUrl)
         {
             var externalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-
+            var openIdRequest = HttpContext.GetOpenIdConnectRequest();
+            var paramList = openIdRequest.GetParameters();
+            if (paramList != null && paramList.Any(m => m.Key == "culture"))
+            {
+                var culture = paramList.FirstOrDefault(m => m.Key == "culture");
+                HttpContext.Response.Cookies.Append(
+                CookieRequestCultureProvider.DefaultCookieName,
+                CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture.Value.ToString())),
+                new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
+                );
+            }
             var model = new LoginViewModel
             {
                 ReturnUrl = returnUrl,

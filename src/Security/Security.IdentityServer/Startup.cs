@@ -136,7 +136,7 @@ namespace Security.IdentityServer
             var supportedCultures = new List<CultureInfo> { new CultureInfo("tr-TR"), new CultureInfo("en-US") };
             app.UseRequestLocalization(new RequestLocalizationOptions
             {
-                DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture("tr-TR"),
+                DefaultRequestCulture = new RequestCulture("tr-TR"),
                 SupportedUICultures = supportedCultures,
                 SupportedCultures = supportedCultures,
                 RequestCultureProviders = new[] { new CookieRequestCultureProvider() },
@@ -149,7 +149,7 @@ namespace Security.IdentityServer
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
-            this.InitializeAsync(app.ApplicationServices).GetAwaiter().GetResult();
+            _ = Task.Run(async () => await InitializeAsync(app.ApplicationServices));
         }
         private async Task InitializeAsync(IServiceProvider service)
         {
@@ -250,6 +250,36 @@ namespace Security.IdentityServer
                         }
                     };
                     await manager.CreateAsync(credentialApp);
+                }
+                var dashboardSPA = await manager.FindByClientIdAsync("dashboard-web");
+                if (dashboardSPA == null)
+                {
+                    OpenIddictApplicationDescriptor spaApp = new OpenIddictApplicationDescriptor()
+                    {
+                        ClientId = "dashboard-web",
+                        ClientSecret = "HJEyX2xtMHfACm2YKhDZsUNV",
+                        DisplayName = "Dashboard SPA Application",
+                        RedirectUris = { new Uri("localhost:4200/login-flow") },
+                        PostLogoutRedirectUris = { new Uri("localhost:4200/logout-flow") },
+                        Type = "public",
+                        Permissions =
+                        {
+                            OpenIddictConstants.Permissions.Endpoints.Authorization,
+                            OpenIddictConstants.Permissions.Endpoints.Logout,
+                            OpenIddictConstants.Permissions.Endpoints.Revocation,
+                            OpenIddictConstants.Permissions.Endpoints.Token,
+                            OpenIddictConstants.Permissions.GrantTypes.AuthorizationCode,
+                            OpenIddictConstants.Permissions.GrantTypes.RefreshToken,
+                            OpenIddictConstants.Permissions.Scopes.Email,
+                            OpenIddictConstants.Permissions.Scopes.Profile,
+                            OpenIddictConstants.Permissions.Scopes.Roles,
+                            OpenIddictConstants.Permissions.Prefixes.Scope + "textileApi",
+                            OpenIddictConstants.Permissions.Prefixes.Scope + "textileUserApi",
+                            OpenIddictConstants.Permissions.Prefixes.Scope + OpenIddictConstants.Scopes.OfflineAccess,
+                            OpenIddictConstants.Permissions.Prefixes.Scope + OpenIddictConstants.Scopes.OpenId,
+                        }
+                    };
+                    await manager.CreateAsync(spaApp);
                 }
             }
         }

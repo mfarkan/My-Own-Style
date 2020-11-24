@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading;
 using System.Threading.Tasks;
 using AspNet.Security.OpenIdConnect.Extensions;
 using AspNet.Security.OpenIdConnect.Primitives;
@@ -70,6 +71,7 @@ namespace Security.IdentityServer.Controllers
             }
             var ticket = await CreateTicketAsync(user, request, new AuthenticationProperties());
             var result = SignIn(ticket.Principal, ticket.Properties, ticket.AuthenticationScheme);
+            ticket.AddProperty("culture", Thread.CurrentThread.CurrentUICulture.Name);
             return result;
         }
 

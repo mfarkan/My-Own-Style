@@ -36,6 +36,21 @@ namespace Security.IdentityServer.Controllers
         {
             return View();
         }
+        [NonAction]
+        private void CreateCultureCookie(string culture)
+        {
+            HttpContext.Response.Cookies.Append(
+            CookieRequestCultureProvider.DefaultCookieName,
+            CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+            new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
+            );
+        }
+        [HttpPost]
+        public IActionResult SetCulture(string culture, string returnUrl)
+        {
+            CreateCultureCookie(culture);
+            return RedirectToAction(nameof(Login), returnUrl);
+        }
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> Login(string returnUrl)
@@ -46,11 +61,7 @@ namespace Security.IdentityServer.Controllers
             if (paramList != null && paramList.Any(m => m.Key == "culture"))
             {
                 var culture = paramList.FirstOrDefault(m => m.Key == "culture");
-                HttpContext.Response.Cookies.Append(
-                CookieRequestCultureProvider.DefaultCookieName,
-                CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture.Value.ToString())),
-                new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
-                );
+                CreateCultureCookie(culture.Value.ToString());
             }
             var model = new LoginViewModel
             {

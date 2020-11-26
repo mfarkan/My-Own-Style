@@ -79,7 +79,17 @@ namespace Security.IdentityServer
                 iis.AutomaticAuthentication = false;
             });
             #endregion
-
+            // we should this cors policy on some library to use everywhere.
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy", policy =>
+                {
+                    policy.AllowAnyHeader();
+                    policy.AllowCredentials();
+                    policy.AllowAnyMethod();
+                    policy.WithOrigins("http://localhost:4200", "http://localhost:4300", "http://localhost:4301");
+                });
+            });
             services.AddHttpContextAccessor();
 
             services.AddOpenIddict(options =>
@@ -130,6 +140,7 @@ namespace Security.IdentityServer
             }
             app.UseStaticFiles();
             app.UseRouting();
+            app.UseCors("CorsPolicy");
             app.UseAuthentication();
             app.UseAuthorization();
             #region Localization
@@ -257,10 +268,10 @@ namespace Security.IdentityServer
                     OpenIddictApplicationDescriptor spaApp = new OpenIddictApplicationDescriptor()
                     {
                         ClientId = "dashboard-web",
-                        ClientSecret = "HJEyX2xtMHfACm2YKhDZsUNV",
+                        //ClientSecret = "HJEyX2xtMHfACm2YKhDZsUNV",
                         DisplayName = "Dashboard SPA Application",
-                        RedirectUris = { new Uri("localhost:4200/login-flow") },
-                        PostLogoutRedirectUris = { new Uri("localhost:4200/logout-flow") },
+                        RedirectUris = { new Uri("http://localhost:4200/login-flow") },
+                        PostLogoutRedirectUris = { new Uri("http://localhost:4200/logout-flow") },
                         Type = "public",
                         Permissions =
                         {
@@ -279,7 +290,14 @@ namespace Security.IdentityServer
                             OpenIddictConstants.Permissions.Prefixes.Scope + OpenIddictConstants.Scopes.OpenId,
                         }
                     };
-                    await manager.CreateAsync(spaApp);
+                    try
+                    {
+                        await manager.CreateAsync(spaApp);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
                 }
             }
         }

@@ -56,13 +56,14 @@ namespace Security.IdentityServer.Controllers
         public async Task<IActionResult> Login(string returnUrl)
         {
             var externalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-            var openIdRequest = HttpContext.GetOpenIdConnectRequest();
-            var paramList = openIdRequest.GetParameters();
-            if (paramList != null && paramList.Any(m => m.Key == "culture"))
-            {
-                var culture = paramList.FirstOrDefault(m => m.Key == "culture");
-                CreateCultureCookie(culture.Value.ToString());
-            }
+            //var openIdRequest = HttpContext.GetOpenIdConnectRequest();
+            //var paramList = openIdRequest.GetParameters();
+            //if (paramList != null && paramList.Any(m => m.Key == "culture"))
+            //{
+            //    var culture = paramList.FirstOrDefault(m => m.Key == "culture");
+            //    CreateCultureCookie(culture.Value.ToString());
+            //}
+            CreateCultureCookie("tr-TR");
             var model = new LoginViewModel
             {
                 ReturnUrl = returnUrl,
@@ -91,6 +92,7 @@ namespace Security.IdentityServer.Controllers
                 {
                     var externalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
                     model.ExternalLogins = externalLogins;
+                    model.ReturnUrl = returnUrl;
                     return View(model);
                 }
             }

@@ -71,7 +71,7 @@ namespace Security.IdentityServer.Controllers
             }
             var ticket = await CreateTicketAsync(user, request, new AuthenticationProperties());
             var result = SignIn(ticket.Principal, ticket.Properties, ticket.AuthenticationScheme);
-            ticket.AddProperty("culture", Thread.CurrentThread.CurrentUICulture.Name);
+            ticket.AddProperty("language", Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName);
             return result;
         }
 

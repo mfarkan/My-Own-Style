@@ -1,0 +1,312 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AccessFailedCount" xml:space="preserve">
+    <value>Başarısız Giriş</value>
+  </data>
+  <data name="CancelButton" xml:space="preserve">
+    <value>İptal</value>
+  </data>
+  <data name="CheckYourLogin" xml:space="preserve">
+    <value>Kullanıcı bilgilerinizi kontrol ediniz.</value>
+  </data>
+  <data name="Clean" xml:space="preserve">
+    <value>Temizle</value>
+  </data>
+  <data name="ComparePassword" xml:space="preserve">
+    <value>Şifre Doğrulama</value>
+  </data>
+  <data name="ComparePasswordError" xml:space="preserve">
+    <value>Girilen şifreler eşleşmiyor.</value>
+  </data>
+  <data name="ConcurrencyFailure" xml:space="preserve">
+    <value>Data eşleşme problemi , nesne değiştirilmiş.</value>
+  </data>
+  <data name="CostManagementSystem" xml:space="preserve">
+    <value>Masraf Yönetimi</value>
+  </data>
+  <data name="CreatedAt" xml:space="preserve">
+    <value>Kayıt Tarihi</value>
+  </data>
+  <data name="DefaultError" xml:space="preserve">
+    <value>Beklenmeyen bir hata oluştu.</value>
+  </data>
+  <data name="DefaultSuccess" xml:space="preserve">
+    <value>İşlem başarıyla gerçekleştirildi.</value>
+  </data>
+  <data name="Deneme" xml:space="preserve">
+    <value>Türkçe</value>
+  </data>
+  <data name="DuplicateEmail" xml:space="preserve">
+    <value>Girilen email '{0}' sistemde mevcut.</value>
+  </data>
+  <data name="DuplicateUserName" xml:space="preserve">
+    <value>Girilen kullanıcı adı '{0}' daha önceden alınmış.</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>E-Posta Adresi</value>
+  </data>
+  <data name="EmailConfirm" xml:space="preserve">
+    <value>Email Doğr.</value>
+  </data>
+  <data name="Enter" xml:space="preserve">
+    <value>Giriş</value>
+  </data>
+  <data name="ExitButton" xml:space="preserve">
+    <value>Çıkış</value>
+  </data>
+  <data name="ExternalSource" xml:space="preserve">
+    <value>Sistem yöneticisi girişi için kullanabilirsiniz.</value>
+  </data>
+  <data name="Female" xml:space="preserve">
+    <value>Kadın</value>
+  </data>
+  <data name="ForgotPasswordMailSuccess" xml:space="preserve">
+    <value>Şifre sıfırlama maili gönderildi.</value>
+  </data>
+  <data name="Gender" xml:space="preserve">
+    <value>Cinsiyet</value>
+  </data>
+  <data name="HasTextile" xml:space="preserve">
+    <value>Has Tekstil</value>
+  </data>
+  <data name="Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="InvalidEmail" xml:space="preserve">
+    <value>Girilen email '{0}' geçersiz.</value>
+  </data>
+  <data name="InvalidEmailError" xml:space="preserve">
+    <value>Lütfen geçerli bir mail adresi giriniz.</value>
+  </data>
+  <data name="InvalidPhoneNumber" xml:space="preserve">
+    <value>Geçersiz telefon numarası.</value>
+  </data>
+  <data name="InvalidRoleName" xml:space="preserve">
+    <value>Girilen rol '{0}' geçersiz.</value>
+  </data>
+  <data name="InvalidToken" xml:space="preserve">
+    <value>Geçersiz anahtar değeri.</value>
+  </data>
+  <data name="InvalidUserName" xml:space="preserve">
+    <value>Girilen kullanıcı adı '{0}' sadece sayı ve harflerden oluşabilir.</value>
+  </data>
+  <data name="LoginAlreadyAssociated" xml:space="preserve">
+    <value>Bu kullanıcı daha önceden giriş yaptı.</value>
+  </data>
+  <data name="LogOutDescription" xml:space="preserve">
+    <value>Çıkmak istiyorsanız çıkış butonuna basabilirsiniz.</value>
+  </data>
+  <data name="Male" xml:space="preserve">
+    <value>Erkek</value>
+  </data>
+  <data name="OptionLabel" xml:space="preserve">
+    <value>Seçiniz.</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Şifre</value>
+  </data>
+  <data name="PasswordCompare" xml:space="preserve">
+    <value>Şifre Tekrarı</value>
+  </data>
+  <data name="PasswordContainsUserName" xml:space="preserve">
+    <value>Şifre içerisinde kulanıcı adı geçmektedir.</value>
+  </data>
+  <data name="PasswordMismatch" xml:space="preserve">
+    <value>Geçersiz şifre.</value>
+  </data>
+  <data name="PasswordRequiresDigit" xml:space="preserve">
+    <value>Şifre en az bir adet rakam içermelidir ('0'-'9').</value>
+  </data>
+  <data name="PasswordRequiresLower" xml:space="preserve">
+    <value>Şifre en az bir adet küçük harf içermelidir ('a'-'z').</value>
+  </data>
+  <data name="PasswordRequiresNonAlphanumeric" xml:space="preserve">
+    <value>Şifre en azından bir adet alfa numeric olmayan değer içermelidir.</value>
+  </data>
+  <data name="PasswordRequiresUpper" xml:space="preserve">
+    <value>Şifre en az bir adet büyük harf içermelidir ('A'-'Z').</value>
+  </data>
+  <data name="PasswordTooShort" xml:space="preserve">
+    <value>Şifre en az '{0}' karakterde olmalıdır.</value>
+  </data>
+  <data name="PhoneNumber" xml:space="preserve">
+    <value>Telefon Numarası</value>
+  </data>
+  <data name="PhoneNumberConfirm" xml:space="preserve">
+    <value>Telefon Doğr.</value>
+  </data>
+  <data name="PhonePrefix" xml:space="preserve">
+    <value>Alan Kodu</value>
+  </data>
+  <data name="ReadyToLeave" xml:space="preserve">
+    <value>Çıkmak istediğinize emin misiniz?</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>Kayıt Ol</value>
+  </data>
+  <data name="RememberMe" xml:space="preserve">
+    <value>Beni hatırla</value>
+  </data>
+  <data name="RequiredError" xml:space="preserve">
+    <value>Zorunlu alan.</value>
+  </data>
+  <data name="SafeEntry" xml:space="preserve">
+    <value>Güvenli Giriş</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Kaydet</value>
+  </data>
+  <data name="Send" xml:space="preserve">
+    <value>Gönder</value>
+  </data>
+  <data name="StringLengthError" xml:space="preserve">
+    <value>{0} alanı {2} ila {1} karakter uzunluğunda olmalıdır.</value>
+  </data>
+  <data name="UserAlreadyHasPassword" xml:space="preserve">
+    <value>Kullanıcı için şifre daha önceden kaydedilmiş.</value>
+  </data>
+  <data name="UserAlreadyInRole" xml:space="preserve">
+    <value>Kullanıcı da '{0}' rolü mevcut.</value>
+  </data>
+  <data name="UserEmailConfirmed" xml:space="preserve">
+    <value>Kullanıcıza ait mail adresi doğrulandı.</value>
+  </data>
+  <data name="UserEmailNotConfirmed" xml:space="preserve">
+    <value>Kullanıcı email adresiniz doğrulanamadı.</value>
+  </data>
+  <data name="UserLocked" xml:space="preserve">
+    <value>Kullanıcınız kilitlenmiş gözükmektedir.</value>
+  </data>
+  <data name="UserLockoutNotEnabled" xml:space="preserve">
+    <value>Bu kullanıcı için lock işlemi aktif değil.</value>
+  </data>
+  <data name="UserName" xml:space="preserve">
+    <value>Kullanıcı Adı</value>
+  </data>
+  <data name="UsernameRequired" xml:space="preserve">
+    <value>Kullanıcı adı zorunludur.</value>
+  </data>
+  <data name="UserNotFound" xml:space="preserve">
+    <value>Kullanıcı bulunamadı.</value>
+  </data>
+  <data name="UserNotInRole" xml:space="preserve">
+    <value>Kullanıcı da '{0}' rolü mevcut değil.</value>
+  </data>
+</root>

@@ -54,7 +54,7 @@ namespace HasTextile.API
             });
             services.AddDistributedMemoryCache();//if we don't configure redis or sql server its working like memory cache in server.
             services.AddSingleton<CacheProvider>();
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
             services.AddApiVersioning();
             services.AddSwaggerGen(options =>
             {
@@ -69,7 +69,7 @@ namespace HasTextile.API
                         Name = "Murat Fatih ARKAN",
                         Url = new Uri("http://mfarkan.github.io/"),
                     },
-                    Description = "Has Tekstil þirketinin API dökümantasyonu.",
+                    Description = "Dummy, No make sense, just like killing machine API",
 
                 });
                 options.DocInclusionPredicate((apiVersion, apiDescription) =>

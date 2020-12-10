@@ -29,7 +29,7 @@ namespace HasTextile.API.Controllers
             _mapper = mapper;
         }
         /// <summary>
-        /// Sistemdeki tüm kurumları döner.
+        /// Returns all Institutions
         /// </summary>
         /// <returns></returns>
         [HttpGet("all")]
@@ -44,10 +44,11 @@ namespace HasTextile.API.Controllers
             return new OkObjectResult(result);
         }
         /// <summary>
-        /// Id bilgisi verilen kurumu döner.
+        /// Return a Institution with Id
         /// </summary>
-        /// <param name="Id">Kurum Id Bilgisi</param>
-        /// <returns></returns>
+        /// <param name="Id">Institution Unique Id</param>
+        /// <returns see="200">OK</returns>
+        /// <returns see="404">Not Found</returns>
         [HttpGet("{Id:guid}")]
         [ProducesResponseType(typeof(InstitutionResponseDTO), 200)]
         [ProducesResponseType(typeof(NotFoundResult), 404)]
@@ -62,10 +63,10 @@ namespace HasTextile.API.Controllers
             return new OkObjectResult(result);
         }
         /// <summary>
-        /// Kurumları filtreleyerek geri döner.
+        /// Return Filtered List of Institution
         /// </summary>
-        /// <param name="requestDTO"></param>
-        /// <returns></returns>
+        /// <param name="requestDTO">request Payload</param>
+        /// <returns see="200">Ok</returns>
         [HttpGet]
         [ProducesResponseType(typeof(List<InstitutionResponseDTO>), 200)]
         public async Task<IActionResult> FindInstitutionsWithFilter([FromQuery] InstitutionFilterRequestDTO requestDTO)
@@ -79,10 +80,10 @@ namespace HasTextile.API.Controllers
             return new OkObjectResult(instanceList);
         }
         /// <summary>
-        /// Kurumu pasivize eder.
+        /// Passivate Institution
         /// </summary>
-        /// <param name="Id">Kurum Unique Id bilgisi</param>
-        /// <returns></returns>
+        /// <param name="Id">Institution Unique Id</param>
+        /// <returns see="200">OK</returns>
         [HttpDelete("{Id:guid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> DeActivateInstitution(Guid Id)
@@ -92,10 +93,10 @@ namespace HasTextile.API.Controllers
             return new OkObjectResult(new { Id });
         }
         /// <summary>
-        /// Kurum güncelleme
+        /// Institution Update
         /// </summary>
-        /// <param name="Id"></param>
-        /// <param name="requestDTO"></param>
+        /// <param name="Id">Institution Unique Id</param>
+        /// <param name="requestDTO">Request PayLoad</param>
         /// <returns></returns>
         [HttpPut("{Id:guid}")]
         [ProducesResponseType(200, Type = typeof(Guid))]
@@ -107,9 +108,9 @@ namespace HasTextile.API.Controllers
             return new OkObjectResult(new { Id });
         }
         /// <summary>
-        /// Yeni kurum oluşturma.
+        /// Create a new Institution
         /// </summary>
-        /// <param name="requestDTO">Request objesi</param>
+        /// <param name="requestDTO">Request payload</param>
         /// <returns></returns>
         public async Task<IActionResult> CreateNewInstitution([FromBody] InstitutionRequestDTO requestDTO)
         {

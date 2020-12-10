@@ -11,6 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="$(DotnetSdkVersion)" />
     <PackageReference Include="AspNet.Security.OAuth.Introspection" Version="$(AuthIntrospection)" />
     <PackageReference Include="AspNet.Security.OAuth.Validation" Version="$(AuthValidation)" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="$(AutoMapperDependencyInjection)" />

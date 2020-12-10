@@ -7,28 +7,28 @@ using System.Text;
 namespace Domain.Service.Model.Customer.Model
 {
     /// <summary>
-    /// Müşteriyi filtrelemek için kullanılan class.
+    /// Customer Filter Request DTO
     /// </summary>
     public class CustomerFilterRequestDTO : BaseFilterRequestDTO
     {
         /// <summary>
-        /// Müşteri Ad Bilgisi
+        /// Customer Name
         /// </summary>
         public string CustomerName { get; set; }
         /// <summary>
-        /// Müşteri Adres Bilgisi
+        /// Customer address
         /// </summary>
         public string CustomerAddress { get; set; }
         /// <summary>
-        /// Müşteri email bilgisi
+        /// Customer email
         /// </summary>
         public string CustomerEmail { get; set; }
         /// <summary>
-        /// Müşteri Telefon Numarası
+        /// customer phone number
         /// </summary>
         public string CustomerPhoneNumber { get; set; }
         /// <summary>
-        /// Müşteri Tipi (1:tüzel , 2:şahıs)
+        /// Customer Type
         /// </summary>
         public CustomerType? CustomerType { get; set; }
 

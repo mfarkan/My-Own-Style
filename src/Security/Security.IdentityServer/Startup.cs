@@ -13,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using OpenIddict.Abstractions;
 using OpenIddict.Core;
 using OpenIddict.EntityFrameworkCore.Models;
+using Security.IdentityServer.Describer;
 using Security.IdentityServer.Resources;
 using System;
 using System.Collections.Generic;
@@ -44,17 +45,14 @@ namespace Security.IdentityServer
                 options.UseOpenIddict<int>();
             });
             services.AddIdentity<ApplicationUser, ApplicationRole>()
-                .AddEntityFrameworkStores<ManagementDbContext>().AddDefaultTokenProviders();
-
-            services.ConfigureApplicationCookie(config =>
-            {
-                config.Cookie.Name = "HasTextile.Cookie";
-                config.ExpireTimeSpan = TimeSpan.FromMinutes(20);
-            });
+                .AddErrorDescriber<CustomErrorDescriber>()
+                .AddEntityFrameworkStores<ManagementDbContext>()
+                .AddDefaultTokenProviders();
 
             services.AddIdentityOptions();
 
             services.AddAntiforgery(option => option.HeaderName = "X-XSRF-Token");
+
             #region Localization Services
             services.AddLocalization(o =>
             {
@@ -81,7 +79,17 @@ namespace Security.IdentityServer
                 iis.AutomaticAuthentication = false;
             });
             #endregion
-
+            // we should this cors policy on some library to use everywhere.
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy", policy =>
+                {
+                    policy.AllowAnyHeader();
+                    policy.AllowCredentials();
+                    policy.AllowAnyMethod();
+                    policy.WithOrigins("http://localhost:4200", "http://localhost:4300", "http://localhost:4301");
+                });
+            });
             services.AddHttpContextAccessor();
 
             services.AddOpenIddict(options =>
@@ -103,13 +111,14 @@ namespace Security.IdentityServer
                        OpenIdConnectConstants.Scopes.Profile,
                        OpenIdConnectConstants.Scopes.Phone,
                        OpenIdConnectConstants.Scopes.OpenId,
+                       OpenIdConnectConstants.Scopes.OfflineAccess,
                        OpenIdConnectConstants.Scopes.Address,
                        OpenIddictConstants.Scopes.Roles);
 
                     config.AllowAuthorizationCodeFlow();
                     config.AllowClientCredentialsFlow();
                     config.AllowPasswordFlow();
-                    //config.AllowRefreshTokenFlow();
+                    config.AllowRefreshTokenFlow(); // for using refresh tokens for not re-enter user information and register again.
                     config.EnableRequestCaching();
                     config.AddSigningCertificate(new FileStream(Directory.GetCurrentDirectory() + "/Certificate.pfx", FileMode.Open),
                         "rRZe9aJyhVxgHSRV9N554VcH", System.Security.Cryptography.X509Certificates.X509KeyStorageFlags.UserKeySet);
@@ -131,13 +140,14 @@ namespace Security.IdentityServer
             }
             app.UseStaticFiles();
             app.UseRouting();
+            app.UseCors("CorsPolicy");
             app.UseAuthentication();
             app.UseAuthorization();
             #region Localization
             var supportedCultures = new List<CultureInfo> { new CultureInfo("tr-TR"), new CultureInfo("en-US") };
             app.UseRequestLocalization(new RequestLocalizationOptions
             {
-                DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture("tr-TR"),
+                DefaultRequestCulture = new RequestCulture("tr-TR"),
                 SupportedUICultures = supportedCultures,
                 SupportedCultures = supportedCultures,
                 RequestCultureProviders = new[] { new CookieRequestCultureProvider() },
@@ -150,13 +160,13 @@ namespace Security.IdentityServer
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
-            this.InitializeAsync(app.ApplicationServices).GetAwaiter().GetResult();
+            _ = Task.Run(async () => await InitializeAsync(app.ApplicationServices));
         }
         private async Task InitializeAsync(IServiceProvider service)
         {
+            //!TODO : Create Client for SPA application.
             using (var scope = service.CreateScope())
             {
-                var dbContext = scope.ServiceProvider.GetRequiredService<ManagementDbContext>();
                 var manager = scope.ServiceProvider.GetRequiredService<OpenIddictApplicationManager<OpenIddictApplication<int>>>();
                 var scopeManager = scope.ServiceProvider.GetRequiredService<OpenIddictScopeManager<OpenIddictScope<int>>>();
 
@@ -251,6 +261,43 @@ namespace Security.IdentityServer
                         }
                     };
                     await manager.CreateAsync(credentialApp);
+                }
+                var dashboardSPA = await manager.FindByClientIdAsync("dashboard-web");
+                if (dashboardSPA == null)
+                {
+                    OpenIddictApplicationDescriptor spaApp = new OpenIddictApplicationDescriptor()
+                    {
+                        ClientId = "dashboard-web",
+                        //ClientSecret = "HJEyX2xtMHfACm2YKhDZsUNV",
+                        DisplayName = "Dashboard SPA Application",
+                        RedirectUris = { new Uri("http://localhost:4200/login-flow") },
+                        PostLogoutRedirectUris = { new Uri("http://localhost:4200/logout-flow") },
+                        Type = "public",
+                        Permissions =
+                        {
+                            OpenIddictConstants.Permissions.Endpoints.Authorization,
+                            OpenIddictConstants.Permissions.Endpoints.Logout,
+                            OpenIddictConstants.Permissions.Endpoints.Revocation,
+                            OpenIddictConstants.Permissions.Endpoints.Token,
+                            OpenIddictConstants.Permissions.GrantTypes.AuthorizationCode,
+                            OpenIddictConstants.Permissions.GrantTypes.RefreshToken,
+                            OpenIddictConstants.Permissions.Scopes.Email,
+                            OpenIddictConstants.Permissions.Scopes.Profile,
+                            OpenIddictConstants.Permissions.Scopes.Roles,
+                            OpenIddictConstants.Permissions.Prefixes.Scope + "textileApi",
+                            OpenIddictConstants.Permissions.Prefixes.Scope + "textileUserApi",
+                            OpenIddictConstants.Permissions.Prefixes.Scope + OpenIddictConstants.Scopes.OfflineAccess,
+                            OpenIddictConstants.Permissions.Prefixes.Scope + OpenIddictConstants.Scopes.OpenId,
+                        }
+                    };
+                    try
+                    {
+                        await manager.CreateAsync(spaApp);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
                 }
             }
         }

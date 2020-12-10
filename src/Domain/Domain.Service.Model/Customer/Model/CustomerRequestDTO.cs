@@ -8,31 +8,31 @@ namespace Domain.Service.Model.Customer.Model
     public class CustomerRequestDTO
     {
         /// <summary>
-        /// Müşteri Adı
+        /// Customer Name
         /// </summary>
         public string CustomerName { get; set; }
         /// <summary>
-        /// Müşteri Adres Bilgisi
+        /// Customer Address
         /// </summary>
         public string CustomerAddress { get; set; }
         /// <summary>
-        /// Müşteri mail adresi
+        /// Customer email address
         /// </summary>
         public string CustomerEmailAddress { get; set; }
         /// <summary>
-        /// Müşteri telefon numarası
+        /// Customer Phone Number
         /// </summary>
         public string CustomerTelephoneNumber { get; set; }
         /// <summary>
-        /// Müşteri açıklaması
+        /// Customer Description
         /// </summary>
         public string CustomerDescription { get; set; }
         /// <summary>
-        /// Müşteri Tipi
+        /// Customer Type
         /// </summary>
         public CustomerType CustomerCompanyType { get; set; }
         /// <summary>
-        /// Müşterinin bağlı olduğu kurum.
+        /// Customer's Institution
         /// </summary>
         public Guid InstitutionId { get; set; }
     }

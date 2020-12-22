@@ -14,5 +14,7 @@ namespace Domain.Model.Income
         public virtual int? Expiry { get; set; }
         public virtual Institution.Institution Institution { get; set; }
         public virtual DateTime? ExpiryDate { get; set; }
+        public bool IsIncome() => Type == ExpenseType.InCome;
+        public bool IsOutCome() => Type == ExpenseType.OutGoing;
     }
 }

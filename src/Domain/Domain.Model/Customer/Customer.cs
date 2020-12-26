@@ -17,5 +17,8 @@ namespace Domain.Model.Customer
         public virtual Institution.Institution Institution { get; set; }
         public virtual CustomerType CustomerCompanyType { get; set; }
         public virtual List<Expenses> Expenses { get; set; }
+
+        public bool IsIndividual() => CustomerCompanyType == CustomerType.Individual;
+        public bool IsCorparate() => CustomerCompanyType == CustomerType.Corporate;
     }
 }

@@ -178,7 +178,7 @@ namespace HasTextile.Tests
             var customerFilterRequestDTO = this.GetFilterRequestDTO();
             var customerList = await _customerService.GetCustomersWithFilter(customerFilterRequestDTO);
             Assert.IsNotNull(customerList, "Customer List must not empty");
-            Assert.AreEqual(expectedResult, customerList == null, "Result should be the same");
+            Assert.AreEqual(expectedResult, customerList != null, "Result should be the same");
         }
     }
 }

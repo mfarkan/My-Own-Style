@@ -1,6 +1,6 @@
 name: Greetings Issuer or Pull Requester <3
 
-on: [pull_request, issues]
+on: [issues]
 
 jobs:
   greeting:

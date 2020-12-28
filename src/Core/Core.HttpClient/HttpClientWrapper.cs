@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -42,7 +43,7 @@ namespace Core.HttpClient
         public async Task<TResponse> PostAsync<TRequest, TResponse>(string resourceUrl, TRequest request, Dictionary<string, string> headers = null)
         {
             AddHeadersToRequest(headers);
-            var content = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
+            var content = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, MediaTypeNames.Application.Json);
             var result = await _httpClient.PostAsync(resourceUrl, content);
             var jsonResponse = await result.Content.ReadAsStringAsync();
             var response = JsonConvert.DeserializeObject<TResponse>(jsonResponse);
@@ -52,7 +53,7 @@ namespace Core.HttpClient
         public async Task<TResponse> PutAsync<TRequest, TResponse>(string resourceUrl, TRequest request, Dictionary<string, string> headers = null)
         {
             AddHeadersToRequest(headers);
-            var content = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
+            var content = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, MediaTypeNames.Application.Json);
             var result = await _httpClient.PutAsync(resourceUrl, content);
             var jsonResponse = await result.Content.ReadAsStringAsync();
             var response = JsonConvert.DeserializeObject<TResponse>(jsonResponse);

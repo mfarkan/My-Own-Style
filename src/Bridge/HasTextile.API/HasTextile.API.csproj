@@ -9,8 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AspNetCore.HealthChecks.UI" Version="3.1.3" />
-    <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="3.1.2" />
+    <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="$(HealtCheckClientVersion)" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="$(DotnetSdkVersion)" />
     <PackageReference Include="AspNet.Security.OAuth.Introspection" Version="$(AuthIntrospection)" />
     <PackageReference Include="AspNet.Security.OAuth.Validation" Version="$(AuthValidation)" />

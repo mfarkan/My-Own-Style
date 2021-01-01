@@ -24,7 +24,7 @@ namespace HasTextile.API
 {
     public class Startup
     {
-        private const string Doc_Helper_Url_Prefix = "Textile-api";
+        private const string Doc_Helper_Url_Prefix = "business-api";
         public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Environment = env;

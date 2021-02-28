@@ -19,4 +19,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Core.Caching\Core.Caching.csproj" />
+    <ProjectReference Include="..\..\Core\Core.Extensions\Core.Extensions.csproj" />
+  </ItemGroup>
 </Project>

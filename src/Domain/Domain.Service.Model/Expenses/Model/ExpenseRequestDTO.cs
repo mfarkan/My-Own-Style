@@ -10,7 +10,7 @@ namespace Domain.Service.Model.Expenses.Model
         /// <summary>
         /// Müşteri Id
         /// </summary>
-        public Guid CustomerId { get; set; }
+        public Guid BankAccountId { get; set; }
         /// <summary>
         /// Gelir mi Gider mi?
         /// </summary>

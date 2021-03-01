@@ -23,10 +23,10 @@ namespace Domain.Service.Expenses
 
         public async Task<Guid> CreateNewExpense(ExpenseRequestDTO requestDTO)
         {
-            var customer = await _repository.GetByIdAsync<Domain.Model.Customer.Customer>(requestDTO.CustomerId);
+            var bankAccount = await _repository.GetByIdAsync<Domain.Model.Account.BankAccount>(requestDTO.BankAccountId);
             var institution = await _repository.GetByIdAsync<Domain.Model.Institution.Institution>(requestDTO.InstitutionId);
 
-            if (customer == null || institution == null)
+            if (bankAccount == null || institution == null)
                 return Guid.Empty;
 
             var newInstance = new Domain.Model.Income.Expenses
@@ -38,7 +38,7 @@ namespace Domain.Service.Expenses
                 Expiry = requestDTO.Expiry,
                 ExpiryDate = requestDTO.ExpiryDate,
                 Type = requestDTO.ExpenseType,
-                Customer = customer,
+                BankAccount = bankAccount,
                 Institution = institution,
             };
             _repository.Add(newInstance);
@@ -47,16 +47,16 @@ namespace Domain.Service.Expenses
         }
         public async Task<Domain.Model.Income.Expenses> GetExpense(Guid Id)
         {
-            var result = await _repository.Query<Domain.Model.Income.Expenses>().Where(q => q.Id == Id && q.Status == StatusType.Active)
-                .Include(q => q.Customer)
+            var result = await _repository.QueryWithoutTracking<Domain.Model.Income.Expenses>()
+                .Include(q => q.BankAccount)
                 .Include(q => q.Institution)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(q => q.Id == Id && q.Status == StatusType.Active);
             return result;
         }
         public async Task<List<Domain.Model.Income.Expenses>> GetExpenses(int page, int pageSize)
         {
             var skipSize = pageSize * (page - 1);
-            var incomeList = await _repository.QueryWithoutTracking<Domain.Model.Income.Expenses>().Include(q => q.Customer)
+            var incomeList = await _repository.QueryWithoutTracking<Domain.Model.Income.Expenses>()
                 .Skip(skipSize).Take(pageSize).ToListAsync();
             return incomeList ?? new List<Domain.Model.Income.Expenses>();
         }
@@ -64,8 +64,8 @@ namespace Domain.Service.Expenses
         {
             var query = _repository.QueryWithoutTracking<Domain.Model.Income.Expenses>().Where(q => q.Status == StatusType.Active);
 
-            if (filterRequestDTO.CustomerId.HasValue)
-                query = query.Where(q => q.Customer.Id == filterRequestDTO.CustomerId);
+            if (filterRequestDTO.BankAccountId.HasValue)
+                query = query.Where(q => q.BankAccount.Id == filterRequestDTO.BankAccountId);
             if (!string.IsNullOrEmpty(filterRequestDTO.Description))
                 query = query.Where(q => q.Description.Contains(filterRequestDTO.Description));
             if (filterRequestDTO.ExpenseType.HasValue)
@@ -77,7 +77,7 @@ namespace Domain.Service.Expenses
             if (filterRequestDTO.ExpiryDate.HasValue)
                 query = query.Where(q => q.ExpiryDate == filterRequestDTO.ExpiryDate.Value);
             query = query.Skip(filterRequestDTO.Start * filterRequestDTO.Length).Take(filterRequestDTO.Length);
-            var expenseList = await query.Include(q => q.Customer).ToListAsync();
+            var expenseList = await query.Include(q => q.BankAccount).ToListAsync();
             return expenseList;
         }
 
@@ -90,13 +90,13 @@ namespace Domain.Service.Expenses
         public async Task<Guid> UpdateExpense(Guid Id, ExpenseRequestDTO requestDTO)
         {
             var expense = await _repository.Query<Domain.Model.Income.Expenses>().Where(q => q.Id == Id && q.Status == StatusType.Active)
-               .Include(q => q.Customer)
+               .Include(q => q.BankAccount)
                .Include(q => q.Institution)
                .FirstOrDefaultAsync();
 
-            var customer = await _repository.GetByIdAsync<Domain.Model.Customer.Customer>(requestDTO.CustomerId);
+            var bankAccount = await _repository.GetByIdAsync<Domain.Model.Account.BankAccount>(requestDTO.BankAccountId);
             var institution = await _repository.GetByIdAsync<Domain.Model.Institution.Institution>(requestDTO.InstitutionId);
-            if (expense == null || customer == null || institution == null)
+            if (expense == null || bankAccount == null || institution == null)
                 return Guid.Empty;
 
             expense.Amount = requestDTO.Amount;
@@ -106,7 +106,7 @@ namespace Domain.Service.Expenses
             expense.Expiry = requestDTO.Expiry;
             expense.ExpiryDate = requestDTO.ExpiryDate;
             expense.Type = requestDTO.ExpenseType;
-            expense.Customer = customer;
+            expense.BankAccount = bankAccount;
 
             _repository.Update(expense);
             await _repository.CommitAsync();

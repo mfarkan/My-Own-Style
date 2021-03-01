@@ -4,6 +4,8 @@ namespace Domain.Model.Account
 {
     public class BankAccount : EntityBase
     {
+        public virtual string BankAccountName { get; set; }
+        public virtual string BankAccountDescription { get; set; }
         public virtual BankType BankType { get; set; }
         public virtual decimal TotalBalance { get; set; }
         public virtual string AccountIBAN { get; set; }

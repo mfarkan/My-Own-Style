@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Domain.DataLayer.Shared
 {
+    // we need nolock for transaction management.
     public abstract class GenericRepository<TContext> : IGenericRepository where TContext : DbContext
     {
         private readonly DbContext _context;

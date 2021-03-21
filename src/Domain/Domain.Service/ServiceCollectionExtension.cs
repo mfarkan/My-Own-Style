@@ -1,6 +1,8 @@
-﻿using Domain.Service.Customer;
+﻿using Domain.Service.BankAccount;
+using Domain.Service.Customer;
 using Domain.Service.Expenses;
 using Domain.Service.Institution;
+using Domain.Service.Model.BankAccount;
 using Domain.Service.Model.Customer;
 using Domain.Service.Model.Expenses;
 using Domain.Service.Model.Institution;
@@ -17,6 +19,7 @@ namespace Domain.Service
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<IExpensesService, ExpensesService>();
             services.AddScoped<IInstitutionService, InstitutionService>();
+            services.AddScoped<IBankAccountService, BankAccountService>();
         }
         public static void AddUserServices(this IServiceCollection services)
         {

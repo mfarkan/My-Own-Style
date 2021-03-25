@@ -1,14 +1,11 @@
 ﻿using Core.Enumarations;
 using Domain.DataLayer.Business;
-using Domain.Model.Income;
-using Domain.Model.Institution;
 using Domain.Service.Model.Expenses;
 using Domain.Service.Model.Expenses.Model;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Domain.Service.Expenses
@@ -25,8 +22,9 @@ namespace Domain.Service.Expenses
         {
             var bankAccount = await _repository.GetByIdAsync<Domain.Model.Account.BankAccount>(requestDTO.BankAccountId);
             var institution = await _repository.GetByIdAsync<Domain.Model.Institution.Institution>(requestDTO.InstitutionId);
+            var sector = await _repository.GetByIdAsync<Domain.Model.Sector.Sector>(requestDTO.SectorId);
 
-            if (bankAccount == null || institution == null)
+            if (bankAccount == null || institution == null || sector == null)
                 return Guid.Empty;
 
             var newInstance = new Domain.Model.Income.Expenses
@@ -40,11 +38,28 @@ namespace Domain.Service.Expenses
                 Type = requestDTO.ExpenseType,
                 BankAccount = bankAccount,
                 Institution = institution,
+                Sector = sector
             };
             _repository.Add(newInstance);
             await _repository.CommitAsync();
             return newInstance.Id;
         }
+
+        public async Task CreateSector(string sectorDescription)
+        {
+            var newInstance = new Domain.Model.Sector.Sector
+            {
+                SectorDescription = sectorDescription
+            };
+            _repository.Add(newInstance);
+            await _repository.CommitAsync();
+        }
+
+        public async Task DeleteSector(Guid Id)
+        {//TODO! sector'u delete edince bağlı olan tüm income'ları diğer sector kısmına atmak gerekiyor. Diğer isimli sector pasif edilemez.
+            await _repository.PassivateEntityAsync<Domain.Model.Sector.Sector>(Id);
+        }
+
         public async Task<Domain.Model.Income.Expenses> GetExpense(Guid Id)
         {
             var result = await _repository.QueryWithoutTracking<Domain.Model.Income.Expenses>()
@@ -84,7 +99,6 @@ namespace Domain.Service.Expenses
         public async Task PassivateExpense(Guid Id)
         {
             await _repository.PassivateEntityAsync<Domain.Model.Income.Expenses>(Id);
-            await Task.CompletedTask;
         }
 
         public async Task<Guid> UpdateExpense(Guid Id, ExpenseRequestDTO requestDTO)
@@ -95,11 +109,13 @@ namespace Domain.Service.Expenses
                .FirstOrDefaultAsync();
 
             var bankAccount = await _repository.GetByIdAsync<Domain.Model.Account.BankAccount>(requestDTO.BankAccountId);
+            var sector = await _repository.GetByIdAsync<Domain.Model.Sector.Sector>(requestDTO.SectorId);
             var institution = await _repository.GetByIdAsync<Domain.Model.Institution.Institution>(requestDTO.InstitutionId);
-            if (expense == null || bankAccount == null || institution == null)
+            if (expense == null || bankAccount == null || institution == null || sector == null)
                 return Guid.Empty;
 
             expense.Amount = requestDTO.Amount;
+            expense.Sector = sector;
             expense.CurrencyType = requestDTO.CurrencyType;
             expense.Description = requestDTO.Description;
             expense.DocumentNumber = requestDTO.DocumentNumber;
@@ -111,6 +127,15 @@ namespace Domain.Service.Expenses
             _repository.Update(expense);
             await _repository.CommitAsync();
             return expense.Id;
+        }
+
+        public async Task UpdateSector(Guid Id, string sectorDescription)
+        {
+            var currentSector = await _repository.GetByIdAsync<Domain.Model.Sector.Sector>(Id);
+            currentSector.SectorDescription = sectorDescription;
+            _repository.Update(currentSector);
+            await _repository.CommitAsync();
+
         }
     }
 }

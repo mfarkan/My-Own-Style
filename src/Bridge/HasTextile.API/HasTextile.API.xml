@@ -4,57 +4,6 @@
         <name>HasTextile.API</name>
     </assembly>
     <members>
-        <member name="M:HasTextile.API.Controllers.CustomerController.FindAllCustomer">
-            <summary>
-            Returns all active customers.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:HasTextile.API.Controllers.CustomerController.FindExpenses(System.Guid)">
-            <summary>
-            Return customer's expense list
-            </summary>
-            <param name="Id">Customer Unique Id</param>
-            <returns>Return customer's info with expense list.</returns>
-            <response code="200">Return Customer Info</response>
-            <response code="404">Not found customer.</response>
-        </member>
-        <member name="M:HasTextile.API.Controllers.CustomerController.FindCustomer(System.Guid)">
-            <summary>
-            Find Customer without expenses.
-            </summary>
-            <param name="Id">Unique Id</param>
-            <returns></returns>
-        </member>
-        <member name="M:HasTextile.API.Controllers.CustomerController.FilterCustomers(Domain.Service.Model.Customer.Model.CustomerFilterRequestDTO)">
-            <summary>
-            Filterize customer with some properties.
-            </summary>
-            <param name="request">QueryString </param>
-            <returns></returns>
-        </member>
-        <member name="M:HasTextile.API.Controllers.CustomerController.DeActivateCustomer(System.Guid)">
-            <summary>
-            Passivate customer.
-            </summary>
-            <param name="Id">Customer's Unique Id</param>
-            <returns></returns>
-        </member>
-        <member name="M:HasTextile.API.Controllers.CustomerController.UpdateCustomer(System.Guid,Domain.Service.Model.Customer.Model.CustomerRequestDTO)">
-            <summary>
-            Update customer
-            </summary>
-            <param name="Id">Unique customer Id</param>
-            <param name="request">Request Payload</param>
-            <returns>Customer's Id</returns>
-        </member>
-        <member name="M:HasTextile.API.Controllers.CustomerController.CreateNewUser(Domain.Service.Model.Customer.Model.CustomerRequestDTO)">
-            <summary>
-            create a new customer.
-            </summary>
-            <param name="request">customer request payload</param>
-            <returns>New Customer's Id</returns>
-        </member>
         <member name="M:HasTextile.API.Controllers.ExpenseController.FindExpense(System.Guid)">
             <summary>
             Return an expense with Unique Id

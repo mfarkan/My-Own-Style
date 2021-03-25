@@ -13,7 +13,6 @@ namespace Domain.Model.Institution
         public virtual string Code { get; set; }
         public virtual string EmailAddress { get; set; }
         public virtual string PhoneNumber { get; set; }
-        public virtual List<Customer.Customer> CustomerList { get; set; }
         public virtual List<Expenses> ExpenseList { get; set; }
         public virtual List<ApplicationUser> UserList { get; set; }
     }

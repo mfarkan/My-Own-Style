@@ -3,7 +3,6 @@ using Domain.Service.Model.BankAccount;
 using Domain.Service.Model.BankAccount.Model;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Domain.Service.BankAccount
@@ -23,7 +22,7 @@ namespace Domain.Service.BankAccount
         public Task GetBankAccountAsync(Guid Id)
         {
             var bankAccount = _repository.QueryWithoutTracking<Domain.Model.Account.BankAccount>()
-                .FirstOrDefaultAsync(q => q.Id == Id && );
+                .FirstOrDefaultAsync(q => q.Id == Id && q.Status == Core.Enumarations.StatusType.Active);
             throw new NotImplementedException();
         }
 

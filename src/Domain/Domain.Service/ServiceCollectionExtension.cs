@@ -16,7 +16,7 @@ namespace Domain.Service
     {
         public static void AddDomainServices(this IServiceCollection services)
         {
-            services.AddScoped<ICustomerService, CustomerService>();
+            //services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<IExpensesService, ExpensesService>();
             services.AddScoped<IInstitutionService, InstitutionService>();
             services.AddScoped<IBankAccountService, BankAccountService>();

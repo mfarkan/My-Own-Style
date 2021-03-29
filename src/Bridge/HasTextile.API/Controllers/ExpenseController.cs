@@ -96,5 +96,11 @@ namespace HasTextile.API.Controllers
             var result = await _expensesService.UpdateExpense(Id, requestDTO);
             return new OkObjectResult(new { Id = result });
         }
+
+        [HttpGet("{Id:guid}")]
+        public async Task<IActionResult> FindSector(Guid Id)
+        {
+            var result = await _expensesService.CreateSector
+        }
     }
 }

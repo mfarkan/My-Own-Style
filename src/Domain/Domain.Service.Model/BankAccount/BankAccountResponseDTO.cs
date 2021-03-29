@@ -1,11 +1,12 @@
 ﻿using Core.Enumarations;
+using Domain.Service.Model.Shared;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Domain.Service.Model.BankAccount.Model
+namespace Domain.Service.Model.BankAccount
 {
-    public class BankAccountRequestDTO
+    public class BankAccountResponseDTO : BaseResponseDTO
     {
         public string BankAccountName { get; set; }
         public string BankAccountDescription { get; set; }
@@ -17,6 +18,5 @@ namespace Domain.Service.Model.BankAccount.Model
         public CurrencyType CurrencyType { get; set; }
         public decimal UsableBalance { get; set; }
         public decimal BlockedBalance { get; set; }
-        public Guid InstitutionId { get; set; }
     }
 }

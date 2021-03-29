@@ -14,6 +14,7 @@ namespace Domain.Model.Account
         public virtual CurrencyType CurrencyType { get; set; }
         public virtual decimal UsableBalance { get; set; }
         public virtual decimal BlockedBalance { get; set; }
+        public virtual Institution.Institution Institution { get; set; }
         public bool IsKMH() => AccountType == AccountType.Overdraft;
         public bool IsVadesiz() => AccountType == AccountType.Vadesiz;
         public bool IsVadeli() => AccountType == AccountType.Vadeli;

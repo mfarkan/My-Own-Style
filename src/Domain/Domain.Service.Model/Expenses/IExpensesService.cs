@@ -19,5 +19,6 @@ namespace Domain.Service.Model.Expenses
         Task CreateSector(string sectorDescription);
         Task UpdateSector(Guid Id, string sectorDescription);
         Task DeleteSector(Guid Id);
+
     }
 }

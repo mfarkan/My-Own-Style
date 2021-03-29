@@ -1,4 +1,5 @@
-﻿using Domain.Model.Customer;
+﻿using Domain.Model.Account;
+using Domain.Model.Customer;
 using Domain.Model.Income;
 using Domain.Model.User;
 using System;
@@ -15,5 +16,6 @@ namespace Domain.Model.Institution
         public virtual string PhoneNumber { get; set; }
         public virtual List<Expenses> ExpenseList { get; set; }
         public virtual List<ApplicationUser> UserList { get; set; }
+        public virtual List<BankAccount> BankAccounts { get; set; }
     }
 }

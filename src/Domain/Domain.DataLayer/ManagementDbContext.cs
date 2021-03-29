@@ -25,6 +25,14 @@ namespace Domain.DataLayer
                 entity.Property(q => q.SectorDescription).IsRequired().HasMaxLength(50);
                 entity.Property(q => q.Status).HasDefaultValue(StatusType.Active);
             });
+            builder.Entity<Domain.Model.Account.BankAccount>(entity =>
+            {
+                entity.ToTable("BankAccount");
+                entity.Property(q => q.Status).HasDefaultValue(StatusType.Active);
+                entity.Property(q => q.BankAccountDescription).IsRequired().HasMaxLength(100);
+                entity.Property(q => q.BankAccountName).IsRequired().HasMaxLength(50);
+                entity.Property(q => q.AccountIBAN).HasMaxLength(34);
+            });
             builder.Entity<Expenses>(entity =>
             {
                 entity.ToTable("Expenses");

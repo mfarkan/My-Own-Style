@@ -17,6 +17,6 @@ namespace Domain.Service.Model.BankAccount.Model
         public CurrencyType CurrencyType { get; set; }
         public decimal UsableBalance { get; set; }
         public decimal BlockedBalance { get; set; }
-        public Guid InstitutionId { get; set; }
+        public Guid? InstitutionId { get; set; }
     }
 }

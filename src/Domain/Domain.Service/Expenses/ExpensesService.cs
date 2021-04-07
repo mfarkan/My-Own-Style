@@ -2,6 +2,7 @@
 using Domain.DataLayer.Business;
 using Domain.Service.Model.Expenses;
 using Domain.Service.Model.Expenses.Model;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,9 +14,12 @@ namespace Domain.Service.Expenses
     public class ExpensesService : IExpensesService
     {
         private readonly IBusinessRepository _repository;
-        public ExpensesService(IBusinessRepository repository)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public ExpensesService(IBusinessRepository repository, IHttpContextAccessor contextAccessor)
         {
             _repository = repository;
+            _httpContextAccessor = contextAccessor;
         }
 
         public async Task<Guid> CreateNewExpense(ExpenseRequestDTO requestDTO)

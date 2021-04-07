@@ -51,6 +51,7 @@ namespace HasTextile.API
             });
             services.AddDistributedMemoryCache();//if we don't configure redis or sql server its working like memory cache in server.
             services.AddSingleton<CacheProvider>();
+            services.AddHttpContextAccessor();
             services.AddControllers().AddNewtonsoftJson();
             services.AddApiVersioning();
             services.AddSwaggerGen(options =>

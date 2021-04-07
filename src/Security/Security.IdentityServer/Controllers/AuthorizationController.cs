@@ -175,7 +175,7 @@ namespace Security.IdentityServer.Controllers
             //var isEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
             var institutionId = user.Institution?.Id;
             //var isphoneNumberConfirmed = await _userManager.IsPhoneNumberConfirmedAsync(user);
-            customClaims.Add(new Claim("InstitutionId", institutionId.ToString()));
+            customClaims.Add(new Claim("institutionId", institutionId.ToString()));
             //customClaims.Add(new Claim(OpenIdConnectConstants.Claims.PhoneNumber, phoneNumber));
             //customClaims.Add(new Claim(OpenIdConnectConstants.Claims.PhoneNumberVerified, isphoneNumberConfirmed.ToString()));
             return customClaims;

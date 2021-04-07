@@ -20,5 +20,6 @@
     <FluentValidation>9.3.0</FluentValidation>
     <OcelotVersion>16.0.1</OcelotVersion>
     <HealtCheckClientVersion>3.1.2</HealtCheckClientVersion>
+    <MicrosoftHttpAbstraction>2.2.0</MicrosoftHttpAbstraction>
   </PropertyGroup>
 </Project>

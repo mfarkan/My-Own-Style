@@ -48,7 +48,13 @@ namespace Domain.Service.Expenses
             await _repository.CommitAsync();
             return newInstance.Id;
         }
-
+        public async Task<Domain.Model.Sector.Sector> GetSectorAsync(Guid Id)
+        {
+            var currentSector = await _repository.QueryWithoutTracking<Domain.Model.Sector.Sector>()
+                .Where(q => q.Id == Id && q.Status == StatusType.Active)
+                .FirstOrDefaultAsync();
+            return currentSector;
+        }
         public async Task CreateSector(string sectorDescription)
         {
             var newInstance = new Domain.Model.Sector.Sector

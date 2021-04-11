@@ -100,7 +100,8 @@ namespace HasTextile.API.Controllers
         [HttpGet("{Id:guid}")]
         public async Task<IActionResult> FindSector(Guid Id)
         {
-            var result = await _expensesService.CreateSector
+            var result = await _expensesService.GetSectorAsync(Id);
+            return new OkObjectResult(result);
         }
     }
 }

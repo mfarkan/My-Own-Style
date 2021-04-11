@@ -6,6 +6,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="$(MicrosoftHttpAbstraction)" />
+    <PackageReference Include="QRCoder" Version="$(QRCoder)" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.Extensions\Core.Extensions.csproj" />

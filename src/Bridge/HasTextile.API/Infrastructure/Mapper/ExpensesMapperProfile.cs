@@ -20,7 +20,7 @@ namespace HasTextile.API.Infrastructure.Mapper
                 .ForMember(dest => dest.CurrencyDescription, src => src.MapFrom(map => map.CurrencyType.GetDisplayName()))
                 .ForMember(dest => dest.BankAccountName, src => src.MapFrom(map => map.BankAccount.BankAccountName));
 
-            CreateMap<BankAccount,BankAccountResponseDTO>()
+            CreateMap<BankAccount, BankAccountResponseDTO>();
         }
     }
 }

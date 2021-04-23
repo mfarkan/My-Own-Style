@@ -15,5 +15,12 @@
     <MoqFramework>4.14.5</MoqFramework>
     <nUnit>3.12.0</nUnit>
     <ApiVersioning>4.1.1</ApiVersioning>
+    <PostgreHealthCheck>3.1.1</PostgreHealthCheck>
+    <SqlDataClient>2.1.1</SqlDataClient>
+    <FluentValidation>9.3.0</FluentValidation>
+    <OcelotVersion>16.0.1</OcelotVersion>
+    <HealtCheckClientVersion>3.1.2</HealtCheckClientVersion>
+    <MicrosoftHttpAbstraction>2.2.0</MicrosoftHttpAbstraction>
+    <QRCoder>1.4.1</QRCoder>
   </PropertyGroup>
 </Project>

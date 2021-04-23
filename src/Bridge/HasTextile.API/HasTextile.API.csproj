@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="$(HealtCheckClientVersion)" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="$(DotnetSdkVersion)" />
     <PackageReference Include="AspNet.Security.OAuth.Introspection" Version="$(AuthIntrospection)" />
     <PackageReference Include="AspNet.Security.OAuth.Validation" Version="$(AuthValidation)" />
@@ -33,10 +34,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
     <Content Include="..\..\..\build\sharedSettings*.json">
       <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Models\**" />
+    <Content Remove="Models\**" />
+    <EmbeddedResource Remove="Models\**" />
+    <None Remove="Models\**" />
   </ItemGroup>
 </Project>

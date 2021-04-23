@@ -12,11 +12,11 @@ namespace Domain.Service.Model.Expenses
         /// <summary>
         /// Customer Id
         /// </summary>
-        public Guid CustomerId { get; set; }
+        public Guid? BankAccountId { get; set; }
         /// <summary>
         /// Customer Name
         /// </summary>
-        public string CustomerName { get; set; }
+        public string BankAccountName { get; set; }
         /// <summary>
         /// Expense Type
         /// </summary>

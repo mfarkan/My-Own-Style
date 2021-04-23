@@ -4,30 +4,27 @@ using Core.Caching;
 using Domain.DataLayer;
 using Domain.Service;
 using HasTextile.API.Filters;
-using HasTextile.API.HealtChecker;
+using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 
 namespace HasTextile.API
 {
     public class Startup
     {
-        private const string Doc_Helper_Url_Prefix = "Textile-api";
+        private const string Doc_Helper_Url_Prefix = "business-api";
         public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Environment = env;
@@ -54,6 +51,7 @@ namespace HasTextile.API
             });
             services.AddDistributedMemoryCache();//if we don't configure redis or sql server its working like memory cache in server.
             services.AddSingleton<CacheProvider>();
+            services.AddHttpContextAccessor();
             services.AddControllers().AddNewtonsoftJson();
             services.AddApiVersioning();
             services.AddSwaggerGen(options =>
@@ -106,15 +104,7 @@ namespace HasTextile.API
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 options.IncludeXmlComments(xmlPath);
             });
-            services.AddHealthChecks().AddCheck<ApiHealthChecker>("My-Health-Check");
             services.AddAutoMapper(typeof(Startup));
-        }
-        //I should look on to this , maybe i should look id server , web application to are they ok ?
-        private static Task WriteAsJson(HttpContext httpContext, HealthReport result)
-        {
-            httpContext.Response.ContentType = "application/json; charset=utf-8";
-            var json = JsonConvert.SerializeObject(result, Formatting.Indented);
-            return httpContext.Response.WriteAsync(json);
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -127,15 +117,6 @@ namespace HasTextile.API
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseHealthChecks("/healtcheck", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions()
-            {
-                ResultStatusCodes =
-                {
-                    [HealthStatus.Healthy]=StatusCodes.Status200OK,
-                    [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable
-                },
-                ResponseWriter = WriteAsJson,
-            });
             app.UseSwagger(c =>
             {
                 c.RouteTemplate = Doc_Helper_Url_Prefix + "/{documentName}/swagger.json";
@@ -151,6 +132,14 @@ namespace HasTextile.API
             });
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHealthChecks("/quickhealth", new HealthCheckOptions
+                {
+                    Predicate = _ => false // do not run any checks. just check the web application is running on.
+                });
+                endpoints.MapHealthChecks("/healthcheck", new HealthCheckOptions()
+                {
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                });
                 endpoints.MapControllers();
             });
         }

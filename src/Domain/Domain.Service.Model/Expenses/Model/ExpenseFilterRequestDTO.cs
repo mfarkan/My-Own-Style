@@ -13,9 +13,9 @@ namespace Domain.Service.Model.Expenses.Model
         /// </summary>
         public ExpenseType? ExpenseType { get; set; }
         /// <summary>
-        /// Müşteri Id Bilgisi
+        /// Banka Hesap Bilgisi
         /// </summary>
-        public Guid? CustomerId { get; set; }
+        public Guid? BankAccountId { get; set; }
         /// <summary>
         /// Açıklama Alanı
         /// </summary>

@@ -3,89 +3,50 @@ using System;
 using Domain.DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Domain.DataLayer.Migrations
 {
     [DbContext(typeof(ManagementDbContext))]
-    partial class ManagementDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210325191448_SectorMigration")]
+    partial class SectorMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("public")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
-                .HasAnnotation("ProductVersion", "3.1.7")
+                .HasAnnotation("ProductVersion", "3.1.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            modelBuilder.Entity("Domain.Model.Customer.Customer", b =>
+            modelBuilder.Entity("Domain.Model.Account.BankAccount", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("CreatedByIp")
+                    b.Property<string>("AccountIBAN")
                         .HasColumnType("text");
 
-                    b.Property<string>("CreatedByUserName")
+                    b.Property<string>("AccountNo")
                         .HasColumnType("text");
 
-                    b.Property<string>("CustomerAddress")
-                        .IsRequired()
-                        .HasColumnType("character varying(255)")
-                        .HasMaxLength(255);
+                    b.Property<int>("AccountType")
+                        .HasColumnType("integer");
 
-                    b.Property<int>("CustomerCompanyType")
-                        .HasColumnType("integer")
-                        .HasMaxLength(255);
+                    b.Property<string>("BankAccountDescription")
+                        .HasColumnType("text");
 
-                    b.Property<string>("CustomerDescription")
-                        .IsRequired()
-                        .HasColumnType("character varying(255)")
-                        .HasMaxLength(255);
+                    b.Property<string>("BankAccountName")
+                        .HasColumnType("text");
 
-                    b.Property<string>("CustomerEmailAddress")
-                        .IsRequired()
-                        .HasColumnType("character varying(255)")
-                        .HasMaxLength(255);
+                    b.Property<int>("BankType")
+                        .HasColumnType("integer");
 
-                    b.Property<string>("CustomerName")
-                        .IsRequired()
-                        .HasColumnType("character varying(255)")
-                        .HasMaxLength(255);
-
-                    b.Property<string>("CustomerTelephoneNumber")
-                        .HasColumnType("character varying(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<Guid?>("InstitutionId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("Status")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasDefaultValue(1);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreatedAt");
-
-                    b.HasIndex("InstitutionId");
-
-                    b.ToTable("Customers");
-                });
-
-            modelBuilder.Entity("Domain.Model.Income.Expenses", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uuid");
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<decimal>("BlockedBalance")
+                        .HasColumnType("numeric");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp without time zone");
@@ -99,8 +60,42 @@ namespace Domain.DataLayer.Migrations
                     b.Property<int>("CurrencyType")
                         .HasColumnType("integer");
 
-                    b.Property<Guid?>("CustomerId")
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("TotalBalance")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("UsableBalance")
+                        .HasColumnType("numeric");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BankAccount");
+                });
+
+            modelBuilder.Entity("Domain.Model.Income.Expenses", b =>
+                {
+                    b.Property<Guid>("Id")
                         .HasColumnType("uuid");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid?>("BankAccountId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("CreatedByIp")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CreatedByUserName")
+                        .HasColumnType("text");
+
+                    b.Property<int>("CurrencyType")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Description")
                         .HasColumnType("character varying(255)")
@@ -119,6 +114,9 @@ namespace Domain.DataLayer.Migrations
                     b.Property<Guid?>("InstitutionId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("SectorId")
+                        .HasColumnType("uuid");
+
                     b.Property<int>("Status")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
@@ -129,11 +127,13 @@ namespace Domain.DataLayer.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BankAccountId");
+
                     b.HasIndex("CreatedAt");
 
-                    b.HasIndex("CustomerId");
-
                     b.HasIndex("InstitutionId");
+
+                    b.HasIndex("SectorId");
 
                     b.ToTable("Expenses");
                 });
@@ -212,6 +212,37 @@ namespace Domain.DataLayer.Migrations
                     b.HasIndex("InstitutionId");
 
                     b.ToTable("InstitutionSettings");
+                });
+
+            modelBuilder.Entity("Domain.Model.Sector.Sector", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("CreatedByIp")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CreatedByUserName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("SectorDescription")
+                        .IsRequired()
+                        .HasColumnType("character varying(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<int>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(1);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.ToTable("Sectors");
                 });
 
             modelBuilder.Entity("Domain.Model.User.ApplicationRole", b =>
@@ -609,22 +640,19 @@ namespace Domain.DataLayer.Migrations
                     b.ToTable("OpenIddictTokens");
                 });
 
-            modelBuilder.Entity("Domain.Model.Customer.Customer", b =>
-                {
-                    b.HasOne("Domain.Model.Institution.Institution", "Institution")
-                        .WithMany("CustomerList")
-                        .HasForeignKey("InstitutionId");
-                });
-
             modelBuilder.Entity("Domain.Model.Income.Expenses", b =>
                 {
-                    b.HasOne("Domain.Model.Customer.Customer", "Customer")
-                        .WithMany("Expenses")
-                        .HasForeignKey("CustomerId");
+                    b.HasOne("Domain.Model.Account.BankAccount", "BankAccount")
+                        .WithMany()
+                        .HasForeignKey("BankAccountId");
 
                     b.HasOne("Domain.Model.Institution.Institution", "Institution")
                         .WithMany("ExpenseList")
                         .HasForeignKey("InstitutionId");
+
+                    b.HasOne("Domain.Model.Sector.Sector", "Sector")
+                        .WithMany("Expenses")
+                        .HasForeignKey("SectorId");
                 });
 
             modelBuilder.Entity("Domain.Model.Institution.InstitutionSettings", b =>

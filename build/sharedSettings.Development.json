@@ -4,6 +4,7 @@
     //"ConnectionStringSecurity": "User ID=mfarkan;Password=123456;Server=localhost;Port=5432;Database=HasTextile_Security;Integrated Security=true;Pooling=true;"
   },
   "Application": {
-    "Deneme": "SharedSettings_Development"
+    "Deneme": "SharedSettings_Development",
+    "QRCodeRemainingTime": 180
   }
 }

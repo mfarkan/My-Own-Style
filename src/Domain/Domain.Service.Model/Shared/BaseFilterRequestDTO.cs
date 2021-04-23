@@ -6,6 +6,6 @@ namespace Domain.Service.Model.Shared
     {
         public int Start { get; set; }
         public int Length { get; set; }
-        public Guid InstitutionId { get; set; }
+        public Guid? InstitutionId { get; set; }
     }
 }

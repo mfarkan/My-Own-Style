@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
+using Core.Enumarations;
+using Domain.Model.Account;
 using Domain.Model.Income;
+using Domain.Service.Model.BankAccount;
 using Domain.Service.Model.Expenses;
 using System;
 using System.Collections.Generic;
@@ -13,9 +16,11 @@ namespace HasTextile.API.Infrastructure.Mapper
         public ExpensesMapperProfile()
         {
             CreateMap<Expenses, ExpenseResponseDTO>()
-                .ForMember(dest => dest.CustomerId, src => src.MapFrom(map => map.Customer.Id))
-                .ForMember(dest => dest.CurrencyDescription, src => src.MapFrom(map => map.CurrencyType.ToString()))
-                .ForMember(dest => dest.CustomerName, src => src.MapFrom(map => map.Customer.CustomerName));
+                .ForMember(dest => dest.BankAccountId, src => src.MapFrom(map => map.BankAccount.Id))
+                .ForMember(dest => dest.CurrencyDescription, src => src.MapFrom(map => map.CurrencyType.GetDisplayName()))
+                .ForMember(dest => dest.BankAccountName, src => src.MapFrom(map => map.BankAccount.BankAccountName));
+
+            CreateMap<BankAccount, BankAccountResponseDTO>();
         }
     }
 }

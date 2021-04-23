@@ -8,4 +8,8 @@
     <ProjectReference Include="..\Domain.Model\Domain.Model.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="QRCode\Model\" />
+  </ItemGroup>
+
 </Project>

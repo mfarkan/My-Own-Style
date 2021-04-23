@@ -1,5 +1,4 @@
 ﻿using Core.Enumarations;
-using Domain.Model.Customer;
 using Domain.Model.Income;
 using Domain.Model.Institution;
 using Domain.Model.User;
@@ -19,18 +18,20 @@ namespace Domain.DataLayer
         {
             builder.HasDefaultSchema("public");
             base.OnModelCreating(builder);
-
-            builder.Entity<Customer>(entity =>
+            builder.Entity<Domain.Model.Sector.Sector>(entity =>
             {
-                entity.ToTable("Customers");
+                entity.ToTable("Sectors");
                 entity.HasIndex(q => q.CreatedAt);
+                entity.Property(q => q.SectorDescription).IsRequired().HasMaxLength(50);
                 entity.Property(q => q.Status).HasDefaultValue(StatusType.Active);
-                entity.Property(q => q.CustomerAddress).IsRequired().HasMaxLength(255);
-                entity.Property(q => q.CustomerCompanyType).IsRequired().HasMaxLength(255);
-                entity.Property(q => q.CustomerDescription).IsRequired().HasMaxLength(255);
-                entity.Property(q => q.CustomerEmailAddress).IsRequired().HasMaxLength(255);
-                entity.Property(q => q.CustomerName).IsRequired().HasMaxLength(255);
-                entity.Property(q => q.CustomerTelephoneNumber).HasMaxLength(50);
+            });
+            builder.Entity<Domain.Model.Account.BankAccount>(entity =>
+            {
+                entity.ToTable("BankAccount");
+                entity.Property(q => q.Status).HasDefaultValue(StatusType.Active);
+                entity.Property(q => q.BankAccountDescription).IsRequired().HasMaxLength(100);
+                entity.Property(q => q.BankAccountName).IsRequired().HasMaxLength(50);
+                entity.Property(q => q.AccountIBAN).HasMaxLength(34);
             });
             builder.Entity<Expenses>(entity =>
             {

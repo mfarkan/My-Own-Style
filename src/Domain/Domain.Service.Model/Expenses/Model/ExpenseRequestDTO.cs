@@ -10,7 +10,7 @@ namespace Domain.Service.Model.Expenses.Model
         /// <summary>
         /// Müşteri Id
         /// </summary>
-        public Guid CustomerId { get; set; }
+        public Guid BankAccountId { get; set; }
         /// <summary>
         /// Gelir mi Gider mi?
         /// </summary>
@@ -39,6 +39,10 @@ namespace Domain.Service.Model.Expenses.Model
         /// Vade tarihi
         /// </summary>
         public DateTime? ExpiryDate { get; set; }
+        /// <summary>
+        /// Kurum Id Bilgisi
+        /// </summary>
         public Guid InstitutionId { get; set; }
+        public Guid SectorId { get; set; }
     }
 }
